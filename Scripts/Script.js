@@ -9,6 +9,7 @@ var playerImg3 = new Image();
 var playerImg4 = new Image();
 var playerImg5 = new Image();
 var playerImg6 = new Image();
+var playerImg7 = new Image();
 
 var birdImg1 = new Image();
 var birdImg2 = new Image();
@@ -53,45 +54,52 @@ var bird = {
     x: -2000,
     y: (standard.height + 100) - Math.random() * 300,
     animationState: 1,
-    animation: 1
+    animation: 1,
+    speed: 1.25
 };
 
 var player = {
     x: 200,
     y: standard.height,
-    animationState: 1,
+    animationState: 5,
     animation: 1,
     jumping: false,
     jumpSpeed: standard.jumpspeed,
     gravitation: 2,
     crouch: false,
     speed: 20,
-    dead: false
+    dead: false,
+    crouchValue:8*8
 };
+
+
 
 window.addEventListener('keydown', function (event) {
     console.log(event)
     if (event.code === "KeyF") {
         toggleFullscreen();
     }
-    if (event.code === "Space" && menu.pause === false || event.code === "Space" && settings.debug === true) {
+    if (event.code === "Space" && menu.pause === false && player.dead === false || event.code === "Space" && settings.debug === true) {
         jump();
     }
-    if (event.code === "Space" && menu.pause === true) {
+    if (event.code === "Space" && menu.pause === true && player.dead === false) {
         jump();
-        menu.pause = false;
+        unPause();
     }
-    if (event.code === "ControlLeft" && menu.pause === false || event.code === "Space" && settings.debug === true) {
+    if (event.code === "ControlLeft" && menu.pause === false && player.dead === false || event.code === "ControlLeft" && settings.debug === true) {
         crouch();
     }
-    if (event.code === "Escape") {
+    if (event.code === "Escape" && player.dead === false) {
         toggleMenu();
+    }
+    if(event.code === "Enter" && player.dead === true){
+        revive();
     }
 });
 
 window.addEventListener('keyup', function (event) {
     console.log(event);
-    if (event.code === "ControlLeft" && menu.pause === false || event.code === "Space" && settings.debug === true) {
+    if (event.code === "ControlLeft" && menu.pause === false && player.dead === false || event.code === "ControlLeft" && settings.debug === true) {
         crouchEnd();
     }
     if (event.code === "KeyB") {
@@ -162,6 +170,10 @@ function showPlayer() {
         c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg6.src = 'Images/Player/Ostrich/player6.png';
     }
+    if (playerImg7.complete && player.animationState === 5) {
+        c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg7.src = 'Images/Player/Ostrich/player7.png';
+    }
 }
 function showObstacle() {
 
@@ -202,10 +214,12 @@ function update() {
     checkCollision();
     showDebugMenu();
 }
+
 function showDebugMenu() {
     if (settings.debug === true) {
-        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillStyle = "rgba(0, 0, 0, 0.25)";
         c.fillRect(player.x + 8*5, player.y + 8 * 9, 8 * 19, 8 * 23);
+        c.fillRect(player.x + 8*5, player.y + 8 * 9+player.crouchValue, 8 * 19, 8 * 23-player.crouchValue);
 
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
         c.fillRect(cactus1.x + 8 * 11, cactus1.y + 8 * 12, 8 * 13, 8 * 20);
@@ -215,37 +229,90 @@ function showDebugMenu() {
         c.fillRect(cactus3.x + 8 * 11, cactus3.y + 8 * 12, 8 * 13, 8 * 20);
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
         c.fillRect(cactus4.x + 8 * 11, cactus4.y + 8 * 12, 8 * 13, 8 * 20);
+
+        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillRect(bird.x + 8*4, bird.y + 8 * 8, 8 * 22, 8 * 10);
     }
 }
 function checkCollision() {
     if (player.x + 8*5 + 8 * 19 > cactus1.x + 8 * 9 && player.x + 8*5 < cactus1.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
-        menu.pause = true;
         cactus1.x -= 64;
         die();
     }
     if (player.x + 8 + 8 * 23 > cactus2.x + 8 * 9 && player.x + 8 < cactus2.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
-        menu.pause = true;
         cactus2.x -= 64;
         die();
     }
     if (player.x + 8 + 8 * 23 > cactus3.x + 8 * 9 && player.x + 8 < cactus3.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
-        menu.pause = true;
         cactus3.x -= 64;
         die();
     }
     if (player.x + 8 + 8 * 23 > cactus4.x + 8 * 9 && player.x + 8 < cactus4.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
-        menu.pause = true;
+        cactus4.x -= 64;
+        die();
+    }
+    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y < bird.y+8*4+8*10 && player.y+8*9 > bird.y+8*4 && menu.pause === false && player.crouch === false) {
+        cactus4.x -= 64;
+        die();
+    }
+    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y+player.crouchValue < bird.y+8*4+8*10 && player.y+8*9 > bird.y+8*4 && menu.pause === false && player.crouch === true) {
         cactus4.x -= 64;
         die();
     }
 }
+function unPause(){
+    menu.pause = false;
+    player.animationState = 1;
+}
 function die() {
     player.animationState = 4;
     player.dead = true;
+    menu.pause = true;
 }
+
+function revive(){
+    cactus1 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus2 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus3 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus4 = {
+        x: -2000,
+        y: standard.height
+    };
+    
+    bird = {
+        x: -2000,
+        y: (standard.height + 100) - Math.random() * 300,
+        animationState: 1,
+        animation: 1
+    };
+    
+    player = {
+        x: 200,
+        y: standard.height,
+        animationState: 5,
+        animation: 1,
+        jumping: false,
+        jumpSpeed: standard.jumpspeed,
+        gravitation: 2,
+        crouch: false,
+        speed: 20,
+        dead: false,
+        crouchValue:8*8
+    };    
+}
+
 function moveObstacle() {
     if (menu.pause === false) {
-        bird.x -= player.speed;
+        bird.x -= player.speed*bird.speed;
         cactus1.x -= player.speed;
         cactus2.x -= player.speed;
         cactus3.x -= player.speed;
@@ -254,14 +321,14 @@ function moveObstacle() {
 }
 
 function checkAir() {
-    if (player.y < standard.height) {
+    if (player.y < standard.height && player.animationState !== 4 && player.animationState !== 5) {
         up();
         player.inAir = true;
         player.animationState = 2;
     } else {
-        if (player.crouch === false) {
+        if (player.crouch === false && player.animationState !== 4 && player.animationState !== 5) {
             player.animationState = 1;
-        } else {
+        } else if(player.animationState !== 4 && player.animationState !== 5){
             player.animationState = 3;
         }
         player.inAir = false;
@@ -300,19 +367,19 @@ function teleport() {
     if (menu.pause === false) {
         var chosen = Math.floor(Math.random() * 5);
 
-        if (cactus1.x < -200 && chosen === 1) {
+        if (cactus1.x < -200 && chosen === 0) {
             cactus1.x = 2000 + (Math.random() * 200);
         }
-        else if (cactus2.x < -200 && chosen === 2) {
+        else if (cactus2.x < -200 && chosen === 1) {
             cactus2.x = 2000 + (Math.random() * 200);
         }
-        else if (cactus3.x < -200 && chosen === 3) {
+        else if (cactus3.x < -200 && chosen === 2) {
             cactus3.x = 2000 + (Math.random() * 200);
         }
-        else if (cactus4.x < -200 && chosen === 4) {
+        else if (cactus4.x < -200 && chosen === 3) {
             cactus4.x = 2000 + (Math.random() * 200);
         }
-        else if (bird.x < -200 && chosen === 5) {
+        else if (bird.x < -200 && chosen === 4) {
             bird.x = 2000 + (Math.random() * 200);
             bird.y = (standard.height + 100) - Math.random() * 300;
         }
