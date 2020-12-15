@@ -22,7 +22,11 @@ var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
 
 var settings = {
-    fullscreen: false
+    fullscreen: false,
+    debug: false
+};
+var menu = {
+    pause:true
 };
 var standard = {
     jumpspeed:35,
@@ -69,20 +73,52 @@ window.addEventListener('keydown', function(event){
     if(event.code === "KeyF"){
         toggleFullscreen();
     }
-    if(event.code === "Space"){
+    if(event.code === "Space" && menu.pause === false || event.code === "Space" && settings.debug === true){
         jump();
     }
-    if(event.code === "ControlLeft"){
+    if(event.code === "Space" && menu.pause === true){
+        jump();
+        menu.pause = false;
+    }
+    if(event.code === "ControlLeft" && menu.pause === false || event.code === "Space" && settings.debug === true){
         crouch();
+    }
+    if(event.code === "Escape"){
+        toggleMenu();
     }
 });
 
 window.addEventListener('keyup', function(event){
     console.log(event);
-    if(event.code === "ControlLeft"){
+    if(event.code === "ControlLeft" && menu.pause === false || event.code === "Space" && settings.debug === true){
         crouchEnd();
     }
+    if(event.code === "KeyB"){
+        toggleDebug();
+    } 
 });
+function toggleMenu(){
+    if(menu.pause === false){
+        menu.pause = true;
+        return;
+    }
+    if(menu.pause === true){
+        menu.pause = false;
+        return;
+    }
+}
+function toggleDebug(){
+    if(settings.debug === false){
+        settings.debug = true;
+        return;
+    }
+    if(settings.debug === true){
+        settings.debug = false;
+        return;
+    }
+}
+
+
 function toggleFullscreen(){
     if(settings.fullscreen === false){
         if (canvas.RequestFullScreen) {
@@ -100,6 +136,7 @@ function toggleFullscreen(){
 }
 
 function showPlayer(){
+
     if (playerImg1.complete && player.animationState === 1 && player.animation === 1){
         c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg1.src = 'Images/Player/Ostrich/player1.png';
@@ -122,6 +159,7 @@ function showPlayer(){
     }
 }
 function showObstacle(){
+
     if (birdImg1.complete && bird.animationState === 1 && bird.animation === 1){
         c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
         birdImg1.src = 'Images/Obstacles/bird1.png';
@@ -130,6 +168,7 @@ function showObstacle(){
         c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
         birdImg2.src = 'Images/Obstacles/bird2.png';
     }
+
     if(cactusImg1.complete){
         c.drawImage(cactusImg1, Math.floor(cactus1.x), Math.floor(cactus1.y), 256, 256);
         cactusImg1.src = 'Images/Obstacles/cactus1.png';
@@ -156,17 +195,56 @@ function update(){
     checkAir();
     moveObstacle();
     checkCollision();
+    showDebugMenu();
+}
+function showDebugMenu(){
+    if(settings.debug === true){
+        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillRect(player.x+8, player.y+8*9, 8*23, 8*23);
+    
+        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillRect(cactus1.x+8*11, cactus1.y+8*12, 8*13, 8*20);
+        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillRect(cactus2.x+8*11, cactus2.y+8*12, 8*13, 8*20);
+        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillRect(cactus3.x+8*11, cactus3.y+8*12, 8*13, 8*20);
+        c.fillStyle = "rgba(0, 0, 0, 0.5)";
+        c.fillRect(cactus4.x+8*11, cactus4.y+8*12, 8*13, 8*20);
+    }
 }
 function checkCollision(){
+    if (player.x+8+8*23 > cactus1.x+8*9 && player.x+8 < cactus1.x+8*11+8*13 && player.y > standard.height - 100 && menu.pause === false){
+        menu.pause = true;
+        cactus1.x -= 64;
+        die();
+    }
+    if (player.x+8+8*23 > cactus2.x+8*9 && player.x+8 < cactus2.x+8*11+8*13 && player.y > standard.height - 100 && menu.pause === false){
+        menu.pause = true;
+        cactus2.x -= 64;
+        die();
+    }
+    if (player.x+8+8*23 > cactus3.x+8*9 && player.x+8 < cactus3.x+8*11+8*13 && player.y > standard.height - 100 && menu.pause === false){
+        menu.pause = true;
+        cactus3.x -= 64;
+        die();
+    }
+    if (player.x+8+8*23 > cactus4.x+8*9 && player.x+8 < cactus4.x+8*11+8*13 && player.y > standard.height - 100 && menu.pause === false){
+        menu.pause = true;
+        cactus4.x -= 64;
+        die();
+    }
+}
+function die(){
 
 }
-
 function moveObstacle(){
-    bird.x -= player.speed;
-    cactus1.x -= player.speed;
-    cactus2.x -= player.speed;
-    cactus3.x -= player.speed;
-    cactus4.x -= player.speed;
+    if(menu.pause === false){
+        bird.x -= player.speed;
+        cactus1.x -= player.speed;
+        cactus2.x -= player.speed;
+        cactus3.x -= player.speed;
+        cactus4.x -= player.speed;
+    }
 }
 
 function checkAir(){
@@ -263,4 +341,6 @@ setInterval(function(){
 
 setInterval(teleport, 1000)
 
-setInterval(update, 16.66666666667)
+setInterval(update, 16.66666666667);
+
+
