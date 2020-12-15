@@ -186,7 +186,7 @@ function crouch() {
   function crouchEnd() {
     dino.crouch = false;
     dino.animationState = 1;
-  }
+  };
 
 function teleport() {
     if (dino.stand === false && dino.died === false && user.loggedIn === true && dino.timer === ""){
