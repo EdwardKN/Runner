@@ -26,170 +26,175 @@ var settings = {
     debug: false
 };
 var menu = {
-    pause:true
+    pause: true
 };
 var standard = {
-    jumpspeed:35,
-    height:640,
+    jumpspeed: 35,
+    height: 640,
 }
 var cactus1 = {
-    x: 700,
+    x: -2000,
     y: standard.height
-  };
-  var cactus2 = {
-    x: 850,
+};
+var cactus2 = {
+    x: -2000,
     y: standard.height
-  };
-  var cactus3 = {
-    x: 1000,
+};
+var cactus3 = {
+    x: -2000,
     y: standard.height
-  };
-  var cactus4 = {
-    x: 1150,
+};
+var cactus4 = {
+    x: -2000,
     y: standard.height
-  }; 
+};
 
-  var bird = {
-    x: 500,
+var bird = {
+    x: -2000,
     y: (standard.height + 100) - Math.random() * 300,
     animationState: 1,
     animation: 1
-  };
+};
 
 var player = {
     x: 200,
     y: standard.height,
     animationState: 1,
-    animation:1,
-    jumping:false,
-    jumpSpeed:standard.jumpspeed,
+    animation: 1,
+    jumping: false,
+    jumpSpeed: standard.jumpspeed,
     gravitation: 2,
     crouch: false,
-    speed: 20
+    speed: 20,
+    dead: false
 };
 
-window.addEventListener('keydown', function(event){
+window.addEventListener('keydown', function (event) {
     console.log(event)
-    if(event.code === "KeyF"){
+    if (event.code === "KeyF") {
         toggleFullscreen();
     }
-    if(event.code === "Space" && menu.pause === false || event.code === "Space" && settings.debug === true){
+    if (event.code === "Space" && menu.pause === false || event.code === "Space" && settings.debug === true) {
         jump();
     }
-    if(event.code === "Space" && menu.pause === true){
+    if (event.code === "Space" && menu.pause === true) {
         jump();
         menu.pause = false;
     }
-    if(event.code === "ControlLeft" && menu.pause === false || event.code === "Space" && settings.debug === true){
+    if (event.code === "ControlLeft" && menu.pause === false || event.code === "Space" && settings.debug === true) {
         crouch();
     }
-    if(event.code === "Escape"){
+    if (event.code === "Escape") {
         toggleMenu();
     }
 });
 
-window.addEventListener('keyup', function(event){
+window.addEventListener('keyup', function (event) {
     console.log(event);
-    if(event.code === "ControlLeft" && menu.pause === false || event.code === "Space" && settings.debug === true){
+    if (event.code === "ControlLeft" && menu.pause === false || event.code === "Space" && settings.debug === true) {
         crouchEnd();
     }
-    if(event.code === "KeyB"){
+    if (event.code === "KeyB") {
         toggleDebug();
-    } 
+    }
 });
-function toggleMenu(){
-    if(menu.pause === false){
+function toggleMenu() {
+    if (menu.pause === false) {
         menu.pause = true;
         return;
     }
-    if(menu.pause === true){
+    if (menu.pause === true) {
         menu.pause = false;
         return;
     }
 }
-function toggleDebug(){
-    if(settings.debug === false){
+function toggleDebug() {
+    if (settings.debug === false) {
         settings.debug = true;
         return;
     }
-    if(settings.debug === true){
+    if (settings.debug === true) {
         settings.debug = false;
         return;
     }
 }
 
 
-function toggleFullscreen(){
-    if(settings.fullscreen === false){
+function toggleFullscreen() {
+    if (settings.fullscreen === false) {
         if (canvas.RequestFullScreen) {
             canvas.RequestFullScreen();
-        }else if(canvas.webkitRequestFullScreen){
+        } else if (canvas.webkitRequestFullScreen) {
             canvas.webkitRequestFullScreen();
-            }else if(canvas.mozRequestFullScreen){
-        canvas.mozRequestFullScreen();
-        }else if(canvas.msRequestFullscreen){
+        } else if (canvas.mozRequestFullScreen) {
+            canvas.mozRequestFullScreen();
+        } else if (canvas.msRequestFullscreen) {
             canvas.msRequestFullscreen();
-        }else{
+        } else {
             alert("This browser doesn't supporter fullscreen");
         }
     }
 }
 
-function showPlayer(){
+function showPlayer() {
 
-    if (playerImg1.complete && player.animationState === 1 && player.animation === 1){
+    if (playerImg1.complete && player.animationState === 1 && player.animation === 1) {
         c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg1.src = 'Images/Player/Ostrich/player1.png';
     }
-    if (playerImg2.complete && player.animationState === 1 && player.animation === 2){
+    if (playerImg2.complete && player.animationState === 1 && player.animation === 2) {
         c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg2.src = 'Images/Player/Ostrich/player2.png';
     }
-    if (playerImg3.complete && player.animationState === 2){
+    if (playerImg3.complete && player.animationState === 2) {
         c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg3.src = 'Images/Player/Ostrich/player3.png';
     }
-    if (playerImg4.complete && player.animationState === 3 && player.animation === 1){
+    if (playerImg4.complete && player.animationState === 3 && player.animation === 1) {
         c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg4.src = 'Images/Player/Ostrich/player4.png';
     }
-    if (playerImg5.complete && player.animationState === 3 && player.animation === 2){
+    if (playerImg5.complete && player.animationState === 3 && player.animation === 2) {
         c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg5.src = 'Images/Player/Ostrich/player5.png';
     }
+    if (playerImg6.complete && player.animationState === 4) {
+        c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg6.src = 'Images/Player/Ostrich/player6.png';
+    }
 }
-function showObstacle(){
+function showObstacle() {
 
-    if (birdImg1.complete && bird.animationState === 1 && bird.animation === 1){
+    if (birdImg1.complete && bird.animationState === 1 && bird.animation === 1) {
         c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
         birdImg1.src = 'Images/Obstacles/bird1.png';
     }
-    if (birdImg2.complete && bird.animationState === 1 && bird.animation === 2){
+    if (birdImg2.complete && bird.animationState === 1 && bird.animation === 2) {
         c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
         birdImg2.src = 'Images/Obstacles/bird2.png';
     }
 
-    if(cactusImg1.complete){
+    if (cactusImg1.complete) {
         c.drawImage(cactusImg1, Math.floor(cactus1.x), Math.floor(cactus1.y), 256, 256);
         cactusImg1.src = 'Images/Obstacles/cactus1.png';
     }
-    if(cactusImg2.complete){
+    if (cactusImg2.complete) {
         c.drawImage(cactusImg2, Math.floor(cactus2.x), Math.floor(cactus2.y), 256, 256);
         cactusImg2.src = 'Images/Obstacles/cactus2.png';
     }
-    if(cactusImg3.complete){
+    if (cactusImg3.complete) {
         c.drawImage(cactusImg3, Math.floor(cactus3.x), Math.floor(cactus3.y), 256, 256);
         cactusImg3.src = 'Images/Obstacles/cactus3.png';
     }
-    if(cactusImg4.complete){
+    if (cactusImg4.complete) {
         c.drawImage(cactusImg4, Math.floor(cactus4.x), Math.floor(cactus4.y), 256, 256);
         cactusImg4.src = 'Images/Obstacles/cactus4.png';
     }
 }
 
-function update(){
-    c.fillStyle='white';
-    c.fillRect(0,0,canvas.width,canvas.height);    
+function update() {
+    c.fillStyle = 'white';
+    c.fillRect(0, 0, canvas.width, canvas.height);
     showPlayer();
     showObstacle();
     checkAir();
@@ -197,48 +202,49 @@ function update(){
     checkCollision();
     showDebugMenu();
 }
-function showDebugMenu(){
-    if(settings.debug === true){
+function showDebugMenu() {
+    if (settings.debug === true) {
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
-        c.fillRect(player.x+8, player.y+8*9, 8*23, 8*23);
-    
+        c.fillRect(player.x + 8*5, player.y + 8 * 9, 8 * 19, 8 * 23);
+
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
-        c.fillRect(cactus1.x+8*11, cactus1.y+8*12, 8*13, 8*20);
+        c.fillRect(cactus1.x + 8 * 11, cactus1.y + 8 * 12, 8 * 13, 8 * 20);
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
-        c.fillRect(cactus2.x+8*11, cactus2.y+8*12, 8*13, 8*20);
+        c.fillRect(cactus2.x + 8 * 11, cactus2.y + 8 * 12, 8 * 13, 8 * 20);
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
-        c.fillRect(cactus3.x+8*11, cactus3.y+8*12, 8*13, 8*20);
+        c.fillRect(cactus3.x + 8 * 11, cactus3.y + 8 * 12, 8 * 13, 8 * 20);
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
-        c.fillRect(cactus4.x+8*11, cactus4.y+8*12, 8*13, 8*20);
+        c.fillRect(cactus4.x + 8 * 11, cactus4.y + 8 * 12, 8 * 13, 8 * 20);
     }
 }
-function checkCollision(){
-    if (player.x+8+8*23 > cactus1.x+8*9 && player.x+8 < cactus1.x+8*11+8*13 && player.y > standard.height - 100 && menu.pause === false){
+function checkCollision() {
+    if (player.x + 8*5 + 8 * 19 > cactus1.x + 8 * 9 && player.x + 8*5 < cactus1.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
         menu.pause = true;
         cactus1.x -= 64;
         die();
     }
-    if (player.x+8+8*23 > cactus2.x+8*9 && player.x+8 < cactus2.x+8*11+8*13 && player.y > standard.height - 100 && menu.pause === false){
+    if (player.x + 8 + 8 * 23 > cactus2.x + 8 * 9 && player.x + 8 < cactus2.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
         menu.pause = true;
         cactus2.x -= 64;
         die();
     }
-    if (player.x+8+8*23 > cactus3.x+8*9 && player.x+8 < cactus3.x+8*11+8*13 && player.y > standard.height - 100 && menu.pause === false){
+    if (player.x + 8 + 8 * 23 > cactus3.x + 8 * 9 && player.x + 8 < cactus3.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
         menu.pause = true;
         cactus3.x -= 64;
         die();
     }
-    if (player.x+8+8*23 > cactus4.x+8*9 && player.x+8 < cactus4.x+8*11+8*13 && player.y > standard.height - 100 && menu.pause === false){
+    if (player.x + 8 + 8 * 23 > cactus4.x + 8 * 9 && player.x + 8 < cactus4.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
         menu.pause = true;
         cactus4.x -= 64;
         die();
     }
 }
-function die(){
-
+function die() {
+    player.animationState = 4;
+    player.dead = true;
 }
-function moveObstacle(){
-    if(menu.pause === false){
+function moveObstacle() {
+    if (menu.pause === false) {
         bird.x -= player.speed;
         cactus1.x -= player.speed;
         cactus2.x -= player.speed;
@@ -247,15 +253,15 @@ function moveObstacle(){
     }
 }
 
-function checkAir(){
-    if(player.y < standard.height){
+function checkAir() {
+    if (player.y < standard.height) {
         up();
         player.inAir = true;
         player.animationState = 2;
-    }else{
-        if(player.crouch === false){
+    } else {
+        if (player.crouch === false) {
             player.animationState = 1;
-        }else{
+        } else {
             player.animationState = 3;
         }
         player.inAir = false;
@@ -266,78 +272,80 @@ function checkAir(){
 function jump() {
     player.animationState = 2;
     player.y--;
-  }
+}
 
-function up(){
-    if(player.animationState !== 2){
+function up() {
+    if (player.animationState !== 2) {
         player.animationState = 1;
-    }    
+    }
     player.animationState = 2;
     player.y -= player.jumpSpeed;
     player.jumpSpeed -= player.gravitation;
 }
 
 function crouch() {
-    if(player.inAir === false) {
+    if (player.inAir === false) {
         player.animationState = 3;
         player.crouch = true;
     }
-  }
-  function crouchEnd() {
+}
+function crouchEnd() {
     player.crouch = false;
-    if(player.animationState !== 2){
+    if (player.animationState !== 2) {
         player.animationState = 1;
     }
-  };
+};
 
 function teleport() {
-    var chosen = Math.floor(Math.random() * 5);
+    if (menu.pause === false) {
+        var chosen = Math.floor(Math.random() * 5);
 
-    if (cactus1.x < -200 && chosen === 1) {
-        cactus1.x = 2000+(Math.random()*200);
-    }
-    else if (cactus2.x < -200 && chosen === 2) {
-        cactus2.x = 2000+(Math.random()*200);
-    }
-    else if (cactus3.x < -200 && chosen === 3) {
-        cactus3.x = 2000+(Math.random()*200);
-    }
-    else if (cactus4.x < -200 && chosen === 4) {
-        cactus4.x = 2000+(Math.random()*200);
-    }
-    else if (bird.x < -200 && chosen === 5) {
-        bird.x = 2000+(Math.random()*200);
-        bird.y = (standard.height + 100) - Math.random() * 300;
-    }
-    else {
-        chosen = Math.floor(Math.random() * 5);
+        if (cactus1.x < -200 && chosen === 1) {
+            cactus1.x = 2000 + (Math.random() * 200);
+        }
+        else if (cactus2.x < -200 && chosen === 2) {
+            cactus2.x = 2000 + (Math.random() * 200);
+        }
+        else if (cactus3.x < -200 && chosen === 3) {
+            cactus3.x = 2000 + (Math.random() * 200);
+        }
+        else if (cactus4.x < -200 && chosen === 4) {
+            cactus4.x = 2000 + (Math.random() * 200);
+        }
+        else if (bird.x < -200 && chosen === 5) {
+            bird.x = 2000 + (Math.random() * 200);
+            bird.y = (standard.height + 100) - Math.random() * 300;
+        }
+        else {
+            chosen = Math.floor(Math.random() * 5);
+        }
     }
 }
 
 
-setInterval(function(){
+setInterval(function () {
 
-    if(player.animation === 1){
+    if (player.animation === 1) {
         player.animation = 2;
         return;
     }
-    if(player.animation === 2){
+    if (player.animation === 2) {
         player.animation = 1;
         return;
     }
-},100);
+}, 100);
 
-setInterval(function(){
+setInterval(function () {
 
-    if(bird.animation === 1){
+    if (bird.animation === 1) {
         bird.animation = 2;
         return;
     }
-    if(bird.animation === 2){
+    if (bird.animation === 2) {
         bird.animation = 1;
         return;
     }
-},200);
+}, 200);
 
 setInterval(teleport, 1000)
 
