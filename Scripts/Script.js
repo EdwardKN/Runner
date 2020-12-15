@@ -179,6 +179,7 @@ function checkAir(){
 function jump() {
     player.animationState = 2;
     up();
+    crouchEnd();
   }
 
 function up(){
