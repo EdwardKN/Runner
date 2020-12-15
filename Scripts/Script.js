@@ -181,6 +181,8 @@ function checkAir(){
         console.log(player.jumpSpeed);
         if(player.crouch === false){
             player.animationState = 1;
+        }else{
+            player.animationState = 3;
         }
     }
 }
@@ -190,7 +192,9 @@ function jump() {
   }
 
 function up(){
-    crouchEnd();
+    if(player.animationState !== 2){
+        player.animationState = 1;
+    }    
     player.animationState = 2;
     player.y -= player.jumpSpeed;
     player.jumpSpeed -= player.gravitation;
