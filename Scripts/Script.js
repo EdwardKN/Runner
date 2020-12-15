@@ -65,6 +65,7 @@ var player = {
 };
 
 window.addEventListener('keydown', function(event){
+    console.log(event)
     if(event.code === "KeyF"){
         toggleFullscreen();
     }
@@ -75,6 +76,7 @@ window.addEventListener('keydown', function(event){
         crouch();
     }
 });
+
 window.addEventListener('keyup', function(event){
     console.log(event);
     if(event.code === "ControlLeft"){
@@ -153,6 +155,10 @@ function update(){
     showObstacle();
     checkAir();
     moveObstacle();
+    checkCollision();
+}
+function checkCollision(){
+
 }
 
 function moveObstacle(){
@@ -167,10 +173,12 @@ function checkAir(){
     if(player.y < standard.height){
         up();
         player.inAir = true;
+        player.animationState = 2;
     }else{
-        player.y = standard.height;
         player.inAir = false;
         player.jumpSpeed = standard.jumpspeed;
+        player.y = standard.height;
+        console.log(player.jumpSpeed);
         if(player.crouch === false){
             player.animationState = 1;
         }
@@ -178,24 +186,27 @@ function checkAir(){
 }
 function jump() {
     player.animationState = 2;
-    up();
-    crouchEnd();
+    player.y--;
   }
 
 function up(){
+    crouchEnd();
+    player.animationState = 2;
     player.y -= player.jumpSpeed;
     player.jumpSpeed -= player.gravitation;
 }
 
 function crouch() {
-    if (player.animationState === 1 && player.inAir === false) {
+    if(player.inAir === false) {
         player.animationState = 3;
         player.crouch = true;
     }
   }
   function crouchEnd() {
     player.crouch = false;
-    player.animationState = 1;
+    if(player.animationState !== 2){
+        player.animationState = 1;
+    }
   };
 
 function teleport() {
