@@ -166,7 +166,7 @@ function moveObstacle(){
 function checkAir(){
     if(player.y < standard.height){
         up();
-        console.log("hej")
+        player.inAir = true;
     }else{
         player.y = standard.height;
         player.inAir = false;
