@@ -3,12 +3,12 @@ var canvas = document.getElementById('game');
 canvas.width = 1920;
 canvas.height = 1080;
 
-var dinoImg1 = new Image();
-var dinoImg2 = new Image();
-var dinoImg3 = new Image();
-var dinoImg4 = new Image();
-var dinoImg5 = new Image();
-var dinoImg6 = new Image();
+var playerImg1 = new Image();
+var playerImg2 = new Image();
+var playerImg3 = new Image();
+var playerImg4 = new Image();
+var playerImg5 = new Image();
+var playerImg6 = new Image();
 
 var birdImg1 = new Image();
 var birdImg2 = new Image();
@@ -52,7 +52,7 @@ var cactus1 = {
     animation: 1
   };
 
-var dino = {
+var player = {
     x: 200,
     y: standard.height,
     animationState: 1,
@@ -60,7 +60,8 @@ var dino = {
     jumping:false,
     jumpSpeed:standard.jumpspeed,
     gravitation: 2,
-    crouch: false
+    crouch: false,
+    speed: 20
 };
 
 window.addEventListener('keydown', function(event){
@@ -97,25 +98,25 @@ function toggleFullscreen(){
 }
 
 function showPlayer(){
-    if (dinoImg1.complete && dino.animationState === 1 && dino.animation === 1){
-        c.drawImage(dinoImg1, Math.floor(dino.x), Math.floor(dino.y), 256, 256);
-        dinoImg1.src = 'Images/Dinosaur/dino1.png';
+    if (playerImg1.complete && player.animationState === 1 && player.animation === 1){
+        c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg1.src = 'Images/Player/Ostrich/player1.png';
     }
-    if (dinoImg2.complete && dino.animationState === 1 && dino.animation === 2){
-        c.drawImage(dinoImg2, Math.floor(dino.x), Math.floor(dino.y), 256, 256);
-        dinoImg2.src = 'Images/Dinosaur/dino2.png';
+    if (playerImg2.complete && player.animationState === 1 && player.animation === 2){
+        c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg2.src = 'Images/Player/Ostrich/player2.png';
     }
-    if (dinoImg3.complete && dino.animationState === 2){
-        c.drawImage(dinoImg3, Math.floor(dino.x), Math.floor(dino.y), 256, 256);
-        dinoImg3.src = 'Images/Dinosaur/dino3.png';
+    if (playerImg3.complete && player.animationState === 2){
+        c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg3.src = 'Images/Player/Ostrich/player3.png';
     }
-    if (dinoImg4.complete && dino.animationState === 3 && dino.animation === 1){
-        c.drawImage(dinoImg4, Math.floor(dino.x), Math.floor(dino.y), 256, 256);
-        dinoImg4.src = 'Images/Dinosaur/dino4.png';
+    if (playerImg4.complete && player.animationState === 3 && player.animation === 1){
+        c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg4.src = 'Images/Player/Ostrich/player4.png';
     }
-    if (dinoImg5.complete && dino.animationState === 3 && dino.animation === 2){
-        c.drawImage(dinoImg5, Math.floor(dino.x), Math.floor(dino.y), 256, 256);
-        dinoImg5.src = 'Images/Dinosaur/dino5.png';
+    if (playerImg5.complete && player.animationState === 3 && player.animation === 2){
+        c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg5.src = 'Images/Player/Ostrich/player5.png';
     }
 }
 function showObstacle(){
@@ -152,79 +153,84 @@ function update(){
     showPlayer();
     showObstacle();
     checkAir();
+    moveObstacle();
+}
+
+function moveObstacle(){
+    bird.x -= player.speed;
+    cactus1.x -= player.speed;
+    cactus2.x -= player.speed;
+    cactus3.x -= player.speed;
+    cactus4.x -= player.speed;
 }
 
 function checkAir(){
-    if(dino.y < standard.height){
+    if(player.y < standard.height){
         up();
         console.log("hej")
     }else{
-        dino.y = standard.height;
-        dino.inAir = false;
-        dino.jumpSpeed = standard.jumpspeed;
-        if(dino.crouch === false){
-            dino.animationState = 1;
+        player.y = standard.height;
+        player.inAir = false;
+        player.jumpSpeed = standard.jumpspeed;
+        if(player.crouch === false){
+            player.animationState = 1;
         }
     }
 }
 function jump() {
-    dino.animationState = 2;
+    player.animationState = 2;
     up();
   }
 
 function up(){
-    dino.y -= dino.jumpSpeed;
-    dino.jumpSpeed -= dino.gravitation;
+    player.y -= player.jumpSpeed;
+    player.jumpSpeed -= player.gravitation;
 }
 
 function crouch() {
-    dino.crouch = true;
-    if (dino.animationState === 1 && dino.inAir === false) {
-      dino.animationState = 3;
+    if (player.animationState === 1 && player.inAir === false) {
+        player.animationState = 3;
+        player.crouch = true;
     }
   }
   function crouchEnd() {
-    dino.crouch = false;
-    dino.animationState = 1;
+    player.crouch = false;
+    player.animationState = 1;
   };
 
 function teleport() {
-    if (dino.stand === false && dino.died === false && user.loggedIn === true && dino.timer === ""){
-        if(hat.dropped === false || loosehat === true){
-            var chosen = Math.floor(Math.random() * 5);
+    var chosen = Math.floor(Math.random() * 5);
 
-            if (cactus1.x < -200 && chosen === 1) {
-                cactus1.x = 2000;
-            }
-            else if (cactus2.x < -200 && chosen === 2) {
-                cactus2.x = 2000;
-            }
-            else if (cactus3.x < -200 && chosen === 3) {
-                cactus3.x = 2000;
-            }
-            else if (cactus4.x < -200 && chosen === 4) {
-                cactus4.x = 2000;
-            }
-            else if (bird.x < -200 && chosen === 5 || bird.x < -200 && chosen === 6) {
-                bird.x = 2000;
-                bird.y = (standard.height + 100) - Math.random() * 300;
-            }
-            else {
-                chosen = Math.floor(Math.random() * 5);
-            }
-        }
+    if (cactus1.x < -200 && chosen === 1) {
+        cactus1.x = 2000+(Math.random()*200);
+    }
+    else if (cactus2.x < -200 && chosen === 2) {
+        cactus2.x = 2000+(Math.random()*200);
+    }
+    else if (cactus3.x < -200 && chosen === 3) {
+        cactus3.x = 2000+(Math.random()*200);
+    }
+    else if (cactus4.x < -200 && chosen === 4) {
+        cactus4.x = 2000+(Math.random()*200);
+    }
+    else if (bird.x < -200 && chosen === 5) {
+        bird.x = 2000+(Math.random()*200);
+        bird.y = (standard.height + 100) - Math.random() * 300;
+    }
+    else {
+        chosen = Math.floor(Math.random() * 5);
     }
 }
 
 
 setInterval(function(){
 
-    if(dino.animation === 1){
-        dino.animation = 2;
+    if(player.animation === 1){
+        player.animation = 2;
         return;
     }
-    if(dino.animation === 2){
-        dino.animation = 1;
+    if(player.animation === 2){
+        player.animation = 1;
         return;
     }
 },100);
