@@ -147,7 +147,6 @@ function showObstacle(){
 }
 
 function update(){
-    requestAnimationFrame(update);
     c.fillStyle='white';
     c.fillRect(0,0,canvas.width,canvas.height);    
     showPlayer();
@@ -249,4 +248,4 @@ setInterval(function(){
 
 setInterval(teleport, 1000)
 
-update();
+setInterval(update, 16.66666666667)
