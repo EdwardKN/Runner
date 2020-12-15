@@ -175,15 +175,14 @@ function checkAir(){
         player.inAir = true;
         player.animationState = 2;
     }else{
-        player.inAir = false;
-        player.jumpSpeed = standard.jumpspeed;
-        player.y = standard.height;
-        console.log(player.jumpSpeed);
         if(player.crouch === false){
             player.animationState = 1;
         }else{
             player.animationState = 3;
         }
+        player.inAir = false;
+        player.jumpSpeed = standard.jumpspeed;
+        player.y = standard.height;
     }
 }
 function jump() {
