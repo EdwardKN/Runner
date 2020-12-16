@@ -214,11 +214,11 @@ function showObstacle() {
 }
 function showBackground() {
     if (groundImg1.complete) {
-        c.drawImage(groundImg1, Math.floor(back1.x), Math.floor(standard.height + 256), 1920, 640);
+        c.drawImage(groundImg1, Math.floor(back1.x), Math.floor(standard.height + 256), 1920, 184);
         groundImg1.src = 'Images/Background/ground.png';
     }
     if (groundImg2.complete) {
-        c.drawImage(groundImg2, Math.floor(back2.x), Math.floor(standard.height + 256), 1920, 640);
+        c.drawImage(groundImg2, Math.floor(back2.x), Math.floor(standard.height + 256), 1920, 184);
         groundImg2.src = 'Images/Background/ground.png';
     }
 }
