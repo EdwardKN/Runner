@@ -283,11 +283,9 @@ function checkCollision() {
         die();
     }
     if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === false) {
-        cactus4.x -= 64;
         die();
     }
     if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y + player.crouchValue < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === true) {
-        cactus4.x -= 64;
         die();
     }
 }
@@ -354,10 +352,10 @@ function moveObstacle() {
 }
 function moveBackground() {
     if (menu.pause === false) {
-        if (back1.x < -1920+player.speed) {
+        if (back1.x < -1920 + player.speed) {
             back1.x = 1920 - player.speed;
         }
-        if (back2.x < -1920+player.speed) {
+        if (back2.x < -1920 + player.speed) {
             back2.x = 1920 - player.speed;
         }
         back1.x -= player.speed;
@@ -366,14 +364,14 @@ function moveBackground() {
 }
 
 function checkAir() {
-    if (player.y < standard.height && player.animationState !== 4 && player.animationState !== 5) {
+    if (player.y < standard.height && player.animationState !== 4 && player.animationState !== 5 && menu.pause === false) {
         up();
         player.inAir = true;
         player.animationState = 2;
-    } else {
-        if (player.crouch === false && player.animationState !== 4 && player.animationState !== 5) {
+    } else if (menu.pause === false) {
+        if (player.crouch === false && player.animationState !== 4 && player.animationState !== 5 && menu.pause === false) {
             player.animationState = 1;
-        } else if (player.animationState !== 4 && player.animationState !== 5) {
+        } else if (player.animationState !== 4 && player.animationState !== 5 && menu.pause === false) {
             player.animationState = 3;
         }
         player.inAir = false;
