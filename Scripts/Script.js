@@ -226,8 +226,8 @@ function showBackground() {
 function update() {
     c.fillStyle = 'white';
     c.fillRect(0, 0, canvas.width, canvas.height);
-    showDebugMenu();
 
+    showDebugMenu();
     showBackground();
     showObstacle();
     showPlayer();
@@ -236,6 +236,7 @@ function update() {
     moveBackground();
     checkCollision();
     deathFall();
+
 }
 
 function deathFall() {
@@ -453,7 +454,7 @@ function teleport() {
         }
         else if (bird.x < -200 && chosen === 4) {
             bird.x = 2200 + (Math.random() * 300);
-            bird.y = (standard.height + 100) - (Math.random() * 200);
+            bird.y = (standard.height + 256) - (Math.random() * 200);
             console.log("bra")
         }
         else {
