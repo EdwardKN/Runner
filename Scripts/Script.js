@@ -225,9 +225,9 @@ function showBackground() {
 function update() {
     c.fillStyle = 'white';
     c.fillRect(0, 0, canvas.width, canvas.height);
+    showBackground();
     showPlayer();
     showObstacle();
-    showBackground();
     checkAir();
     moveObstacle();
     moveBackground();
