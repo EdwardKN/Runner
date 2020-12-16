@@ -238,25 +238,25 @@ function showDebugMenu() {
     }
 }
 function checkCollision() {
-    if (player.x + 8*5 + 8 * 19 > cactus1.x + 8 * 9 && player.x + 8*5 < cactus1.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
+    if (player.x + 8*5 + 8 * 19 > cactus1.x + 8 * 11 && player.x + 8*5 < cactus1.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
         if(player.x < cactus1.x+8*5){
             cactus1.x -= 64;
         }
         die();
     }
-    if (player.x + 8 + 8 * 23 > cactus2.x + 8 * 9 && player.x + 8 < cactus2.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
+    if (player.x + 8 + 8 * 23 > cactus2.x + 8 * 11 && player.x + 8 < cactus2.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
         if(player.x < cactus2.x+8*5){
             cactus2.x -= 64;
         }        
         die();
     }
-    if (player.x + 8 + 8 * 23 > cactus3.x + 8 * 9 && player.x + 8 < cactus3.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
+    if (player.x + 8 + 8 * 23 > cactus3.x + 8 * 11 && player.x + 8 < cactus3.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
         if(player.x < cactus2.x+8*5){
             cactus2.x -= 64;
         }        
         die();
     }
-    if (player.x + 8 + 8 * 23 > cactus4.x + 8 * 9 && player.x + 8 < cactus4.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
+    if (player.x + 8 + 8 * 23 > cactus4.x + 8 * 11 && player.x + 8 < cactus4.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
         if(player.x < cactus2.x+8*5){
             cactus2.x -= 64;
         }        
