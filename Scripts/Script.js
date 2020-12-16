@@ -226,15 +226,21 @@ function update() {
     c.fillStyle = 'white';
     c.fillRect(0, 0, canvas.width, canvas.height);
     showBackground();
-    showPlayer();
     showObstacle();
+    showPlayer();
     checkAir();
     moveObstacle();
     moveBackground();
     checkCollision();
     showDebugMenu();
+    deathFall();
 }
 
+function deathFall() {
+    if (player.dead === true && player.y < standard.height) {
+        player.y += player.gravitation*10;
+    }
+}
 function showDebugMenu() {
     if (settings.debug === true) {
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
@@ -258,7 +264,7 @@ function showDebugMenu() {
     }
 }
 function checkCollision() {
-    if (player.x + 8 * 5 + 8 * 19 > cactus1.x + 8 * 11 && player.x + 8 * 5 < cactus1.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100 && menu.pause === false) {
+    if (player.x + 8 * 5 + 8 * 19 > cactus1.x + 8 * 11 && player.x + 8 * 5 < cactus1.x + 8 * 11 + 8 * 13 && player.y > standard.height - 100) {
         if (player.x < cactus1.x + 8 * 5) {
             cactus1.x -= 64;
         }
@@ -385,10 +391,12 @@ function jump() {
 }
 
 function up() {
-    if (player.animationState !== 2) {
+    if (player.animationState !== 2 && player.animationState !== 4) {
         player.animationState = 1;
     }
-    player.animationState = 2;
+    if (player.animationState !== 4) {
+        player.animationState = 2;
+    }
     player.y -= player.jumpSpeed;
     player.jumpSpeed -= player.gravitation;
 }
