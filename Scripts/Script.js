@@ -262,11 +262,11 @@ function checkCollision() {
         }        
         die();
     }
-    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y < bird.y+8*4+8*10 && player.y+8*9 > bird.y+8*4 && menu.pause === false && player.crouch === false) {
+    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y < bird.y+8*4+8*10 && player.y+8*9+8*23 > bird.y+8*4 && menu.pause === false && player.crouch === false) {
         cactus4.x -= 64;
         die();
     }
-    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y+player.crouchValue < bird.y+8*4+8*10 && player.y+8*9 > bird.y+8*4 && menu.pause === false && player.crouch === true) {
+    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y+player.crouchValue < bird.y+8*4+8*10 && player.y+8*9+8*23 > bird.y+8*4 && menu.pause === false && player.crouch === true) {
         cactus4.x -= 64;
         die();
     }
@@ -303,7 +303,8 @@ function revive(){
         x: -2000,
         y: (standard.height + 100) - Math.random() * 300,
         animationState: 1,
-        animation: 1
+        animation: 1,
+        speed:1.25
     };
     
     player = {
@@ -376,8 +377,8 @@ function crouchEnd() {
 
 function teleport() {
     if (menu.pause === false) {
-        var chosen = Math.floor(Math.random() * 5);
-
+        var chosen = Math.floor(Math.random()*5);
+        console.log(chosen)
         if (cactus1.x < -200 && chosen === 0) {
             cactus1.x = 2000 + (Math.random() * 200);
         }
@@ -392,7 +393,8 @@ function teleport() {
         }
         else if (bird.x < -200 && chosen === 4) {
             bird.x = 2000 + (Math.random() * 200);
-            bird.y = (standard.height + 100) - Math.random() * 300;
+            bird.y = (standard.height + 100);
+            console.log("bra")
         }
         else {
             chosen = Math.floor(Math.random() * 5);
