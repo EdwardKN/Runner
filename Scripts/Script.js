@@ -380,20 +380,20 @@ function teleport() {
         var chosen = Math.floor(Math.random()*5);
         console.log(chosen)
         if (cactus1.x < -200 && chosen === 0) {
-            cactus1.x = 2000 + (Math.random() * 200);
+            cactus1.x = 2000 + (Math.random() * 300);
         }
         else if (cactus2.x < -200 && chosen === 1) {
-            cactus2.x = 2000 + (Math.random() * 200);
+            cactus2.x = 2000 + (Math.random() * 300);
         }
         else if (cactus3.x < -200 && chosen === 2) {
-            cactus3.x = 2000 + (Math.random() * 200);
+            cactus3.x = 2000 + (Math.random() * 300);
         }
         else if (cactus4.x < -200 && chosen === 3) {
-            cactus4.x = 2000 + (Math.random() * 200);
+            cactus4.x = 2000 + (Math.random() * 300);
         }
         else if (bird.x < -200 && chosen === 4) {
-            bird.x = 2000 + (Math.random() * 200);
-            bird.y = (standard.height + 100);
+            bird.x = 2000 + (Math.random() * 300);
+            bird.y = (standard.height + 100)-(Math.random() * 200);
             console.log("bra")
         }
         else {
