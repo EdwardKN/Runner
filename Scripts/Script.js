@@ -244,7 +244,8 @@ function deathFall() {
     if (player.dead === true && player.y < standard.height) {
         player.y -= player.deathFallSpeed;
         player.deathFallSpeed -= player.gravitation;
-
+    }else if(player.dead === true){
+        player.y = standard.height;
     }
 }
 function showDebugMenu() {
@@ -288,16 +289,16 @@ function checkCollision() {
         }
         die();
     }
-    if (player.x + 8 + 8 * 23 > cactus4.x + 8 * 3 && player.x + 8 < cactus4.x + 8 * 3 + 8 * 28 && player.y > standard.height - 8*9 && menu.pause === false) {
+    if (player.x + 8 + 8 * 23 > cactus4.x + 8 * 1 && player.x + 8 < cactus4.x + 8 * 1 + 8 * 31 && player.y > standard.height - 8*9 && menu.pause === false) {
         if (player.x < cactus2.x + 8 * 5) {
             cactus2.x -= 64;
         }
         die();
     }
-    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === false) {
+    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === false) {
         die();
     }
-    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 22 && player.y + player.crouchValue < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === true) {
+    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y + player.crouchValue < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === true) {
         die();
     }
 }
@@ -309,8 +310,10 @@ function die() {
     player.animationState = 4;
     player.dead = true;
     menu.pause = true;
-    if(player.jumpSpeed != standard.jumpspeed){
+    if(player.jumpSpeed != standard.jumpspeed && player.jumpSpeed < 0){
         player.deathFallSpeed = player.jumpSpeed;
+    }else if(player.jumpSpeed != standard.jumpspeed && player.jumpSpeed > 0){
+        player.jumpSpeed/2;
     }else{
         player.deathFallSpeed = 0;
     }
@@ -393,14 +396,14 @@ function checkAir() {
         player.inAir = true;
         player.animationState = 2;
     } else if (menu.pause === false) {
+        player.inAir = false;
+        player.jumpSpeed = standard.jumpspeed;
+        player.y = standard.height;
         if (player.crouch === false && player.animationState !== 4 && player.animationState !== 5 && menu.pause === false) {
             player.animationState = 1;
         } else if (player.animationState !== 4 && player.animationState !== 5 && menu.pause === false) {
             player.animationState = 3;
         }
-        player.inAir = false;
-        player.jumpSpeed = standard.jumpspeed;
-        player.y = standard.height;
     }
 }
 function jump() {
