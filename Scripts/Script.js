@@ -449,7 +449,7 @@ function teleport() {
             cactus4.x = 2000 + (Math.random() * 300);
         }
         else if (bird.x < -200 && chosen === 4) {
-            bird.x = 2000 + (Math.random() * 300);
+            bird.x = 2200 + (Math.random() * 300);
             bird.y = (standard.height + 100) - (Math.random() * 200);
             console.log("bra")
         }
