@@ -272,34 +272,22 @@ function showDebugMenu() {
     }
 }
 function checkCollision() {
-    if (player.x + 8 * 5 + 8 * 19 > cactus1.x + 8 * 9 && player.x + 8 * 5 < cactus1.x + 8 * 9 + 8 * 14 && player.y > standard.height - 8*31  && menu.pause === false) {
-        if (player.x < cactus1.x + 8 * 5) {
-            cactus1.x -= 64;
-        }
+    if (player.x + 8 + 8 * 19 > cactus1.x + 8 * 9 && player.x + 8 * 2 < cactus1.x + 8 * 9 + 8 * 14 && player.y > standard.height - 8*31  && menu.pause === false) {
         die();
     }
-    if (player.x + 8 + 8 * 23 > cactus2.x + 8 * 5 && player.x + 8 < cactus2.x + 8 * 5 + 8 * 23 && player.y > standard.height - 8*24 && menu.pause === false) {
-        if (player.x < cactus2.x + 8 * 5) {
-            cactus2.x -= 64;
-        }
+    if (player.x + 8 + 8 * 19 > cactus2.x + 8 * 5 && player.x + 8 *2 < cactus2.x + 8 * 5 + 8 * 23 && player.y > standard.height - 8*24 && menu.pause === false) {
         die();
     }
-    if (player.x + 8 + 8 * 23 > cactus3.x + 8 * 7 && player.x + 8 < cactus3.x + 8 * 7 + 8 * 12 && player.y > standard.height - 8*20 && menu.pause === false) {
-        if (player.x < cactus2.x + 8 * 5) {
-            cactus2.x -= 64;
-        }
+    if (player.x + 8 + 8 * 19 > cactus3.x + 8 * 7 && player.x + 8  *2 < cactus3.x + 8 * 7 + 8 * 12 && player.y > standard.height - 8*20 && menu.pause === false) {
         die();
     }
-    if (player.x + 8 + 8 * 23 > cactus4.x + 8 * 1 && player.x + 8 < cactus4.x + 8 * 1 + 8 * 31 && player.y > standard.height - 8*9 && menu.pause === false) {
-        if (player.x < cactus2.x + 8 * 5) {
-            cactus2.x -= 64;
-        }
+    if (player.x + 8 + 8 * 19 > cactus4.x + 8 * 1 && player.x + 8 *2 < cactus4.x + 8 * 1 + 8 * 31 && player.y > standard.height - 8*9 && menu.pause === false) {
         die();
     }
-    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === false) {
+    if (player.x + 8 + 8 * 19 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === false) {
         die();
     }
-    if (player.x + 8 + 8 * 23 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y + player.crouchValue < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === true) {
+    if (player.x + 8+ 8 * 19 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y + player.crouchValue < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === true) {
         die();
     }
 }
@@ -454,8 +442,7 @@ function teleport() {
         }
         else if (bird.x < -200 && chosen === 4) {
             bird.x = 2200 + (Math.random() * 300);
-            bird.y = (standard.height + 256) - (Math.random() * 200);
-            console.log("bra")
+            bird.y = (standard.height - 50) - (Math.random() * 200);
         }
         else {
             chosen = Math.floor(Math.random() * 5);
