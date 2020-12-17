@@ -30,7 +30,8 @@ var settings = {
     debug: false
 };
 var menu = {
-    pause: true
+    pause: true,
+    menuState: 0
 };
 var standard = {
     jumpspeed: 35,
@@ -104,6 +105,9 @@ window.addEventListener('keydown', function (event) {
     }
     if (event.code === "Enter" && player.dead === true) {
         revive();
+    }
+    if (event.code === "KeyT") {
+        createParticles(player.x, player.y, 50, 5, "black", 1)
     }
 });
 
@@ -227,6 +231,8 @@ function update() {
     c.fillStyle = 'white';
     c.fillRect(0, 0, canvas.width, canvas.height);
 
+
+
     showDebugMenu();
     showBackground();
     showObstacle();
@@ -236,16 +242,23 @@ function update() {
     moveBackground();
     checkCollision();
     deathFall();
+    particleArray.forEach(Particle => {
+        Particle.update(particleArray);
+    });
+    showMenu();
 
 }
+function showMenu() {
+    if (menu.menuState === 1) {
 
+    }
+}
 function deathFall() {
-    console.log(player.deathFallSpeed);
 
     if (player.dead === true && player.y < standard.height) {
         player.y -= player.deathFallSpeed;
         player.deathFallSpeed -= player.gravitation;
-    }else if(player.dead === true){
+    } else if (player.dead === true) {
         player.y = standard.height;
     }
 }
@@ -265,29 +278,29 @@ function showDebugMenu() {
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
         c.fillRect(cactus3.x + 8 * 7, cactus3.y + 8 * 12, 8 * 12, 8 * 20);
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
-        c.fillRect(cactus4.x + 8 * 3, cactus4.y + 8 *23, 8 * 28, 8 * 9);
+        c.fillRect(cactus4.x + 8 * 3, cactus4.y + 8 * 23, 8 * 28, 8 * 9);
 
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
         c.fillRect(bird.x + 8 * 4, bird.y + 8 * 8, 8 * 22, 8 * 10);
     }
 }
 function checkCollision() {
-    if (player.x + 8 + 8 * 19 > cactus1.x + 8 * 9 && player.x + 8 * 2 < cactus1.x + 8 * 9 + 8 * 14 && player.y > standard.height - 8*31  && menu.pause === false) {
+    if (player.x + 8 + 8 * 19 > cactus1.x + 8 * 9 && player.x + 8 * 2 < cactus1.x + 8 * 9 + 8 * 14 && player.y > standard.height - 8 * 31 && menu.pause === false) {
         die();
     }
-    if (player.x + 8 + 8 * 19 > cactus2.x + 8 * 5 && player.x + 8 *2 < cactus2.x + 8 * 5 + 8 * 23 && player.y > standard.height - 8*24 && menu.pause === false) {
+    if (player.x + 8 + 8 * 19 > cactus2.x + 8 * 5 && player.x + 8 * 2 < cactus2.x + 8 * 5 + 8 * 23 && player.y > standard.height - 8 * 24 && menu.pause === false) {
         die();
     }
-    if (player.x + 8 + 8 * 19 > cactus3.x + 8 * 7 && player.x + 8  *2 < cactus3.x + 8 * 7 + 8 * 12 && player.y > standard.height - 8*20 && menu.pause === false) {
+    if (player.x + 8 + 8 * 19 > cactus3.x + 8 * 7 && player.x + 8 * 2 < cactus3.x + 8 * 7 + 8 * 12 && player.y > standard.height - 8 * 20 && menu.pause === false) {
         die();
     }
-    if (player.x + 8 + 8 * 19 > cactus4.x + 8 * 1 && player.x + 8 *2 < cactus4.x + 8 * 1 + 8 * 31 && player.y > standard.height - 8*9 && menu.pause === false) {
+    if (player.x + 8 + 8 * 19 > cactus4.x + 8 * 1 && player.x + 8 * 2 < cactus4.x + 8 * 1 + 8 * 31 && player.y > standard.height - 8 * 9 && menu.pause === false) {
         die();
     }
     if (player.x + 8 + 8 * 19 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === false) {
         die();
     }
-    if (player.x + 8+ 8 * 19 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y + player.crouchValue < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === true) {
+    if (player.x + 8 + 8 * 19 > bird.x + 8 * 4 && player.x + 8 < bird.x + 8 * 4 + 8 * 18 && player.y + player.crouchValue < bird.y + 8 * 4 + 8 * 10 && player.y + 8 * 9 + 8 * 23 > bird.y + 8 * 4 && menu.pause === false && player.crouch === true) {
         die();
     }
 }
@@ -296,14 +309,15 @@ function unPause() {
     player.animationState = 1;
 }
 function die() {
+    menu.menuState = 0;
     player.animationState = 4;
     player.dead = true;
     menu.pause = true;
-    if(player.jumpSpeed != standard.jumpspeed && player.jumpSpeed < 0){
+    if (player.jumpSpeed != standard.jumpspeed && player.jumpSpeed < 0) {
         player.deathFallSpeed = player.jumpSpeed;
-    }else if(player.jumpSpeed != standard.jumpspeed && player.jumpSpeed > 0){
-        player.jumpSpeed/2;
-    }else{
+    } else if (player.jumpSpeed != standard.jumpspeed && player.jumpSpeed > 0) {
+        player.jumpSpeed / 2;
+    } else {
         player.deathFallSpeed = 0;
     }
 }
@@ -331,7 +345,7 @@ function revive() {
         x: -2000,
         y: standard.height
     };
-    
+
     bird = {
         x: -2000,
         y: (standard.height + 100) - Math.random() * 300,
@@ -339,7 +353,7 @@ function revive() {
         animation: 1,
         speed: 1.25
     };
-    
+
     player = {
         x: 200,
         y: standard.height,
@@ -354,6 +368,7 @@ function revive() {
         crouchValue: 8 * 8,
         deathFallSpeed: 0
     };
+    particleArray = [];
 }
 
 function moveObstacle() {
@@ -427,7 +442,6 @@ function crouchEnd() {
 function teleport() {
     if (menu.pause === false) {
         var chosen = Math.floor(Math.random() * 5);
-        console.log(chosen)
         if (cactus1.x < -200 && chosen === 0) {
             cactus1.x = 2000 + (Math.random() * 300);
         }
@@ -450,6 +464,56 @@ function teleport() {
     }
 }
 
+
+var particleArray = [];
+
+function createParticles(x, y, amount, spread, gravitation, color, size) {
+
+    let newSize = size * 8;
+
+    for (var i = 0; i < amount; i++) {
+        particleArray.push(new Particle(x, y, newSize, color, spread, gravitation));
+    }
+}
+function Particle(x, y, size, color, spread, gravitation) {
+
+    this.size = size;
+    this.x = x;
+    this.y = y;
+    this.spread = spread;
+    this.gravitation = gravitation;
+    this.color = color;
+    this.velocity = {
+        x: Math.random() * spread - (Math.random() * spread * 2) + spread / 2,
+        y: this.gravitation / 2 + (this.gravitation / 2 * Math.random())
+    };
+
+
+
+
+    this.draw = function () {
+
+        c.fillStyle = this.color;
+        c.fillRect(this.x, this.y, this.size, this.size);
+    };
+    this.update = particleArray => {
+
+
+        this.draw();
+        this.x += this.velocity.x;
+        this.y -= this.velocity.y;
+        this.velocity.y -= this.gravitation / 10 * Math.random();
+
+        for (let i = 0; i < particleArray.length; i++){
+            if(this.x === particleArray[i].x || this.y === particleArray[i].y){
+                if(this.y > standard.height+248-this.size){
+                    particleArray.splice(i, 1);
+                }
+            } 
+        }
+
+    }
+}
 
 setInterval(function () {
 
@@ -475,6 +539,12 @@ setInterval(function () {
         }
     }
 }, 200);
+
+setInterval(function () {
+    if (player.dead === true) {
+        createParticles(player.x + 200, player.y + 8 * 20, 2, 1, 3, "red", 1);
+    }
+}, 100)
 
 setInterval(teleport, 1000)
 
