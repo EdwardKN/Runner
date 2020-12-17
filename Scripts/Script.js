@@ -34,7 +34,7 @@ var menu = {
     menuState: 0
 };
 var standard = {
-    jumpspeed: 35,
+    jumpspeed: 37.5,
     height: 648,
 }
 var back1 = {
@@ -80,7 +80,8 @@ var player = {
     speed: 24,
     dead: false,
     crouchValue: 8 * 8,
-    deathFallSpeed: 0
+    deathFallSpeed: 0,
+    crouchCooldownValue: 0
 };
 
 
@@ -97,7 +98,7 @@ window.addEventListener('keydown', function (event) {
         jump();
         unPause();
     }
-    if (event.code === "ControlLeft" && menu.pause === false && player.dead === false || event.code === "ControlLeft" && settings.debug === true) {
+    if (event.code === "ControlLeft" && menu.pause === false && player.dead === false && player.crouchCooldownValue < 25 || event.code === "ControlLeft" && settings.debug === true) {
         crouch();
     }
     if (event.code === "Escape" && player.dead === false) {
@@ -246,7 +247,17 @@ function update() {
         Particle.update(particleArray);
     });
     showMenu();
-
+    crouchCooldown();
+}
+function crouchCooldown(){
+    if(player.crouch === true){
+        player.crouchCooldownValue++;
+    }else if(player.crouchCooldownValue > 0){
+        player.crouchCooldownValue--;
+    }
+    if(player.crouchCooldownValue > 50){
+        crouchEnd();
+    }
 }
 function showMenu() {
     if (menu.menuState === 1) {
@@ -366,7 +377,8 @@ function revive() {
         speed: 24,
         dead: false,
         crouchValue: 8 * 8,
-        deathFallSpeed: 0
+        deathFallSpeed: 0,
+        crouchCooldownValue: 0
     };
     particleArray = [];
 }
@@ -434,7 +446,7 @@ function crouch() {
 }
 function crouchEnd() {
     player.crouch = false;
-    if (player.animationState !== 2) {
+    if (player.animationState !== 2 && menu.pause === false) {
         player.animationState = 1;
     }
 };
@@ -500,7 +512,11 @@ function Particle(x, y, size, color, spread, gravitation) {
 
 
         this.draw();
-        this.x += this.velocity.x;
+        if(menu.pause === true){
+            this.x += this.velocity.x;
+        }else{
+            this.x -= player.speed/2;
+        }
         this.y -= this.velocity.y;
         this.velocity.y -= this.gravitation / 10 * Math.random();
 
@@ -546,8 +562,12 @@ setInterval(function () {
     }
 }, 100)
 
+setInterval(function(){
+    if(menu.pause === false){
+        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue/12.5), 1, 6, "gray", 1)
+    }
+},100-player.crouchCooldownValue)
 setInterval(teleport, 1000)
-
 setInterval(update, 16.66666666667);
 
 
