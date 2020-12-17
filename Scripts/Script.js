@@ -122,7 +122,7 @@ function toggleMenu() {
         return;
     }
     if (menu.pause === true) {
-        menu.pause = false;
+        unPause();
         return;
     }
 }
