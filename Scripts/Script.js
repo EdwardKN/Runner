@@ -22,6 +22,9 @@ var cactusImg4 = new Image();
 var groundImg1 = new Image();
 var groundImg2 = new Image();
 
+var runningMusic = new Audio('Sounds/Music/RunningMusicByDavidRenda.mp3');
+runningMusic.loop = true;
+
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
 
@@ -91,15 +94,21 @@ window.addEventListener('keydown', function (event) {
     if (event.code === "KeyF") {
         toggleFullscreen();
     }
-    if (event.code === "Space" && menu.pause === false && player.dead === false || event.code === "Space" && settings.debug === true) {
-        jump();
+    if (event.code === "Space" || event.code === "ArrowUp") {
+        if(menu.pause === false && player.dead === false || settings.debug === true){
+            jump();
+        }
     }
-    if (event.code === "Space" && menu.pause === true && player.dead === false) {
-        jump();
-        unPause();
+    if (event.code === "Space" || event.code === "ArrowUp") {
+        if(menu.pause === true && player.dead === false){
+            jump();
+            unPause();
+        }
     }
-    if (event.code === "ControlLeft" && menu.pause === false && player.dead === false && player.crouchCooldownValue < 25 || event.code === "ControlLeft" && settings.debug === true) {
-        crouch();
+    if (event.code === "ControlLeft" || event.code === "ArrowDown") {
+        if(menu.pause === false && player.dead === false && player.crouchCooldownValue < 25 ||settings.debug === true){
+            crouch();
+        }
     }
     if (event.code === "Escape" && player.dead === false) {
         toggleMenu();
@@ -114,8 +123,10 @@ window.addEventListener('keydown', function (event) {
 
 window.addEventListener('keyup', function (event) {
     console.log(event);
-    if (event.code === "ControlLeft" && menu.pause === false && player.dead === false || event.code === "ControlLeft" && settings.debug === true) {
-        crouchEnd();
+    if (event.code === "ControlLeft" || event.code === "ArrowDown") {
+        if(menu.pause === false && player.dead === false || settings.debug === true){
+            crouchEnd();
+        }
     }
     if (event.code === "KeyB") {
         toggleDebug();
@@ -231,9 +242,6 @@ function showBackground() {
 function update() {
     c.fillStyle = 'white';
     c.fillRect(0, 0, canvas.width, canvas.height);
-
-
-
     showDebugMenu();
     showBackground();
     showObstacle();
@@ -253,7 +261,7 @@ function crouchCooldown(){
     if(player.crouch === true){
         player.crouchCooldownValue++;
     }else if(player.crouchCooldownValue > 0){
-        player.crouchCooldownValue--;
+        player.crouchCooldownValue-=0.5;
     }
     if(player.crouchCooldownValue > 50){
         crouchEnd();
@@ -318,12 +326,22 @@ function checkCollision() {
 function unPause() {
     menu.pause = false;
     player.animationState = 1;
+    runningMusic.play();
 }
 function die() {
     menu.menuState = 0;
     player.animationState = 4;
     player.dead = true;
     menu.pause = true;
+    back1.x = (Math.floor(back1.x/8))*8
+    back2.x = (Math.floor(back2.x/8))*8
+    cactus1.x = (Math.floor(cactus1.x/8))*8
+    cactus2.x = (Math.floor(cactus2.x/8))*8
+    cactus3.x = (Math.floor(cactus3.x/8))*8
+    cactus4.x = (Math.floor(cactus4.x/8))*8
+    bird.x = (Math.floor(bird.x/8))*8
+    runningMusic.pause();
+    runningMusic.currentTime = 0;
     if (player.jumpSpeed != standard.jumpspeed && player.jumpSpeed < 0) {
         player.deathFallSpeed = player.jumpSpeed;
     } else if (player.jumpSpeed != standard.jumpspeed && player.jumpSpeed > 0) {
