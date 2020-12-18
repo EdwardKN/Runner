@@ -533,14 +533,14 @@ function Particle(x, y, size, color, spread, gravitation) {
         if(menu.pause === true){
             this.x += this.velocity.x;
         }else{
-            this.x -= player.speed/2;
+            this.x -= player.speed/4;
         }
         this.y -= this.velocity.y;
         this.velocity.y -= this.gravitation / 10 * Math.random();
 
         for (let i = 0; i < particleArray.length; i++){
             if(this.x === particleArray[i].x || this.y === particleArray[i].y){
-                if(this.y > standard.height+248-this.size){
+                if(this.y > standard.height+248-this.size || this.y < 0 || this.y > 1080){
                     particleArray.splice(i, 1);
                 }
             } 
@@ -585,6 +585,9 @@ setInterval(function(){
         createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue/12.5), 1, 6, "gray", 1)
     }
 },100-player.crouchCooldownValue)
+
+
+
 setInterval(teleport, 1000)
 setInterval(update, 16.66666666667);
 
