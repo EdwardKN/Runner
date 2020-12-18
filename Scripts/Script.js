@@ -28,6 +28,8 @@ runningMusic.loop = true;
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
 
+var particleArray = [];
+
 var settings = {
     fullscreen: false,
     debug: false
@@ -495,7 +497,6 @@ function teleport() {
 }
 
 
-var particleArray = [];
 
 function createParticles(x, y, amount, spread, gravitation, color, size, mode, modeSetting) {
 
