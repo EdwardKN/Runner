@@ -95,18 +95,18 @@ window.addEventListener('keydown', function (event) {
         toggleFullscreen();
     }
     if (event.code === "Space" || event.code === "ArrowUp") {
-        if(menu.pause === false && player.dead === false || settings.debug === true){
+        if (menu.pause === false && player.dead === false || settings.debug === true) {
             jump();
         }
     }
     if (event.code === "Space" || event.code === "ArrowUp") {
-        if(menu.pause === true && player.dead === false){
+        if (menu.pause === true && player.dead === false) {
             jump();
             unPause();
         }
     }
     if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-        if(menu.pause === false && player.dead === false && player.crouchCooldownValue < 25 ||settings.debug === true){
+        if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 25 || settings.debug === true) {
             crouch();
         }
     }
@@ -124,7 +124,7 @@ window.addEventListener('keydown', function (event) {
 window.addEventListener('keyup', function (event) {
     console.log(event);
     if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-        if(menu.pause === false && player.dead === false || settings.debug === true){
+        if (menu.pause === false && player.dead === false || settings.debug === true) {
             crouchEnd();
         }
     }
@@ -257,13 +257,13 @@ function update() {
     showMenu();
     crouchCooldown();
 }
-function crouchCooldown(){
-    if(player.crouch === true){
+function crouchCooldown() {
+    if (player.crouch === true) {
         player.crouchCooldownValue++;
-    }else if(player.crouchCooldownValue > 0){
-        player.crouchCooldownValue-=0.5;
+    } else if (player.crouchCooldownValue > 0) {
+        player.crouchCooldownValue -= 0.5;
     }
-    if(player.crouchCooldownValue > 50){
+    if (player.crouchCooldownValue > 50) {
         crouchEnd();
     }
 }
@@ -333,13 +333,13 @@ function die() {
     player.animationState = 4;
     player.dead = true;
     menu.pause = true;
-    back1.x = (Math.floor(back1.x/8))*8
-    back2.x = (Math.floor(back2.x/8))*8
-    cactus1.x = (Math.floor(cactus1.x/8))*8
-    cactus2.x = (Math.floor(cactus2.x/8))*8
-    cactus3.x = (Math.floor(cactus3.x/8))*8
-    cactus4.x = (Math.floor(cactus4.x/8))*8
-    bird.x = (Math.floor(bird.x/8))*8
+    back1.x = (Math.floor(back1.x / 8)) * 8
+    back2.x = (Math.floor(back2.x / 8)) * 8
+    cactus1.x = (Math.floor(cactus1.x / 8)) * 8
+    cactus2.x = (Math.floor(cactus2.x / 8)) * 8
+    cactus3.x = (Math.floor(cactus3.x / 8)) * 8
+    cactus4.x = (Math.floor(cactus4.x / 8)) * 8
+    bird.x = (Math.floor(bird.x / 8)) * 8
     runningMusic.pause();
     runningMusic.currentTime = 0;
     if (player.jumpSpeed != standard.jumpspeed && player.jumpSpeed < 0) {
@@ -497,15 +497,15 @@ function teleport() {
 
 var particleArray = [];
 
-function createParticles(x, y, amount, spread, gravitation, color, size) {
+function createParticles(x, y, amount, spread, gravitation, color, size, mode, modeSetting) {
 
     let newSize = size * 8;
 
     for (var i = 0; i < amount; i++) {
-        particleArray.push(new Particle(x, y, newSize, color, spread, gravitation));
+        particleArray.push(new Particle(x, y, newSize, color, spread, gravitation, mode, modeSetting));
     }
 }
-function Particle(x, y, size, color, spread, gravitation) {
+function Particle(x, y, size, color, spread, gravitation, mode, modeSetting) {
 
     this.size = size;
     this.x = x;
@@ -517,7 +517,8 @@ function Particle(x, y, size, color, spread, gravitation) {
         x: Math.random() * spread - (Math.random() * spread * 2) + spread / 2,
         y: this.gravitation / 2 + (this.gravitation / 2 * Math.random())
     };
-
+    this.mode = mode;
+    this.modeSetting = modeSetting;
 
 
 
@@ -530,20 +531,34 @@ function Particle(x, y, size, color, spread, gravitation) {
 
 
         this.draw();
-        if(menu.pause === true){
-            this.x += this.velocity.x;
-        }else{
-            this.x -= player.speed/4;
+        if (this.mode !== 1 && this.mode !== 3 && menu.pause === false) {
+            if (this.mode === 2 && this.modeSetting === 0) {
+                this.x += spread-player.speed / 4;;
+            } else if(this.modeSetting === 1 && this.mode === 2){
+                this.x -= spread+player.speed / 4;;
+            }else{
+                this.x -= player.speed / 4;
+            }
+        } else {
+            if (this.mode === 0 || this.mode === 1) {
+                this.x += this.velocity.x;
+            } else if (this.modeSetting === 0) {
+                this.x += spread;
+            } else {
+                this.x -= spread;
+            }
         }
+
+
         this.y -= this.velocity.y;
         this.velocity.y -= this.gravitation / 10 * Math.random();
 
-        for (let i = 0; i < particleArray.length; i++){
-            if(this.x === particleArray[i].x || this.y === particleArray[i].y){
-                if(this.y > standard.height+248-this.size || this.y < 0 || this.y > 1080){
+        for (let i = 0; i < particleArray.length; i++) {
+            if (this.x === particleArray[i].x || this.y === particleArray[i].y) {
+                if (this.y > standard.height + 248 - this.size || this.y < 0 || this.y > 1080) {
                     particleArray.splice(i, 1);
                 }
-            } 
+            }
         }
 
     }
@@ -576,15 +591,15 @@ setInterval(function () {
 
 setInterval(function () {
     if (player.dead === true) {
-        createParticles(player.x + 200, player.y + 8 * 20, 2, 1, 3, "red", 1);
+        createParticles(player.x + 200, player.y + 8 * 20, 2, 1, 3, "red", 1, 0, 0);
     }
 }, 100)
 
-setInterval(function(){
-    if(menu.pause === false){
-        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue/12.5), 1, 6, "gray", 1)
+setInterval(function () {
+    if (menu.pause === false) {
+        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "gray", 1, 0, 0)
     }
-},100-player.crouchCooldownValue)
+}, 100 - player.crouchCooldownValue)
 
 
 
