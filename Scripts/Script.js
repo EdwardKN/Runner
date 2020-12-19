@@ -160,17 +160,35 @@ function toggleFullscreen() {
     if (settings.fullscreen === false) {
         if (canvas.RequestFullScreen) {
             canvas.RequestFullScreen();
+            settings.fullscreen = true;
         } else if (canvas.webkitRequestFullScreen) {
             canvas.webkitRequestFullScreen();
+            settings.fullscreen = true;
         } else if (canvas.mozRequestFullScreen) {
             canvas.mozRequestFullScreen();
+            settings.fullscreen = true;
         } else if (canvas.msRequestFullscreen) {
             canvas.msRequestFullscreen();
+            settings.fullscreen = true;
         } else {
-            alert("This browser doesn't supporter fullscreen");
+            alert("This Computer doesn't supporter fullscreen");
         }
+        if (settings.fullscreen === true) {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+                settings.fullscreen = false;
+            } else if (document.webkitExitFullscreen) { 
+                document.webkitExitFullscreen();
+                settings.fullscreen = false;
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+                settings.fullscreen = false;
+            }
+        }
+
     }
 }
+
 
 function showPlayer() {
 
@@ -534,10 +552,10 @@ function Particle(x, y, size, color, spread, gravitation, mode, modeSetting) {
         this.draw();
         if (this.mode !== 1 && this.mode !== 3 && menu.pause === false) {
             if (this.mode === 2 && this.modeSetting === 0) {
-                this.x += spread-player.speed / 4;;
-            } else if(this.modeSetting === 1 && this.mode === 2){
-                this.x -= spread+player.speed / 4;;
-            }else{
+                this.x += spread - player.speed / 4;;
+            } else if (this.modeSetting === 1 && this.mode === 2) {
+                this.x -= spread + player.speed / 4;;
+            } else {
                 this.x -= player.speed / 4;
             }
         } else {
