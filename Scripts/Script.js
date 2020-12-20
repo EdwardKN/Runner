@@ -457,7 +457,7 @@ function moveObstacle() {
         cactus4.x -= player.speed;
     }
     if(player.dead === true){
-        bird.x -= (player.speed*bird.speed-player.speed)*3;
+        bird.x -= (player.speed*bird.speed-player.speed)*1.75;
     }
 }
 function moveBackground() {
