@@ -22,13 +22,23 @@ var cactusImg4 = new Image();
 var groundImg1 = new Image();
 var groundImg2 = new Image();
 
-var runningMusic = new Audio('Sounds/Music/RunningMusicByDavidRenda.mp3');
+var gameoverImg = new Image();
+
+var runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
 runningMusic.loop = true;
+
+var gameOverMusic = new Audio('Sounds/Music/GameOverByPatrickdeArteaga.ogg')
+
+var titleScreenMusic = new Audio('Sounds/Music/TitleScreenBysawsquarenoise.mp3')
+titleScreenMusic.loop = true;
+titleScreenMusic.play();
 
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
 
 var particleArray = [];
+
+var timeout = undefined;
 
 var settings = {
     fullscreen: false,
@@ -259,6 +269,17 @@ function showBackground() {
         groundImg2.src = 'Images/Background/ground.png';
     }
 }
+function showMenu() {
+    if (menu.menuState === 1) {
+
+    }
+    if(player.dead === true){
+        if (gameoverImg.complete) {
+            c.drawImage(gameoverImg, Math.floor(0), Math.floor(0), 1920, 640);
+            gameoverImg.src = 'Images/Menu/gameover.png';
+        }
+    }
+}
 function update() {
     c.fillStyle = 'white';
     c.fillRect(0, 0, canvas.width, canvas.height);
@@ -287,11 +308,7 @@ function crouchCooldown() {
         crouchEnd();
     }
 }
-function showMenu() {
-    if (menu.menuState === 1) {
 
-    }
-}
 function deathFall() {
 
     if (player.dead === true && player.y < standard.height) {
@@ -347,8 +364,12 @@ function unPause() {
     menu.pause = false;
     player.animationState = 1;
     runningMusic.play();
+    titleScreenMusic.pause();
+    titleScreenMusic.currentTime = 0; 
 }
+
 function die() {
+    timeout = setTimeout(revive, 30000)
     menu.menuState = 0;
     player.animationState = 4;
     player.dead = true;
@@ -362,6 +383,7 @@ function die() {
     bird.x = (Math.floor(bird.x / 8)) * 8
     runningMusic.pause();
     runningMusic.currentTime = 0;
+    gameOverMusic.play();
     if (player.jumpSpeed != standard.jumpspeed && player.jumpSpeed < 0) {
         player.deathFallSpeed = player.jumpSpeed;
     } else if (player.jumpSpeed != standard.jumpspeed && player.jumpSpeed > 0) {
@@ -372,6 +394,10 @@ function die() {
 }
 
 function revive() {
+    clearTimeout(timeout);
+
+    gameOverMusic.pause();
+    gameOverMusic.currentTime = 0;
     back1 = {
         x: 0,
     }
