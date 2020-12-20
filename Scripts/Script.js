@@ -395,6 +395,7 @@ function die() {
 
 function revive() {
     clearTimeout(timeout);
+    titleScreenMusic.play();
 
     gameOverMusic.pause();
     gameOverMusic.currentTime = 0;
@@ -454,7 +455,9 @@ function moveObstacle() {
         cactus2.x -= player.speed;
         cactus3.x -= player.speed;
         cactus4.x -= player.speed;
-
+    }
+    if(player.dead === true){
+        bird.x -= (player.speed*bird.speed-player.speed)*3;
     }
 }
 function moveBackground() {
@@ -622,7 +625,7 @@ setInterval(function () {
 }, 100);
 
 setInterval(function () {
-    if (menu.pause === false) {
+    if (menu.pause === false || player.dead === true) {
         if (bird.animation === 1) {
             bird.animation = 2;
             return;
