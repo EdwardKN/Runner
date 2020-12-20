@@ -31,10 +31,11 @@ var gameOverMusic = new Audio('Sounds/Music/GameOverByPatrickdeArteaga.ogg')
 
 var titleScreenMusic = new Audio('Sounds/Music/TitleScreenBysawsquarenoise.mp3')
 titleScreenMusic.loop = true;
-titleScreenMusic.play();
 
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
+
+var InteractedWithDocument = false;
 
 var particleArray = [];
 
@@ -52,54 +53,76 @@ var standard = {
     jumpspeed: 37.5,
     height: 648,
 }
-var back1 = {
-    x: 0,
-}
-var back2 = {
-    x: 1920
-}
-var cactus1 = {
-    x: -2000,
-    y: standard.height
-};
-var cactus2 = {
-    x: -2000,
-    y: standard.height
-};
-var cactus3 = {
-    x: -2000,
-    y: standard.height
-};
-var cactus4 = {
-    x: -2000,
-    y: standard.height
+
+var back1 = undefined;
+var back2 = undefined;
+
+var cactus1 = undefined;
+var cactus2 = undefined;
+var cactus3 = undefined;
+var cactus4 = undefined;
+
+var bird = undefined;
+
+var player = undefined;
+
+function init(){
+    back1 = {
+        x: 0,
+    }
+    back2 = {
+        x: 1920
+    }
+    cactus1 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus2 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus3 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus4 = {
+        x: -2000,
+        y: standard.height
+    };
+    
+    bird = {
+        x: -2000,
+        y: (standard.height + 100) - Math.random() * 300,
+        animationState: 1,
+        animation: 1,
+        speed: 1.25
+    };
+    
+    player = {
+        x: 200,
+        y: standard.height,
+        animationState: 5,
+        animation: 1,
+        jumping: false,
+        jumpSpeed: standard.jumpspeed,
+        gravitation: 2,
+        crouch: false,
+        speed: 24,
+        dead: false,
+        crouchValue: 8 * 8,
+        deathFallSpeed: 0,
+        crouchCooldownValue: 0
+    };
 };
 
-var bird = {
-    x: -2000,
-    y: (standard.height + 100) - Math.random() * 300,
-    animationState: 1,
-    animation: 1,
-    speed: 1.25
-};
+init();
 
-var player = {
-    x: 200,
-    y: standard.height,
-    animationState: 5,
-    animation: 1,
-    jumping: false,
-    jumpSpeed: standard.jumpspeed,
-    gravitation: 2,
-    crouch: false,
-    speed: 24,
-    dead: false,
-    crouchValue: 8 * 8,
-    deathFallSpeed: 0,
-    crouchCooldownValue: 0
-};
-
-
+window.addEventListener('click', function(event){
+    if(InteractedWithDocument === false){
+        titleScreenMusic.play();
+        InteractedWithDocument = true;
+    }
+})
 
 window.addEventListener('keydown', function (event) {
     console.log(event)
@@ -107,7 +130,7 @@ window.addEventListener('keydown', function (event) {
         toggleFullscreen();
     }
     if (event.code === "Space" || event.code === "ArrowUp") {
-        if (menu.pause === false && player.dead === false || settings.debug === true) {
+        if (menu.pause === false && player.dead === false) {
             jump();
         }
     }
@@ -118,7 +141,7 @@ window.addEventListener('keydown', function (event) {
         }
     }
     if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-        if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 25 || settings.debug === true) {
+        if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 25) {
             crouch();
         }
     }
@@ -136,7 +159,7 @@ window.addEventListener('keydown', function (event) {
 window.addEventListener('keyup', function (event) {
     console.log(event);
     if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-        if (menu.pause === false && player.dead === false || settings.debug === true) {
+        if (menu.pause === false && player.dead === false) {
             crouchEnd();
         }
     }
@@ -399,53 +422,10 @@ function revive() {
 
     gameOverMusic.pause();
     gameOverMusic.currentTime = 0;
-    back1 = {
-        x: 0,
-    }
-    back2 = {
-        x: 1920
-    }
-    cactus1 = {
-        x: -2000,
-        y: standard.height
-    };
-    cactus2 = {
-        x: -2000,
-        y: standard.height
-    };
-    cactus3 = {
-        x: -2000,
-        y: standard.height
-    };
-    cactus4 = {
-        x: -2000,
-        y: standard.height
-    };
-
-    bird = {
-        x: -2000,
-        y: (standard.height + 100) - Math.random() * 300,
-        animationState: 1,
-        animation: 1,
-        speed: 1.25
-    };
-
-    player = {
-        x: 200,
-        y: standard.height,
-        animationState: 5,
-        animation: 1,
-        jumping: false,
-        jumpSpeed: standard.jumpspeed,
-        gravitation: 2,
-        crouch: false,
-        speed: 24,
-        dead: false,
-        crouchValue: 8 * 8,
-        deathFallSpeed: 0,
-        crouchCooldownValue: 0
-    };
+    
     particleArray = [];
+
+    init();
 }
 
 function moveObstacle() {
@@ -648,7 +628,6 @@ setInterval(function () {
         createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "gray", 1, 0, 0)
     }
 }, 100 - player.crouchCooldownValue)
-
 
 
 setInterval(teleport, 1000)
