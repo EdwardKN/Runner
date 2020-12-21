@@ -3,6 +3,8 @@ var canvas = document.getElementById('game');
 canvas.width = 1920;
 canvas.height = 1080;
 
+
+
 var playerImg1 = new Image();
 var playerImg2 = new Image();
 var playerImg3 = new Image();
@@ -44,6 +46,10 @@ var loadingState = 0;
 
 var clicked = false;
 
+var fps = 60;
+
+var fpsMultiplier = fps/60;
+
 var particleArray = [];
 
 var timeout = undefined;
@@ -61,6 +67,11 @@ var standard = {
     jumpspeed: 37.5,
     height: 648,
 }
+var mouse = {
+    x: undefined,
+    y: undefined,
+    click: false
+  };
 
 var back1 = undefined;
 var back2 = undefined;
@@ -196,7 +207,7 @@ function start(){
         c.fillStyle = 'black';
         c.fillRect(0, 0, canvas.width, canvas.height);
         if(loadingState === 0){
-            loadingAlpha+=0.005;
+            loadingAlpha+=0.005/fpsMultiplier;
             if(loadingAlpha > 1.1){
                 loadingState = 1;
             }
@@ -204,7 +215,7 @@ function start(){
             if(loadingAlpha <= 0.01){
                 loadingAlpha = 0;
             }else{
-                loadingAlpha-=0.01
+                loadingAlpha-=0.01/fpsMultiplier;
             }
         }
         if (logoImg.complete) {
@@ -233,6 +244,17 @@ window.addEventListener('click', function(){
         },7000);
     }
 })
+canvas.addEventListener('mousemove', function (event) {
+    let tmpXmulti = 1365/screen.width;
+    let tmpYmulti = 768/screen.height;
+    if(document.fullscreenElement){
+      mouse.x = event.offsetX*tmpXmulti;
+      mouse.y = event.offsetY*tmpYmulti;
+    }else{
+      mouse.x = event.offsetX;
+      mouse.y = event.offsetY;      
+    };
+});
 
 
 window.addEventListener('keydown', function (event) {
@@ -456,9 +478,9 @@ function update() {
 }
 function crouchCooldown() {
     if (player.crouch === true) {
-        player.crouchCooldownValue++;
+        player.crouchCooldownValue+=1/fpsMultiplier;
     } else if (player.crouchCooldownValue > 0) {
-        player.crouchCooldownValue -= 0.5;
+        player.crouchCooldownValue -= 0.5/fpsMultiplier;
     }
     if (player.crouchCooldownValue > 50) {
         crouchEnd();
@@ -468,8 +490,8 @@ function crouchCooldown() {
 function deathFall() {
 
     if (player.dead === true && player.y < standard.height) {
-        player.y -= player.deathFallSpeed;
-        player.deathFallSpeed -= player.gravitation;
+        player.y -= player.deathFallSpeed/fpsMultiplier;
+        player.deathFallSpeed -= player.gravitation/fpsMultiplier;
     } else if (player.dead === true) {
         player.y = standard.height;
     }
@@ -564,14 +586,14 @@ function revive() {
 
 function moveObstacle() {
     if (menu.pause === false) {
-        bird.x -= player.speed * bird.speed;
-        cactus1.x -= player.speed;
-        cactus2.x -= player.speed;
-        cactus3.x -= player.speed;
-        cactus4.x -= player.speed;
+        bird.x -= player.speed * bird.speed/fpsMultiplier;
+        cactus1.x -= player.speed/fpsMultiplier;
+        cactus2.x -= player.speed/fpsMultiplier;
+        cactus3.x -= player.speed/fpsMultiplier;
+        cactus4.x -= player.speed/fpsMultiplier;
     }
     if(player.dead === true){
-        bird.x -= (player.speed*bird.speed-player.speed)*1.75;
+        bird.x -= (player.speed*bird.speed-player.speed)*1.75/fpsMultiplier;
     }
 }
 function moveBackground() {
@@ -582,8 +604,8 @@ function moveBackground() {
         if (back2.x < -1920 + player.speed) {
             back2.x = 1920 - player.speed;
         }
-        back1.x -= player.speed;
-        back2.x -= player.speed;
+        back1.x -= player.speed/fpsMultiplier;
+        back2.x -= player.speed/fpsMultiplier;
     }
 }
 
@@ -605,7 +627,7 @@ function checkAir() {
 }
 function jump() {
     player.animationState = 2;
-    player.y--;
+    player.y-=1/fpsMultiplier;
 }
 
 function up() {
@@ -615,8 +637,8 @@ function up() {
     if (player.animationState !== 4) {
         player.animationState = 2;
     }
-    player.y -= player.jumpSpeed;
-    player.jumpSpeed -= player.gravitation;
+    player.y -= player.jumpSpeed/fpsMultiplier;
+    player.jumpSpeed -= player.gravitation/fpsMultiplier;
 }
 
 function crouch() {
@@ -695,25 +717,25 @@ function Particle(x, y, size, color, spread, gravitation, mode, modeSetting) {
         this.draw();
         if (this.mode !== 1 && this.mode !== 3 && menu.pause === false) {
             if (this.mode === 2 && this.modeSetting === 0) {
-                this.x += spread - player.speed / 4;;
+                this.x += spread - player.speed / 4/fpsMultiplier;
             } else if (this.modeSetting === 1 && this.mode === 2) {
-                this.x -= spread + player.speed / 4;;
+                this.x -= spread + player.speed / 4/fpsMultiplier;
             } else {
-                this.x -= player.speed / 4;
+                this.x -= player.speed / 4/fpsMultiplier;
             }
         } else {
             if (this.mode === 0 || this.mode === 1) {
-                this.x += this.velocity.x;
+                this.x += this.velocity.x/fpsMultiplier;
             } else if (this.modeSetting === 0) {
-                this.x += spread;
+                this.x += spread/fpsMultiplier;
             } else {
-                this.x -= spread;
+                this.x -= spread/fpsMultiplier;
             }
         }
 
 
-        this.y -= this.velocity.y;
-        this.velocity.y -= this.gravitation / 10 * Math.random();
+        this.y -= this.velocity.y/fpsMultiplier;
+        this.velocity.y -= this.gravitation / 10 * Math.random()/fpsMultiplier;
 
         for (let i = 0; i < particleArray.length; i++) {
             if (this.x === particleArray[i].x || this.y === particleArray[i].y) {
@@ -765,6 +787,6 @@ setInterval(function () {
 
 
 setInterval(teleport, 1000)
-setInterval(update, 16.66666666667);
+setInterval(update, 1000/fps  );
 
 
