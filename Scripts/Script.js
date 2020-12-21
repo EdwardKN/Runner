@@ -224,6 +224,13 @@ window.addEventListener('click', function(){
         loadingMusic.play();
         clicked = true;
         toggleFullscreen();
+        timeout2 = setTimeout(function(){
+            loaded = true;
+            clearTimeout(timeout2);
+            titleScreenMusic.play();
+            timeout2 = undefined;
+
+        },7000);
     }
 })
 
@@ -417,6 +424,7 @@ function showMenu() {
 function update() {
 
     if(loaded === true){
+
         c.fillStyle = 'white';
         c.fillRect(0, 0, canvas.width, canvas.height);
         showDebugMenu();
@@ -433,15 +441,11 @@ function update() {
         });
         showMenu();
         crouchCooldown();
+
     }else if(clicked === true){
 
         start();
 
-        timeout2 = setTimeout(function(){
-            loaded = true;
-            titleScreenMusic.play();
-            clearTimeout(timeout2);
-        },7000);
     }else{
 
      
@@ -755,7 +759,7 @@ setInterval(function () {
 
 setInterval(function () {
     if (menu.pause === false) {
-        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "gray", 1, 0, 0)
+        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "rgb("+(255-((player.crouchCooldownValue/50)*255))+", "+(255-((player.crouchCooldownValue/50)*255))+", "+(255-((player.crouchCooldownValue/50)*255))+")", 1, 0, 0)
     }
 }, 100 - player.crouchCooldownValue)
 
