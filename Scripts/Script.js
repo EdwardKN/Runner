@@ -26,6 +26,7 @@ var groundImg2 = new Image();
 
 var gameoverImg = new Image();
 var logoImg = new Image();
+var logoImg2 = new Image();
 
 var runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
 runningMusic.loop = true;
@@ -36,6 +37,7 @@ var titleScreenMusic = new Audio('Sounds/Music/TitleScreenBysawsquarenoise.mp3')
 titleScreenMusic.loop = true;
 
 var loadingMusic = new Audio('Sounds/Music/Intro.mp3')
+var loadingMusic2 = new Audio('Sounds/Music/Intro2.mp3')
 
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
@@ -208,8 +210,40 @@ function start(){
         c.fillRect(0, 0, canvas.width, canvas.height);
         if(loadingState === 0){
             loadingAlpha+=0.005/fpsMultiplier;
-            if(loadingAlpha > 1.1){
+            if(loadingAlpha > 1.5){
                 loadingState = 1;
+            }
+            if (logoImg.complete) {
+                c.globalAlpha = loadingAlpha;
+                c.drawImage(logoImg, Math.floor(420), Math.floor(0), 1080, 1080);
+                logoImg.src = 'Images/Menu/logo.png';
+                c.globalAlpha = 1;
+            }
+        }else if(loadingState === 1){
+            if(loadingAlpha <= 0.01){
+                loadingAlpha = 0;
+                setTimeout(() => {
+                    loadingState = 2;
+                }, 500);
+            }else{
+                loadingAlpha-=0.01/fpsMultiplier;
+            }
+            if (logoImg.complete) {
+                c.globalAlpha = loadingAlpha;
+                c.drawImage(logoImg, Math.floor(420), Math.floor(0), 1080, 1080);
+                logoImg.src = 'Images/Menu/logo.png';
+                c.globalAlpha = 1;
+            }
+        }else if(loadingState === 2){
+            loadingAlpha+=0.005/fpsMultiplier;
+            if(loadingAlpha > 1.25){
+                loadingState = 3;
+            }
+            if (logoImg2.complete) {
+                c.globalAlpha = loadingAlpha;
+                c.drawImage(logoImg2, Math.floor(420), Math.floor(0), 1080, 1080);
+                logoImg2.src = 'Images/Menu/logo2.png';
+                c.globalAlpha = 1;
             }
         }else{
             if(loadingAlpha <= 0.01){
@@ -217,13 +251,14 @@ function start(){
             }else{
                 loadingAlpha-=0.01/fpsMultiplier;
             }
+            if (logoImg2.complete) {
+                c.globalAlpha = loadingAlpha;
+                c.drawImage(logoImg2, Math.floor(420), Math.floor(0), 1080, 1080);
+                logoImg2.src = 'Images/Menu/logo2.png';
+                c.globalAlpha = 1;
+            }
         }
-        if (logoImg.complete) {
-            c.globalAlpha = loadingAlpha;
-            c.drawImage(logoImg, Math.floor(420), Math.floor(0), 1080, 1080);
-            logoImg.src = 'Images/Menu/logo.png';
-            c.globalAlpha = 1;
-        }
+
     }
 }
 init();
@@ -241,7 +276,10 @@ window.addEventListener('click', function(){
             titleScreenMusic.play();
             timeout2 = undefined;
 
-        },7000);
+        },16000);
+        setTimeout(() => {
+            loadingMusic2.play();
+        }, 8000);
     }
 })
 canvas.addEventListener('mousemove', function (event) {
@@ -598,11 +636,11 @@ function moveObstacle() {
 }
 function moveBackground() {
     if (menu.pause === false) {
-        if (back1.x < -1920 + player.speed) {
-            back1.x = 1920 - player.speed;
+        if (back1.x < -1920 + player.speed/fpsMultiplier) {
+            back1.x = 1920 - player.speed/fpsMultiplier;
         }
-        if (back2.x < -1920 + player.speed) {
-            back2.x = 1920 - player.speed;
+        if (back2.x < -1920 + player.speed/fpsMultiplier) {
+            back2.x = 1920 - player.speed/fpsMultiplier;
         }
         back1.x -= player.speed/fpsMultiplier;
         back2.x -= player.speed/fpsMultiplier;
