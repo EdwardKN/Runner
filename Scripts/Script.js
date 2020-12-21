@@ -47,6 +47,7 @@ var clicked = false;
 var particleArray = [];
 
 var timeout = undefined;
+var timeout2 = undefined;
 
 var settings = {
     fullscreen: false,
@@ -222,6 +223,7 @@ window.addEventListener('click', function(){
     if(clicked === false){
         loadingMusic.play();
         clicked = true;
+        toggleFullscreen();
     }
 })
 
@@ -431,11 +433,15 @@ function update() {
     }else if(clicked === true){
 
         start();
-        setTimeout(() => {
+
+        timeout2 = setTimeout(function(){
             loaded = true;
             titleScreenMusic.play();
-        }, 7000);
+            clearTimeout(timeout2);
+        },7000);
     }else{
+
+     
         c.fillStyle = 'black';
         c.fillRect(0, 0, canvas.width, canvas.height);
     }
@@ -504,11 +510,12 @@ function checkCollision() {
     }
 }
 function unPause() {
+    titleScreenMusic.pause();
+    titleScreenMusic.currentTime = 0; 
     menu.pause = false;
     player.animationState = 1;
     runningMusic.play();
-    titleScreenMusic.pause();
-    titleScreenMusic.currentTime = 0; 
+
 }
 
 function die() {
