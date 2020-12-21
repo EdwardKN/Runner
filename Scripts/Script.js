@@ -23,6 +23,7 @@ var groundImg1 = new Image();
 var groundImg2 = new Image();
 
 var gameoverImg = new Image();
+var logoImg = new Image();
 
 var runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
 runningMusic.loop = true;
@@ -32,10 +33,16 @@ var gameOverMusic = new Audio('Sounds/Music/GameOverByPatrickdeArteaga.ogg')
 var titleScreenMusic = new Audio('Sounds/Music/TitleScreenBysawsquarenoise.mp3')
 titleScreenMusic.loop = true;
 
+var loadingMusic = new Audio('Sounds/Music/Intro.mp3')
+
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
 
-var InteractedWithDocument = false;
+var loaded = false;
+var loadingAlpha = 0;
+var loadingState = 0;
+
+var clicked = false;
 
 var particleArray = [];
 
@@ -115,56 +122,155 @@ function init(){
     };
 };
 
-init();
+function start(){
 
-window.addEventListener('click', function(event){
-    if(InteractedWithDocument === false){
-        titleScreenMusic.play();
-        InteractedWithDocument = true;
+    if(clicked === true){
+        if (playerImg1.complete) {
+            c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg1.src = 'Images/Player/Ostrich/player1.png';
+        }
+        if (playerImg2.complete) {
+            c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg2.src = 'Images/Player/Ostrich/player2.png';
+        }
+        if (playerImg3.complete) {
+            c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg3.src = 'Images/Player/Ostrich/player3.png';
+        }
+        if (playerImg4.complete) {
+            c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg4.src = 'Images/Player/Ostrich/player4.png';
+        }
+        if (playerImg5.complete) {
+            c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg5.src = 'Images/Player/Ostrich/player5.png';
+        }
+        if (playerImg6.complete) {
+            c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg6.src = 'Images/Player/Ostrich/player6.png';
+        }
+        if (playerImg7.complete) {
+            c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg7.src = 'Images/Player/Ostrich/player7.png';
+        }
+        if (birdImg1.complete) {
+            c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
+            birdImg1.src = 'Images/Obstacles/bird1.png';
+        }
+        if (birdImg2.complete) {
+            c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
+            birdImg2.src = 'Images/Obstacles/bird2.png';
+        }
+    
+        if (cactusImg1.complete) {
+            c.drawImage(cactusImg1, Math.floor(cactus1.x), Math.floor(cactus1.y), 256, 256);
+            cactusImg1.src = 'Images/Obstacles/cactus1.png';
+        }
+        if (cactusImg2.complete) {
+            c.drawImage(cactusImg2, Math.floor(cactus2.x), Math.floor(cactus2.y), 256, 256);
+            cactusImg2.src = 'Images/Obstacles/cactus2.png';
+        }
+        if (cactusImg3.complete) {
+            c.drawImage(cactusImg3, Math.floor(cactus3.x), Math.floor(cactus3.y), 256, 256);
+            cactusImg3.src = 'Images/Obstacles/cactus3.png';
+        }
+        if (cactusImg4.complete) {
+            c.drawImage(cactusImg4, Math.floor(cactus4.x), Math.floor(cactus4.y), 256, 256);
+            cactusImg4.src = 'Images/Obstacles/cactus4.png';
+        }
+        if (groundImg1.complete) {
+            c.drawImage(groundImg1, Math.floor(back1.x), Math.floor(standard.height + 248), 1920, 184);
+            groundImg1.src = 'Images/Background/ground.png';
+        }
+        if (groundImg2.complete) {
+            c.drawImage(groundImg2, Math.floor(back2.x), Math.floor(standard.height + 248), 1920, 184);
+            groundImg2.src = 'Images/Background/ground.png';
+        }
+        if (gameoverImg.complete) {
+            c.drawImage(gameoverImg, Math.floor(0), Math.floor(0), 1920, 640);
+            gameoverImg.src = 'Images/Menu/gameover.png';
+        }
+
+
+        c.fillStyle = 'black';
+        c.fillRect(0, 0, canvas.width, canvas.height);
+        if(loadingState === 0){
+            loadingAlpha+=0.005;
+            if(loadingAlpha > 1.1){
+                loadingState = 1;
+            }
+        }else{
+            if(loadingAlpha <= 0.01){
+                loadingAlpha = 0;
+            }else{
+                loadingAlpha-=0.01
+            }
+        }
+        if (logoImg.complete) {
+            c.globalAlpha = loadingAlpha;
+            c.drawImage(logoImg, Math.floor(420), Math.floor(0), 1080, 1080);
+            logoImg.src = 'Images/Menu/logo.png';
+            c.globalAlpha = 1;
+        }
+    }
+}
+init();
+start();
+
+
+window.addEventListener('click', function(){
+    if(clicked === false){
+        loadingMusic.play();
+        clicked = true;
     }
 })
+
 
 window.addEventListener('keydown', function (event) {
     console.log(event)
     if (event.code === "KeyF") {
         toggleFullscreen();
     }
-    if (event.code === "Space" || event.code === "ArrowUp") {
-        if (menu.pause === false && player.dead === false) {
-            jump();
+    if(loaded === true){
+        if (event.code === "Space" || event.code === "ArrowUp") {
+            if (menu.pause === false && player.dead === false) {
+                jump();
+            }
         }
-    }
-    if (event.code === "Space" || event.code === "ArrowUp") {
-        if (menu.pause === true && player.dead === false) {
-            jump();
-            unPause();
+        if (event.code === "Space" || event.code === "ArrowUp") {
+            if (menu.pause === true && player.dead === false) {
+                jump();
+                unPause();
+            }
         }
-    }
-    if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-        if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 25) {
-            crouch();
+        if (event.code === "ControlLeft" || event.code === "ArrowDown") {
+            if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 25) {
+                crouch();
+            }
         }
-    }
-    if (event.code === "Escape" && player.dead === false) {
-        toggleMenu();
-    }
-    if (event.code === "Enter" && player.dead === true) {
-        revive();
-    }
-    if (event.code === "KeyT") {
-        createParticles(player.x, player.y, 50, 5, "black", 1)
+        if (event.code === "Escape" && player.dead === false) {
+            toggleMenu();
+        }
+        if (event.code === "Enter" && player.dead === true) {
+            revive();
+        }
+        if (event.code === "KeyT") {
+            createParticles(player.x, player.y, 50, 5, "black", 1)
+        }
     }
 });
 
 window.addEventListener('keyup', function (event) {
     console.log(event);
-    if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-        if (menu.pause === false && player.dead === false) {
-            crouchEnd();
+    if(loaded === true){
+        if (event.code === "ControlLeft" || event.code === "ArrowDown") {
+            if (menu.pause === false && player.dead === false) {
+                crouchEnd();
+            }
         }
-    }
-    if (event.code === "KeyB") {
-        toggleDebug();
+        if (event.code === "KeyB") {
+            toggleDebug();
+        }
     }
 });
 function toggleMenu() {
@@ -304,22 +410,36 @@ function showMenu() {
     }
 }
 function update() {
-    c.fillStyle = 'white';
-    c.fillRect(0, 0, canvas.width, canvas.height);
-    showDebugMenu();
-    showBackground();
-    showObstacle();
-    showPlayer();
-    checkAir();
-    moveObstacle();
-    moveBackground();
-    checkCollision();
-    deathFall();
-    particleArray.forEach(Particle => {
-        Particle.update(particleArray);
-    });
-    showMenu();
-    crouchCooldown();
+
+    if(loaded === true){
+        c.fillStyle = 'white';
+        c.fillRect(0, 0, canvas.width, canvas.height);
+        showDebugMenu();
+        showBackground();
+        showObstacle();
+        showPlayer();
+        checkAir();
+        moveObstacle();
+        moveBackground();
+        checkCollision();
+        deathFall();
+        particleArray.forEach(Particle => {
+            Particle.update(particleArray);
+        });
+        showMenu();
+        crouchCooldown();
+    }else if(clicked === true){
+
+        start();
+        setTimeout(() => {
+            loaded = true;
+            titleScreenMusic.play();
+        }, 7000);
+    }else{
+        c.fillStyle = 'black';
+        c.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
 }
 function crouchCooldown() {
     if (player.crouch === true) {
