@@ -233,6 +233,9 @@ window.addEventListener('keydown', function (event) {
     if (event.code === "KeyF") {
         toggleFullscreen();
     }
+    if(event.code === "KeyP"){
+        window.close();
+    }
     if(loaded === true){
         if (event.code === "Space" || event.code === "ArrowUp") {
             if (menu.pause === false && player.dead === false) {
