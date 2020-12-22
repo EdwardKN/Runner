@@ -3,8 +3,6 @@ var canvas = document.getElementById('game');
 canvas.width = 1920;
 canvas.height = 1080;
 
-
-
 var playerImg1 = new Image();
 var playerImg2 = new Image();
 var playerImg3 = new Image();
@@ -48,7 +46,7 @@ var loadingState = 0;
 
 var clicked = false;
 
-var fps = 60;
+var fps = undefined;
 
 var fpsMultiplier = fps / 60;
 
@@ -56,6 +54,8 @@ var particleArray = [];
 
 var timeout = undefined;
 var timeout2 = undefined;
+
+var interval1 = undefined;
 
 var settings = {
     fullscreen: false,
@@ -227,7 +227,22 @@ canvas.addEventListener('mousemove', function (event) {
 
 window.addEventListener('keydown', function (event) {
     console.log(event)
+    if (clicked === false) {
+        loadingMusic.play();
+        clicked = true;
+        toggleFullscreen();
+        timeout2 = setTimeout(function () {
+            loaded = true;
+            clearTimeout(timeout2);
+            titleScreenMusic.play();
+            menu.menuState = 1;
+            timeout2 = undefined;
 
+        }, 17000);
+        setTimeout(() => {
+            loadingMusic2.play();
+        }, 9000);
+    }
     if (event.code === "KeyP") {
         window.close();
     }
@@ -242,6 +257,7 @@ window.addEventListener('keydown', function (event) {
         loadingAlpha = 1000000000000;
     }
     if (loaded === true) {
+
         if (event.code === "KeyF") {
             toggleFullscreen();
         }
@@ -274,7 +290,6 @@ window.addEventListener('keydown', function (event) {
 });
 
 window.addEventListener('keyup', function (event) {
-    console.log(event);
     if (loaded === true) {
         if (event.code === "ControlLeft" || event.code === "ArrowDown") {
             if (menu.pause === false && player.dead === false) {
@@ -487,7 +502,6 @@ function showMenu() {
             c.fillRect(0, 0, 0, 0)
         } else if (button(0, 0, 0, 0) === 1) {
             c.fillStyle = "green"
-            console.log(c.fillStyle)
             c.fillRect(0, 0, 0, 0)
         } else {
             c.fillStyle = "blue"
@@ -502,7 +516,6 @@ function showMenu() {
     }
 }
 function update() {
-
     if (loaded === true) {
 
         c.fillStyle = 'white';
@@ -528,8 +541,8 @@ function update() {
 
     } else {
 
-
         c.fillStyle = 'black';
+
         c.fillRect(0, 0, canvas.width, canvas.height);
     }
 
@@ -847,7 +860,6 @@ setInterval(function () {
 setInterval(function () {
     if (player.dead === true) {
         let randoms = Math.floor(Math.random() * 100)
-        console.log(randoms);
         createParticles(player.x + 200, player.y + 8 * 20, 2, 1, 3, "rgb(" + (255 - randoms) + ", " + 0 + ", " + 0 + ")", 1, 0, 0);
     }
 }, 100);
@@ -859,8 +871,55 @@ setInterval(function () {
 }, 100 - player.crouchCooldownValue);
 
 
+function updateFPS(thisFps) {
+    console.log(thisFps)
+    clearInterval(interval1);
+    interval1 = undefined;
+    interval1 = setInterval(update, 1000 / thisFps);
+    fpsMultiplier = thisFps / 60;
+}
 
 setInterval(teleport, 1000)
-setInterval(update, 1000 / fps);
+interval1 = setInterval(update, 1000 / fps);
 
+setInterval(() => {
+    fps = oldCount - oldCount3;
+    oldCount3 = oldCount;
+    if (fps !== oldFPS) {
+        updateFPS(fps)
+    }
+    oldFPS = fps;
+}, 1000);
 
+var oldFPS = 0;
+
+var oldCount3 = 0;
+var oldCount2 = 0;
+var oldCount = 0;
+
+count()
+
+function count() {
+    requestAnimationFrame(count)
+
+    oldCount = oldCount2;
+    oldCount2++;
+    return oldCount;
+
+}
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return -1;
+}
+//    document.cookie = `test=${true};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
