@@ -197,12 +197,19 @@ window.addEventListener('click', function () {
             loaded = true;
             clearTimeout(timeout2);
             titleScreenMusic.play();
+            menu.menuState = 1;
             timeout2 = undefined;
 
         }, 17000);
         setTimeout(() => {
             loadingMusic2.play();
         }, 9000);
+    }
+    if (mouse.click === false) {
+        mouse.click = true;
+        setTimeout(() => {
+            mouse.click = false;
+        }, 1000 / fps);
     }
 })
 canvas.addEventListener('mousemove', function (event) {
@@ -223,6 +230,16 @@ window.addEventListener('keydown', function (event) {
 
     if (event.code === "KeyP") {
         window.close();
+    }
+    if (event.code === "KeyD") {
+        loaded = true;
+        clearTimeout(timeout2);
+        titleScreenMusic.play();
+        menu.menuState = 1;
+        timeout2 = undefined;
+        loadingMusic.pause();
+        loadingState = 1000;
+        loadingAlpha = 1000000000000;
     }
     if (loaded === true) {
         if (event.code === "KeyF") {
@@ -465,7 +482,17 @@ function showBackground() {
 }
 function showMenu() {
     if (menu.menuState === 1) {
-
+        if (button(0, 0, 0, 0) === 0) {
+            c.fillStyle = "red"
+            c.fillRect(0, 0, 0, 0)
+        } else if (button(0, 0, 0, 0) === 1) {
+            c.fillStyle = "green"
+            console.log(c.fillStyle)
+            c.fillRect(0, 0, 0, 0)
+        } else {
+            c.fillStyle = "blue"
+            c.fillRect(0, 0, 0, 0)
+        }
     }
     if (player.dead === true) {
         if (gameoverImg.complete) {
@@ -492,8 +519,8 @@ function update() {
         particleArray.forEach(Particle => {
             Particle.update(particleArray);
         });
-        showMenu();
         crouchCooldown();
+        showMenu();
 
     } else if (clicked === true) {
 
@@ -575,6 +602,7 @@ function unPause() {
     menu.pause = false;
     player.animationState = 1;
     runningMusic.play();
+    menu.menuState = 0;
 
 }
 
@@ -606,7 +634,7 @@ function die() {
 function revive() {
     clearTimeout(timeout);
     titleScreenMusic.play();
-
+    menu.menuState = 1;
     gameOverMusic.pause();
     gameOverMusic.currentTime = 0;
 
@@ -779,6 +807,18 @@ function Particle(x, y, size, color, spread, gravitation, mode, modeSetting) {
     }
 }
 
+function button(x, y, width, height) {
+    if (mouse.x > x && mouse.x < x + width && mouse.y > y && mouse.y < y + height) {
+        if (mouse.click === true) {
+            return 2;
+        } else {
+            return 1;
+        }
+    } else {
+        return 0;
+    }
+}
+
 setInterval(function () {
 
     if (player.animation === 1) {
@@ -806,7 +846,7 @@ setInterval(function () {
 
 setInterval(function () {
     if (player.dead === true) {
-        let randoms =  Math.floor(Math.random()*100)
+        let randoms = Math.floor(Math.random() * 100)
         console.log(randoms);
         createParticles(player.x + 200, player.y + 8 * 20, 2, 1, 3, "rgb(" + (255 - randoms) + ", " + 0 + ", " + 0 + ")", 1, 0, 0);
     }
@@ -817,6 +857,7 @@ setInterval(function () {
         createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "rgb(" + (255 - ((player.crouchCooldownValue / 50) * 255)) + ", " + (255 - ((player.crouchCooldownValue / 50) * 255)) + ", " + (255 - ((player.crouchCooldownValue / 50) * 255)) + ")", 1, 0, 0)
     }
 }, 100 - player.crouchCooldownValue);
+
 
 
 setInterval(teleport, 1000)
