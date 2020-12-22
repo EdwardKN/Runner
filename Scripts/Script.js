@@ -160,7 +160,7 @@ function start() {
                 loadingAlpha = 0;
                 setTimeout(() => {
                     loadingState = 2;
-                }, 500);
+                }, 1500);
             } else {
                 loadingAlpha -= 0.01 / fpsMultiplier;
             }
@@ -199,10 +199,10 @@ window.addEventListener('click', function () {
             titleScreenMusic.play();
             timeout2 = undefined;
 
-        }, 16000);
+        }, 17000);
         setTimeout(() => {
             loadingMusic2.play();
-        }, 8000);
+        }, 9000);
     }
 })
 canvas.addEventListener('mousemove', function (event) {
