@@ -46,6 +46,8 @@ var loadingState = 0;
 
 var clicked = false;
 
+var startTimer = false;
+
 var fps = undefined;
 
 var fpsMultiplier = fps / 60;
@@ -86,6 +88,10 @@ var cactus4 = undefined;
 var bird = undefined;
 
 var player = undefined;
+
+setTimeout(() => {
+    startTimer = true;
+}, 1000);
 
 function init() {
     back1 = {
@@ -189,7 +195,7 @@ start();
 
 
 window.addEventListener('click', function () {
-    if (clicked === false) {
+    if (clicked === false && startTimer === true) {
         loadingMusic.play();
         clicked = true;
         toggleFullscreen();
@@ -227,7 +233,7 @@ canvas.addEventListener('mousemove', function (event) {
 
 window.addEventListener('keydown', function (event) {
     console.log(event)
-    if (clicked === false) {
+    if (clicked === false && startTimer === true) {
         loadingMusic.play();
         clicked = true;
         toggleFullscreen();
