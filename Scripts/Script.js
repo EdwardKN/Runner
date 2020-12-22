@@ -50,7 +50,7 @@ var clicked = false;
 
 var fps = 60;
 
-var fpsMultiplier = fps/60;
+var fpsMultiplier = fps / 60;
 
 var particleArray = [];
 
@@ -73,7 +73,7 @@ var mouse = {
     x: undefined,
     y: undefined,
     click: false
-  };
+};
 
 var back1 = undefined;
 var back2 = undefined;
@@ -87,7 +87,7 @@ var bird = undefined;
 
 var player = undefined;
 
-function init(){
+function init() {
     back1 = {
         x: 0,
     }
@@ -110,7 +110,7 @@ function init(){
         x: -2000,
         y: standard.height
     };
-    
+
     bird = {
         x: -2000,
         y: (standard.height + 100) - Math.random() * 300,
@@ -118,7 +118,7 @@ function init(){
         animation: 1,
         speed: 1.25
     };
-    
+
     player = {
         x: 200,
         y: standard.height,
@@ -136,81 +136,17 @@ function init(){
     };
 };
 
-function start(){
+function start() {
 
-    if(clicked === true){
-        if (playerImg1.complete) {
-            c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
-            playerImg1.src = 'Images/Player/Ostrich/player1.png';
-        }
-        if (playerImg2.complete) {
-            c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
-            playerImg2.src = 'Images/Player/Ostrich/player2.png';
-        }
-        if (playerImg3.complete) {
-            c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
-            playerImg3.src = 'Images/Player/Ostrich/player3.png';
-        }
-        if (playerImg4.complete) {
-            c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
-            playerImg4.src = 'Images/Player/Ostrich/player4.png';
-        }
-        if (playerImg5.complete) {
-            c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
-            playerImg5.src = 'Images/Player/Ostrich/player5.png';
-        }
-        if (playerImg6.complete) {
-            c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
-            playerImg6.src = 'Images/Player/Ostrich/player6.png';
-        }
-        if (playerImg7.complete) {
-            c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
-            playerImg7.src = 'Images/Player/Ostrich/player7.png';
-        }
-        if (birdImg1.complete) {
-            c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
-            birdImg1.src = 'Images/Obstacles/bird1.png';
-        }
-        if (birdImg2.complete) {
-            c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
-            birdImg2.src = 'Images/Obstacles/bird2.png';
-        }
-    
-        if (cactusImg1.complete) {
-            c.drawImage(cactusImg1, Math.floor(cactus1.x), Math.floor(cactus1.y), 256, 256);
-            cactusImg1.src = 'Images/Obstacles/cactus1.png';
-        }
-        if (cactusImg2.complete) {
-            c.drawImage(cactusImg2, Math.floor(cactus2.x), Math.floor(cactus2.y), 256, 256);
-            cactusImg2.src = 'Images/Obstacles/cactus2.png';
-        }
-        if (cactusImg3.complete) {
-            c.drawImage(cactusImg3, Math.floor(cactus3.x), Math.floor(cactus3.y), 256, 256);
-            cactusImg3.src = 'Images/Obstacles/cactus3.png';
-        }
-        if (cactusImg4.complete) {
-            c.drawImage(cactusImg4, Math.floor(cactus4.x), Math.floor(cactus4.y), 256, 256);
-            cactusImg4.src = 'Images/Obstacles/cactus4.png';
-        }
-        if (groundImg1.complete) {
-            c.drawImage(groundImg1, Math.floor(back1.x), Math.floor(standard.height + 248), 1920, 184);
-            groundImg1.src = 'Images/Background/ground.png';
-        }
-        if (groundImg2.complete) {
-            c.drawImage(groundImg2, Math.floor(back2.x), Math.floor(standard.height + 248), 1920, 184);
-            groundImg2.src = 'Images/Background/ground.png';
-        }
-        if (gameoverImg.complete) {
-            c.drawImage(gameoverImg, Math.floor(0), Math.floor(0), 1920, 640);
-            gameoverImg.src = 'Images/Menu/gameover.png';
-        }
+    if (clicked === true) {
+        preload();
 
 
         c.fillStyle = 'black';
         c.fillRect(0, 0, canvas.width, canvas.height);
-        if(loadingState === 0){
-            loadingAlpha+=0.005/fpsMultiplier;
-            if(loadingAlpha > 1.5){
+        if (loadingState === 0) {
+            loadingAlpha += 0.005 / fpsMultiplier;
+            if (loadingAlpha > 1.5) {
                 loadingState = 1;
             }
             if (logoImg.complete) {
@@ -219,14 +155,14 @@ function start(){
                 logoImg.src = 'Images/Menu/logo.png';
                 c.globalAlpha = 1;
             }
-        }else if(loadingState === 1){
-            if(loadingAlpha <= 0.01){
+        } else if (loadingState === 1) {
+            if (loadingAlpha <= 0.01) {
                 loadingAlpha = 0;
                 setTimeout(() => {
                     loadingState = 2;
                 }, 500);
-            }else{
-                loadingAlpha-=0.01/fpsMultiplier;
+            } else {
+                loadingAlpha -= 0.01 / fpsMultiplier;
             }
             if (logoImg.complete) {
                 c.globalAlpha = loadingAlpha;
@@ -234,9 +170,9 @@ function start(){
                 logoImg.src = 'Images/Menu/logo.png';
                 c.globalAlpha = 1;
             }
-        }else if(loadingState === 2){
-            loadingAlpha+=0.005/fpsMultiplier;
-            if(loadingAlpha > 1.25){
+        } else {
+            loadingAlpha += 0.002 / fpsMultiplier;
+            if (loadingAlpha > 1.25) {
                 loadingState = 3;
             }
             if (logoImg2.complete) {
@@ -245,65 +181,53 @@ function start(){
                 logoImg2.src = 'Images/Menu/logo2.png';
                 c.globalAlpha = 1;
             }
-        }else{
-            if(loadingAlpha <= 0.01){
-                loadingAlpha = 0;
-            }else{
-                loadingAlpha-=0.01/fpsMultiplier;
-            }
-            if (logoImg2.complete) {
-                c.globalAlpha = loadingAlpha;
-                c.drawImage(logoImg2, Math.floor(420), Math.floor(0), 1080, 1080);
-                logoImg2.src = 'Images/Menu/logo2.png';
-                c.globalAlpha = 1;
-            }
         }
-
     }
 }
 init();
 start();
 
 
-window.addEventListener('click', function(){
-    if(clicked === false){
+window.addEventListener('click', function () {
+    if (clicked === false) {
         loadingMusic.play();
         clicked = true;
         toggleFullscreen();
-        timeout2 = setTimeout(function(){
+        timeout2 = setTimeout(function () {
             loaded = true;
             clearTimeout(timeout2);
             titleScreenMusic.play();
             timeout2 = undefined;
 
-        },16000);
+        }, 16000);
         setTimeout(() => {
             loadingMusic2.play();
         }, 8000);
     }
 })
 canvas.addEventListener('mousemove', function (event) {
-    let tmpXmulti = 1365/screen.width;
-    let tmpYmulti = 768/screen.height;
-    if(document.fullscreenElement){
-      mouse.x = event.offsetX*tmpXmulti;
-      mouse.y = event.offsetY*tmpYmulti;
-    }else{
-      mouse.x = event.offsetX;
-      mouse.y = event.offsetY;      
+    let tmpXmulti = 1365 / screen.width;
+    let tmpYmulti = 768 / screen.height;
+    if (document.fullscreenElement) {
+        mouse.x = event.offsetX * tmpXmulti;
+        mouse.y = event.offsetY * tmpYmulti;
+    } else {
+        mouse.x = event.offsetX;
+        mouse.y = event.offsetY;
     };
 });
 
 
 window.addEventListener('keydown', function (event) {
     console.log(event)
-    if (event.code === "KeyF") {
-        toggleFullscreen();
-    }
-    if(event.code === "KeyP"){
+
+    if (event.code === "KeyP") {
         window.close();
     }
-    if(loaded === true){
+    if (loaded === true) {
+        if (event.code === "KeyF") {
+            toggleFullscreen();
+        }
         if (event.code === "Space" || event.code === "ArrowUp") {
             if (menu.pause === false && player.dead === false) {
                 jump();
@@ -334,7 +258,7 @@ window.addEventListener('keydown', function (event) {
 
 window.addEventListener('keyup', function (event) {
     console.log(event);
-    if(loaded === true){
+    if (loaded === true) {
         if (event.code === "ControlLeft" || event.code === "ArrowDown") {
             if (menu.pause === false && player.dead === false) {
                 crouchEnd();
@@ -345,6 +269,75 @@ window.addEventListener('keyup', function (event) {
         }
     }
 });
+
+function preload() {
+    if (playerImg1.complete) {
+        c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg1.src = 'Images/Player/Ostrich/player1.png';
+    }
+    if (playerImg2.complete) {
+        c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg2.src = 'Images/Player/Ostrich/player2.png';
+    }
+    if (playerImg3.complete) {
+        c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg3.src = 'Images/Player/Ostrich/player3.png';
+    }
+    if (playerImg4.complete) {
+        c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg4.src = 'Images/Player/Ostrich/player4.png';
+    }
+    if (playerImg5.complete) {
+        c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg5.src = 'Images/Player/Ostrich/player5.png';
+    }
+    if (playerImg6.complete) {
+        c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg6.src = 'Images/Player/Ostrich/player6.png';
+    }
+    if (playerImg7.complete) {
+        c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg7.src = 'Images/Player/Ostrich/player7.png';
+    }
+    if (birdImg1.complete) {
+        c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
+        birdImg1.src = 'Images/Obstacles/bird1.png';
+    }
+    if (birdImg2.complete) {
+        c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
+        birdImg2.src = 'Images/Obstacles/bird2.png';
+    }
+
+    if (cactusImg1.complete) {
+        c.drawImage(cactusImg1, Math.floor(cactus1.x), Math.floor(cactus1.y), 256, 256);
+        cactusImg1.src = 'Images/Obstacles/cactus1.png';
+    }
+    if (cactusImg2.complete) {
+        c.drawImage(cactusImg2, Math.floor(cactus2.x), Math.floor(cactus2.y), 256, 256);
+        cactusImg2.src = 'Images/Obstacles/cactus2.png';
+    }
+    if (cactusImg3.complete) {
+        c.drawImage(cactusImg3, Math.floor(cactus3.x), Math.floor(cactus3.y), 256, 256);
+        cactusImg3.src = 'Images/Obstacles/cactus3.png';
+    }
+    if (cactusImg4.complete) {
+        c.drawImage(cactusImg4, Math.floor(cactus4.x), Math.floor(cactus4.y), 256, 256);
+        cactusImg4.src = 'Images/Obstacles/cactus4.png';
+    }
+    if (groundImg1.complete) {
+        c.drawImage(groundImg1, Math.floor(back1.x), Math.floor(standard.height + 248), 1920, 184);
+        groundImg1.src = 'Images/Background/ground.png';
+    }
+    if (groundImg2.complete) {
+        c.drawImage(groundImg2, Math.floor(back2.x), Math.floor(standard.height + 248), 1920, 184);
+        groundImg2.src = 'Images/Background/ground.png';
+    }
+    if (gameoverImg.complete) {
+        c.drawImage(gameoverImg, Math.floor(0), Math.floor(0), 1920, 640);
+        gameoverImg.src = 'Images/Menu/gameover.png';
+    }
+}
+
 function toggleMenu() {
     if (menu.pause === false) {
         menu.pause = true;
@@ -388,7 +381,7 @@ function toggleFullscreen() {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
                 settings.fullscreen = false;
-            } else if (document.webkitExitFullscreen) { 
+            } else if (document.webkitExitFullscreen) {
                 document.webkitExitFullscreen();
                 settings.fullscreen = false;
             } else if (document.msExitFullscreen) {
@@ -474,7 +467,7 @@ function showMenu() {
     if (menu.menuState === 1) {
 
     }
-    if(player.dead === true){
+    if (player.dead === true) {
         if (gameoverImg.complete) {
             c.drawImage(gameoverImg, Math.floor(0), Math.floor(0), 1920, 640);
             gameoverImg.src = 'Images/Menu/gameover.png';
@@ -483,7 +476,7 @@ function showMenu() {
 }
 function update() {
 
-    if(loaded === true){
+    if (loaded === true) {
 
         c.fillStyle = 'white';
         c.fillRect(0, 0, canvas.width, canvas.height);
@@ -502,13 +495,13 @@ function update() {
         showMenu();
         crouchCooldown();
 
-    }else if(clicked === true){
+    } else if (clicked === true) {
 
         start();
 
-    }else{
+    } else {
 
-     
+
         c.fillStyle = 'black';
         c.fillRect(0, 0, canvas.width, canvas.height);
     }
@@ -516,9 +509,9 @@ function update() {
 }
 function crouchCooldown() {
     if (player.crouch === true) {
-        player.crouchCooldownValue+=1/fpsMultiplier;
+        player.crouchCooldownValue += 1 / fpsMultiplier;
     } else if (player.crouchCooldownValue > 0) {
-        player.crouchCooldownValue -= 0.5/fpsMultiplier;
+        player.crouchCooldownValue -= 0.5 / fpsMultiplier;
     }
     if (player.crouchCooldownValue > 50) {
         crouchEnd();
@@ -528,8 +521,8 @@ function crouchCooldown() {
 function deathFall() {
 
     if (player.dead === true && player.y < standard.height) {
-        player.y -= player.deathFallSpeed/fpsMultiplier;
-        player.deathFallSpeed -= player.gravitation/fpsMultiplier;
+        player.y -= player.deathFallSpeed / fpsMultiplier;
+        player.deathFallSpeed -= player.gravitation / fpsMultiplier;
     } else if (player.dead === true) {
         player.y = standard.height;
     }
@@ -578,7 +571,7 @@ function checkCollision() {
 }
 function unPause() {
     titleScreenMusic.pause();
-    titleScreenMusic.currentTime = 0; 
+    titleScreenMusic.currentTime = 0;
     menu.pause = false;
     player.animationState = 1;
     runningMusic.play();
@@ -616,7 +609,7 @@ function revive() {
 
     gameOverMusic.pause();
     gameOverMusic.currentTime = 0;
-    
+
     particleArray = [];
 
     init();
@@ -624,26 +617,26 @@ function revive() {
 
 function moveObstacle() {
     if (menu.pause === false) {
-        bird.x -= player.speed * bird.speed/fpsMultiplier;
-        cactus1.x -= player.speed/fpsMultiplier;
-        cactus2.x -= player.speed/fpsMultiplier;
-        cactus3.x -= player.speed/fpsMultiplier;
-        cactus4.x -= player.speed/fpsMultiplier;
+        bird.x -= player.speed * bird.speed / fpsMultiplier;
+        cactus1.x -= player.speed / fpsMultiplier;
+        cactus2.x -= player.speed / fpsMultiplier;
+        cactus3.x -= player.speed / fpsMultiplier;
+        cactus4.x -= player.speed / fpsMultiplier;
     }
-    if(player.dead === true){
-        bird.x -= (player.speed*bird.speed-player.speed)*1.75/fpsMultiplier;
+    if (player.dead === true) {
+        bird.x -= (player.speed * bird.speed - player.speed) * 1.75 / fpsMultiplier;
     }
 }
 function moveBackground() {
     if (menu.pause === false) {
-        if (back1.x < -1920 + player.speed/fpsMultiplier) {
-            back1.x = 1920 - player.speed/fpsMultiplier;
+        if (back1.x < -1920 + player.speed / fpsMultiplier) {
+            back1.x = 1920 - player.speed / fpsMultiplier;
         }
-        if (back2.x < -1920 + player.speed/fpsMultiplier) {
-            back2.x = 1920 - player.speed/fpsMultiplier;
+        if (back2.x < -1920 + player.speed / fpsMultiplier) {
+            back2.x = 1920 - player.speed / fpsMultiplier;
         }
-        back1.x -= player.speed/fpsMultiplier;
-        back2.x -= player.speed/fpsMultiplier;
+        back1.x -= player.speed / fpsMultiplier;
+        back2.x -= player.speed / fpsMultiplier;
     }
 }
 
@@ -665,7 +658,7 @@ function checkAir() {
 }
 function jump() {
     player.animationState = 2;
-    player.y-=1/fpsMultiplier;
+    player.y -= 1 / fpsMultiplier;
 }
 
 function up() {
@@ -675,8 +668,8 @@ function up() {
     if (player.animationState !== 4) {
         player.animationState = 2;
     }
-    player.y -= player.jumpSpeed/fpsMultiplier;
-    player.jumpSpeed -= player.gravitation/fpsMultiplier;
+    player.y -= player.jumpSpeed / fpsMultiplier;
+    player.jumpSpeed -= player.gravitation / fpsMultiplier;
 }
 
 function crouch() {
@@ -755,25 +748,25 @@ function Particle(x, y, size, color, spread, gravitation, mode, modeSetting) {
         this.draw();
         if (this.mode !== 1 && this.mode !== 3 && menu.pause === false) {
             if (this.mode === 2 && this.modeSetting === 0) {
-                this.x += spread - player.speed / 4/fpsMultiplier;
+                this.x += spread - player.speed / 4 / fpsMultiplier;
             } else if (this.modeSetting === 1 && this.mode === 2) {
-                this.x -= spread + player.speed / 4/fpsMultiplier;
+                this.x -= spread + player.speed / 4 / fpsMultiplier;
             } else {
-                this.x -= player.speed / 4/fpsMultiplier;
+                this.x -= player.speed / 4 / fpsMultiplier;
             }
         } else {
             if (this.mode === 0 || this.mode === 1) {
-                this.x += this.velocity.x/fpsMultiplier;
+                this.x += this.velocity.x / fpsMultiplier;
             } else if (this.modeSetting === 0) {
-                this.x += spread/fpsMultiplier;
+                this.x += spread / fpsMultiplier;
             } else {
-                this.x -= spread/fpsMultiplier;
+                this.x -= spread / fpsMultiplier;
             }
         }
 
 
-        this.y -= this.velocity.y/fpsMultiplier;
-        this.velocity.y -= this.gravitation / 10 * Math.random()/fpsMultiplier;
+        this.y -= this.velocity.y / fpsMultiplier;
+        this.velocity.y -= this.gravitation / 10 * Math.random() / fpsMultiplier;
 
         for (let i = 0; i < particleArray.length; i++) {
             if (this.x === particleArray[i].x || this.y === particleArray[i].y) {
@@ -813,18 +806,20 @@ setInterval(function () {
 
 setInterval(function () {
     if (player.dead === true) {
-        createParticles(player.x + 200, player.y + 8 * 20, 2, 1, 3, "red", 1, 0, 0);
+        let randoms =  Math.floor(Math.random()*100)
+        console.log(randoms);
+        createParticles(player.x + 200, player.y + 8 * 20, 2, 1, 3, "rgb(" + (255 - randoms) + ", " + 0 + ", " + 0 + ")", 1, 0, 0);
     }
-}, 100)
+}, 100);
 
 setInterval(function () {
     if (menu.pause === false) {
-        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "rgb("+(255-((player.crouchCooldownValue/50)*255))+", "+(255-((player.crouchCooldownValue/50)*255))+", "+(255-((player.crouchCooldownValue/50)*255))+")", 1, 0, 0)
+        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "rgb(" + (255 - ((player.crouchCooldownValue / 50) * 255)) + ", " + (255 - ((player.crouchCooldownValue / 50) * 255)) + ", " + (255 - ((player.crouchCooldownValue / 50) * 255)) + ")", 1, 0, 0)
     }
-}, 100 - player.crouchCooldownValue)
+}, 100 - player.crouchCooldownValue);
 
 
 setInterval(teleport, 1000)
-setInterval(update, 1000/fps  );
+setInterval(update, 1000 / fps);
 
 
