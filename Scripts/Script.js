@@ -36,6 +36,12 @@ var ButtonUp = new Image();
 var ButtonRight = new Image();
 var ButtonLeft = new Image();
 var ButtonDown = new Image();
+var ButtonLeftSided = new Image();
+var ButtonRightSided = new Image();
+var ButtonDouble = new Image();
+var ButtonDownSided = new Image();
+var ButtonUpperSided = new Image();
+var ButtonDoubleVertical = new Image();
 
 var runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
 runningMusic.loop = true;
@@ -522,7 +528,9 @@ function showBackground() {
 }
 function showMenu() {
     if (menu.menuState === 1) {
-        //if(showButton(2,2,1,1) === true){}
+        if (showButton(2, 2, 5, 5) === true) {
+
+        }
     }
     if (player.dead === true) {
         if (gameoverImg.complete) {
@@ -848,146 +856,178 @@ function button(x, y, width, height) {
         return 0;
     }
 }
-function showButton(x,y,w,h){
-    if (button(x*8, y*8, w*40, h*40) === 0) {
+function showButton(x, y, w, h) {
+    if (button(x * 8, y * 8, w * 40, h * 40) === 0) {
         c.fillStyle = "red"
-        showNiceButton(x*8,y*8,w*40,h*40)
+        showNiceButton(x * 8, y * 8, w * 40, h * 40)
         return false;
-    } else if (button(x*8, y*8, w*40, h*40) === 1) {
+    } else if (button(x * 8, y * 8, w * 40, h * 40) === 1) {
         c.fillStyle = "black"
-        c.fillRect(x*8, y*8, w*40, h*40)
+        c.fillRect(x * 8, y * 8, w * 40, h * 40)
         return false;
     } else {
         c.fillStyle = "black"
-        c.fillRect(x*8, y*8, w*40, h*40)
+        c.fillRect(x * 8, y * 8, w * 40, h * 40)
         return true;
     }
 }
 
-function showNiceButton(x,y,w,h){
-    if(w === 40){
+function showNiceButton(x, y, w, h) {
+    if (w === 40 && h === 40) {
         if (ButtonSmall.complete) {
             c.drawImage(ButtonSmall, Math.floor(x), Math.floor(y), w, h);
             ButtonSmall.src = 'Images/Menu/Button/Small.png';
         }
     }
-    if(w === 80 && h === 80){
+    if (w === 80 && h === 80) {
         if (ButtonUpLeft.complete) {
             c.drawImage(ButtonUpLeft, Math.floor(x), Math.floor(y), 40, 40);
             ButtonUpLeft.src = 'Images/Menu/Button/UpperLeft.png';
-        }  
+        }
         if (ButtonUpRight.complete) {
-            c.drawImage(ButtonUpRight, Math.floor(x+(w/2)), Math.floor(y), 40, 40);
+            c.drawImage(ButtonUpRight, Math.floor(x + (w / 2)), Math.floor(y), 40, 40);
             ButtonUpRight.src = 'Images/Menu/Button/UpperRight.png';
-        }  
+        }
         if (ButtonDownLeft.complete) {
-            c.drawImage(ButtonDownLeft, Math.floor(x), Math.floor(y+(h/2)), 40, 40);
+            c.drawImage(ButtonDownLeft, Math.floor(x), Math.floor(y + (h / 2)), 40, 40);
             ButtonDownLeft.src = 'Images/Menu/Button/DownLeft.png';
-        }  
+        }
         if (ButtonDownRight.complete) {
-            c.drawImage(ButtonDownRight, Math.floor(x+(w/2)), Math.floor(y+(h/2)), 40, 40);
+            c.drawImage(ButtonDownRight, Math.floor(x + (w / 2)), Math.floor(y + (h / 2)), 40, 40);
             ButtonDownRight.src = 'Images/Menu/Button/DownRight.png';
-        }  
+        }
     }
-    if(w > 80 && h === 80){
+    if (w > 80 && h === 80) {
         if (ButtonUpLeft.complete) {
             c.drawImage(ButtonUpLeft, Math.floor(x), Math.floor(y), 40, 40);
             ButtonUpLeft.src = 'Images/Menu/Button/UpperLeft.png';
-        }  
+        }
         if (ButtonUpRight.complete) {
-            c.drawImage(ButtonUpRight, Math.floor(x+w-40), Math.floor(y), 40, 40);
+            c.drawImage(ButtonUpRight, Math.floor(x + w - 40), Math.floor(y), 40, 40);
             ButtonUpRight.src = 'Images/Menu/Button/UpperRight.png';
-        }  
+        }
         if (ButtonDownLeft.complete) {
-            c.drawImage(ButtonDownLeft, Math.floor(x), Math.floor(y+(h/2)), 40, 40);
+            c.drawImage(ButtonDownLeft, Math.floor(x), Math.floor(y + (h / 2)), 40, 40);
             ButtonDownLeft.src = 'Images/Menu/Button/DownLeft.png';
-        }  
+        }
         if (ButtonDownRight.complete) {
-            c.drawImage(ButtonDownRight, Math.floor(x+w-40), Math.floor(y+(h/2)), 40, 40);
+            c.drawImage(ButtonDownRight, Math.floor(x + w - 40), Math.floor(y + (h / 2)), 40, 40);
             ButtonDownRight.src = 'Images/Menu/Button/DownRight.png';
-        }  
-        for (let i = 0; i < (w-80)/40; i++){
+        }
+        for (let i = 0; i < (w - 80) / 40; i++) {
             if (ButtonUp.complete) {
-                c.drawImage(ButtonUp, Math.floor(x+40+i*40), Math.floor(y), 40, 40);
+                c.drawImage(ButtonUp, Math.floor(x + 40 + i * 40), Math.floor(y), 40, 40);
                 ButtonUp.src = 'Images/Menu/Button/Up.png';
-            }  
+            }
             if (ButtonDown.complete) {
-                c.drawImage(ButtonDown, Math.floor(x+40+i*40), Math.floor(y+40), 40, 40);
+                c.drawImage(ButtonDown, Math.floor(x + 40 + i * 40), Math.floor(y + 40), 40, 40);
                 ButtonDown.src = 'Images/Menu/Button/Down.png';
-            }  
+            }
         }
     }
-    if(w === 80 && h > 80){
+    if (w === 80 && h > 80) {
         if (ButtonUpLeft.complete) {
             c.drawImage(ButtonUpLeft, Math.floor(x), Math.floor(y), 40, 40);
             ButtonUpLeft.src = 'Images/Menu/Button/UpperLeft.png';
-        }  
+        }
         if (ButtonUpRight.complete) {
-            c.drawImage(ButtonUpRight, Math.floor(x+w-40), Math.floor(y), 40, 40);
+            c.drawImage(ButtonUpRight, Math.floor(x + w - 40), Math.floor(y), 40, 40);
             ButtonUpRight.src = 'Images/Menu/Button/UpperRight.png';
-        }  
+        }
         if (ButtonDownLeft.complete) {
-            c.drawImage(ButtonDownLeft, Math.floor(x), Math.floor(y+(h-40)), 40, 40);
+            c.drawImage(ButtonDownLeft, Math.floor(x), Math.floor(y + (h - 40)), 40, 40);
             ButtonDownLeft.src = 'Images/Menu/Button/DownLeft.png';
-        }  
+        }
         if (ButtonDownRight.complete) {
-            c.drawImage(ButtonDownRight, Math.floor(x+w-40), Math.floor(y+(h-40)), 40, 40);
+            c.drawImage(ButtonDownRight, Math.floor(x + w - 40), Math.floor(y + (h - 40)), 40, 40);
             ButtonDownRight.src = 'Images/Menu/Button/DownRight.png';
-        }  
-        for (let i = 0; i < (h-80)/40; i++){
+        }
+        for (let i = 0; i < (h - 80) / 40; i++) {
             if (ButtonLeft.complete) {
-                c.drawImage(ButtonLeft, Math.floor(x), Math.floor(y+40+i*40), 40, 40);
+                c.drawImage(ButtonLeft, Math.floor(x), Math.floor(y + 40 + i * 40), 40, 40);
                 ButtonLeft.src = 'Images/Menu/Button/Left.png';
-            }  
+            }
             if (ButtonRight.complete) {
-                c.drawImage(ButtonRight, Math.floor(x+40), Math.floor(y+40+i*40), 40, 40);
+                c.drawImage(ButtonRight, Math.floor(x + 40), Math.floor(y + 40 + i * 40), 40, 40);
                 ButtonRight.src = 'Images/Menu/Button/Right.png';
-            }  
+            }
         }
     }
-    if(w > 80 && h > 80){
+    if (w > 80 && h > 80) {
         if (ButtonUpLeft.complete) {
             c.drawImage(ButtonUpLeft, Math.floor(x), Math.floor(y), 40, 40);
             ButtonUpLeft.src = 'Images/Menu/Button/UpperLeft.png';
-        }  
-        if (ButtonUpRight.complete) {
-            c.drawImage(ButtonUpRight, Math.floor(x+w-40), Math.floor(y), 40, 40);
-            ButtonUpRight.src = 'Images/Menu/Button/UpperRight.png';
-        }  
-        if (ButtonDownLeft.complete) {
-            c.drawImage(ButtonDownLeft, Math.floor(x), Math.floor(y+(h-40)), 40, 40);
-            ButtonDownLeft.src = 'Images/Menu/Button/DownLeft.png';
-        }  
-        if (ButtonDownRight.complete) {
-            c.drawImage(ButtonDownRight, Math.floor(x+w-40), Math.floor(y+(h-40)), 40, 40);
-            ButtonDownRight.src = 'Images/Menu/Button/DownRight.png';
-        }  
-        for (let i = 0; i < (h-80)/40; i++){
-            if (ButtonLeft.complete) {
-                c.drawImage(ButtonLeft, Math.floor(x), Math.floor(y+40+i*40), 40, 40);
-                ButtonLeft.src = 'Images/Menu/Button/Left.png';
-            }  
-            if (ButtonRight.complete) {
-                c.drawImage(ButtonRight, Math.floor(x+w-40), Math.floor(y+40+i*40), 40, 40);
-                ButtonRight.src = 'Images/Menu/Button/Right.png';
-            }  
         }
-        for (let i = 0; i < (w-80)/40; i++){
+        if (ButtonUpRight.complete) {
+            c.drawImage(ButtonUpRight, Math.floor(x + w - 40), Math.floor(y), 40, 40);
+            ButtonUpRight.src = 'Images/Menu/Button/UpperRight.png';
+        }
+        if (ButtonDownLeft.complete) {
+            c.drawImage(ButtonDownLeft, Math.floor(x), Math.floor(y + (h - 40)), 40, 40);
+            ButtonDownLeft.src = 'Images/Menu/Button/DownLeft.png';
+        }
+        if (ButtonDownRight.complete) {
+            c.drawImage(ButtonDownRight, Math.floor(x + w - 40), Math.floor(y + (h - 40)), 40, 40);
+            ButtonDownRight.src = 'Images/Menu/Button/DownRight.png';
+        }
+        for (let i = 0; i < (h - 80) / 40; i++) {
+            if (ButtonLeft.complete) {
+                c.drawImage(ButtonLeft, Math.floor(x), Math.floor(y + 40 + i * 40), 40, 40);
+                ButtonLeft.src = 'Images/Menu/Button/Left.png';
+            }
+            if (ButtonRight.complete) {
+                c.drawImage(ButtonRight, Math.floor(x + w - 40), Math.floor(y + 40 + i * 40), 40, 40);
+                ButtonRight.src = 'Images/Menu/Button/Right.png';
+            }
+        }
+        for (let i = 0; i < (w - 80) / 40; i++) {
             if (ButtonUp.complete) {
-                c.drawImage(ButtonUp, Math.floor(x+40+i*40), Math.floor(y), 40, 40);
+                c.drawImage(ButtonUp, Math.floor(x + 40 + i * 40), Math.floor(y), 40, 40);
                 ButtonUp.src = 'Images/Menu/Button/Up.png';
-            }  
+            }
             if (ButtonDown.complete) {
-                c.drawImage(ButtonDown, Math.floor(x+40+i*40), Math.floor(y+h-40), 40, 40);
+                c.drawImage(ButtonDown, Math.floor(x + 40 + i * 40), Math.floor(y + h - 40), 40, 40);
                 ButtonDown.src = 'Images/Menu/Button/Down.png';
-            }  
+            }
         }
-        for (let i = 0; i < (h-80)/40; i++){
-            for (let g = 0; g < (w-80)/40; g++){
+        for (let i = 0; i < (h - 80) / 40; i++) {
+            for (let g = 0; g < (w - 80) / 40; g++) {
                 if (ButtonMiddle.complete) {
-                    c.drawImage(ButtonMiddle, Math.floor(x+40+g*40), Math.floor(y+40+i*40), 40, 40);
+                    c.drawImage(ButtonMiddle, Math.floor(x + 40 + g * 40), Math.floor(y + 40 + i * 40), 40, 40);
                     ButtonMiddle.src = 'Images/Menu/Button/Middle.png';
-                }  
+                }
+            }
+        }
+    }
+    if (w > 40 && h === 40) {
+        if (ButtonLeftSided.complete) {
+            c.drawImage(ButtonLeftSided, Math.floor(x), Math.floor(y), 40, 40);
+            ButtonLeftSided.src = 'Images/Menu/Button/LeftSided.png';
+        }
+        if (ButtonRightSided.complete) {
+            c.drawImage(ButtonRightSided, Math.floor(x + w - 40), Math.floor(y), 40, 40);
+            ButtonRightSided.src = 'Images/Menu/Button/RightSided.png';
+        }
+        for (let i = 0; i < (w-80) / 40; i++) {
+            if (ButtonDouble.complete) {
+                c.drawImage(ButtonDouble, Math.floor(x + 40+i*40), Math.floor(y), 40, 40);
+                ButtonDouble.src = 'Images/Menu/Button/Double.png';
+            }
+        }
+    }
+    if (w === 40 && h > 40) {
+        if (ButtonUpperSided.complete) {
+            c.drawImage(ButtonUpperSided, Math.floor(x), Math.floor(y), 40, 40);
+            ButtonUpperSided.src = 'Images/Menu/Button/UpperSided.png';
+        }
+        if (ButtonDownSided.complete) {
+            c.drawImage(ButtonDownSided, Math.floor(x), Math.floor(y + h - 40), 40, 40);
+            ButtonDownSided.src = 'Images/Menu/Button/DownSided.png';
+        }
+        for (let i = 0; i < (h-80) / 40; i++) {
+            if (ButtonDoubleVertical.complete) {
+                c.drawImage(ButtonDoubleVertical, Math.floor(x ), Math.floor(y+ 40+i*40), 40, 40);
+                ButtonDoubleVertical.src = 'Images/Menu/Button/DoubleVertical.png';
             }
         }
     }
