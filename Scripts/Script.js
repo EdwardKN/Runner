@@ -558,6 +558,8 @@ function update() {
         crouchCooldown();
         showMenu();
 
+
+
     } else if (clicked === true) {
 
         start();
@@ -592,6 +594,10 @@ function deathFall() {
 }
 function showDebugMenu() {
     if (settings.debug === true) {
+        c.font = "30px Arial";
+        c.fillStyle = "black";
+        c.fillText("FPS:"+fps,100,100);
+
         c.fillStyle = "rgba(0, 0, 0, 0.5)";
         if (player.crouch === false) {
             c.fillRect(player.x + 8 * 5, player.y + 8 * 9, 8 * 19, 8 * 23);
@@ -1072,7 +1078,6 @@ setInterval(function () {
 
 
 function updateFPS(thisFps) {
-    console.log(thisFps)
     clearInterval(interval1);
     interval1 = undefined;
     interval1 = setInterval(update, 1000 / thisFps);
