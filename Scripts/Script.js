@@ -528,9 +528,7 @@ function showBackground() {
 }
 function showMenu() {
     if (menu.menuState === 1) {
-        if (showButton(2, 2, 5, 5) === true) {
-
-        }
+        //if (showButton(2, 2, 5, 5) === true) {}
     }
     if (player.dead === true) {
         if (gameoverImg.complete) {
