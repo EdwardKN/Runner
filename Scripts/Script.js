@@ -24,7 +24,6 @@ var groundImg2 = new Image();
 
 var gameoverImg = new Image();
 var logoImg = new Image();
-var logoImg2 = new Image();
 
 var ButtonDownLeft = new Image();
 var ButtonUpLeft = new Image();
@@ -52,7 +51,6 @@ var titleScreenMusic = new Audio('Sounds/Music/TitleScreenBysawsquarenoise.mp3')
 titleScreenMusic.loop = true;
 
 var loadingMusic = new Audio('Sounds/Music/Intro.mp3')
-var loadingMusic2 = new Audio('Sounds/Music/Intro2.mp3')
 
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
@@ -193,17 +191,6 @@ function start() {
                 logoImg.src = 'Images/Menu/logo.png';
                 c.globalAlpha = 1;
             }
-        } else {
-            loadingAlpha += 0.002 / fpsMultiplier;
-            if (loadingAlpha > 1.25) {
-                loadingState = 3;
-            }
-            if (logoImg2.complete) {
-                c.globalAlpha = loadingAlpha;
-                c.drawImage(logoImg2, Math.floor(420), Math.floor(0), 1080, 1080);
-                logoImg2.src = 'Images/Menu/logo2.png';
-                c.globalAlpha = 1;
-            }
         }
     }
 }
@@ -223,9 +210,6 @@ window.addEventListener('click', function () {
             menu.menuState = 1;
             timeout2 = undefined;
 
-        }, 17000);
-        setTimeout(() => {
-            loadingMusic2.play();
         }, 9000);
     }
     if (mouse.click === false) {
@@ -238,7 +222,7 @@ window.addEventListener('click', function () {
 canvas.addEventListener('mousemove', function (event) {
     let tmpXmulti = 1920 / screen.width;
     let tmpYmulti = 1080 / screen.height;
-    if (document.fullscreenElement) {
+    if (settings.fullscreen === true) {
         mouse.x = event.offsetX * tmpXmulti;
         mouse.y = event.offsetY * tmpYmulti;
     } else {
@@ -528,7 +512,9 @@ function showBackground() {
 }
 function showMenu() {
     if (menu.menuState === 1) {
-        //if (showButton(2, 2, 5, 5) === true) {}
+        if (showButton(22, 10, 15, 1) === true) {
+            alert("hej")
+        }
     }
     if (player.dead === true) {
         if (gameoverImg.complete) {
@@ -861,17 +847,17 @@ function button(x, y, width, height) {
     }
 }
 function showButton(x, y, w, h) {
-    if (button(x * 8, y * 8, w * 40, h * 40) === 0) {
+    if (button(x * 40, y * 40, w * 40, h * 40) === 0) {
         c.fillStyle = "red"
-        showNiceButton(x * 8, y * 8, w * 40, h * 40)
+        showNiceButton(x * 40, y * 40, w * 40, h * 40)
         return false;
-    } else if (button(x * 8, y * 8, w * 40, h * 40) === 1) {
+    } else if (button(x * 40, y * 40, w * 40, h * 40) === 1) {
         c.fillStyle = "black"
-        c.fillRect(x * 8, y * 8, w * 40, h * 40)
+        c.fillRect(x * 40, y * 40, w * 40, h * 40)
         return false;
     } else {
         c.fillStyle = "black"
-        c.fillRect(x * 8, y * 8, w * 40, h * 40)
+        c.fillRect(x * 40, y * 40, w * 40, h * 40)
         return true;
     }
 }
