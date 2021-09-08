@@ -21,9 +21,11 @@ var cactusImg4 = new Image();
 
 var groundImg1 = new Image();
 var groundImg2 = new Image();
+var hillImg1 = new Image();
+var hillImg2 = new Image();
 
 var gameoverImg = new Image();
-var logoImg = new Image();
+var introImg = new Image();
 
 var ButtonDownLeft = new Image();
 var ButtonUpLeft = new Image();
@@ -50,7 +52,7 @@ var gameOverMusic = new Audio('Sounds/Music/GameOverByPatrickdeArteaga.ogg')
 var titleScreenMusic = new Audio('Sounds/Music/TitleScreenBysawsquarenoise.mp3')
 titleScreenMusic.loop = true;
 
-var loadingMusic = new Audio('Sounds/Music/Intro.mp3')
+var loadingMusic = new Audio('Sounds/Music/IntroByDavidRenda.mp3')
 
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
@@ -58,6 +60,10 @@ c.imageSmoothingEnabled = false;
 var loaded = false;
 var loadingAlpha = 0;
 var loadingState = 0;
+var activated1 = false;
+var activated2 = false;
+var activated3 = false;
+
 
 var clicked = false;
 
@@ -110,10 +116,12 @@ setTimeout(() => {
 
 function init() {
     back1 = {
-        x: 0,
+        groundX: 0,
+        hillX:0
     }
     back2 = {
-        x: 1920
+        groundX: 1920,
+        hillX:1920
     }
     cactus1 = {
         x: -2000,
@@ -165,32 +173,40 @@ function start() {
 
         c.fillStyle = 'black';
         c.fillRect(0, 0, canvas.width, canvas.height);
-        if (loadingState === 0) {
-            loadingAlpha += 0.005 / fpsMultiplier;
-            if (loadingAlpha > 1.5) {
+        
+        introImg.src = 'Images/Menu/intro.png';
+        c.drawImage(introImg,0,0,1920,1080)
+
+        c.fillStyle = "white"
+        c.fillRect(1424,800-40,4*8,4*8)
+
+        if(loadingState === 0 && activated1 === false){
+            activated3 = false;
+            activated1 = true;
+            setTimeout(() => {
                 loadingState = 1;
-            }
-            if (logoImg.complete) {
-                c.globalAlpha = loadingAlpha;
-                c.drawImage(logoImg, Math.floor(420), Math.floor(0), 1080, 1080);
-                logoImg.src = 'Images/Menu/logo.png';
-                c.globalAlpha = 1;
-            }
-        } else if (loadingState === 1) {
-            if (loadingAlpha <= 0.01) {
-                loadingAlpha = 0;
-                setTimeout(() => {
-                    loadingState = 2;
-                }, 1500);
-            } else {
-                loadingAlpha -= 0.01 / fpsMultiplier;
-            }
-            if (logoImg.complete) {
-                c.globalAlpha = loadingAlpha;
-                c.drawImage(logoImg, Math.floor(420), Math.floor(0), 1080, 1080);
-                logoImg.src = 'Images/Menu/logo.png';
-                c.globalAlpha = 1;
-            }
+            }, 500);
+        }
+        if(loadingState === 1 && activated2 === false){
+            activated2 = true;
+            activated1 = false;
+            setTimeout(() => {
+                loadingState = 2;
+            }, 500);
+        }
+        if(loadingState === 2 && activated3 === false){
+            activated3 = true;
+            activated2 = false;
+            setTimeout(() => {
+                loadingState = 0;
+            }, 500);
+        }
+        if(loadingState === 1){
+            c.fillRect(1424+64,800-40,4*8,4*8)
+        }
+        if(loadingState === 2){
+            c.fillRect(1424+64,800-40,4*8,4*8)
+            c.fillRect(1424+128,800-40,4*8,4*8)
         }
     }
 }
@@ -210,7 +226,7 @@ window.addEventListener('click', function () {
             menu.menuState = 1;
             timeout2 = undefined;
 
-        }, 9000);
+        }, 12500);
     }
     if (mouse.click === false) {
         mouse.click = true;
@@ -364,12 +380,20 @@ function preload() {
         cactusImg4.src = 'Images/Obstacles/cactus4.png';
     }
     if (groundImg1.complete) {
-        c.drawImage(groundImg1, Math.floor(back1.x), Math.floor(standard.height + 248), 1920, 184);
+        c.drawImage(groundImg1, Math.floor(back1.groundX), Math.floor(standard.height + 248), 1920, 184);
         groundImg1.src = 'Images/Background/ground.png';
     }
     if (groundImg2.complete) {
-        c.drawImage(groundImg2, Math.floor(back2.x), Math.floor(standard.height + 248), 1920, 184);
+        c.drawImage(groundImg2, Math.floor(back2.groundX), Math.floor(standard.height + 248), 1920, 184);
         groundImg2.src = 'Images/Background/ground.png';
+    }
+    if (hillImg1.complete) {
+        c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        hillImg1.src = 'Images/Background/hill1.png';
+    }
+    if (hillImg2.complete) {
+        c.drawImage(hillImg2, Math.floor(back2.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        hillImg2.src = 'Images/Background/hill1.png';
     }
     if (gameoverImg.complete) {
         c.drawImage(gameoverImg, Math.floor(0), Math.floor(0), 1920, 640);
@@ -502,19 +526,25 @@ function showObstacle() {
 }
 function showBackground() {
     if (groundImg1.complete) {
-        c.drawImage(groundImg1, Math.floor(back1.x), Math.floor(standard.height + 248), 1920, 184);
+        c.drawImage(groundImg1, Math.floor(back1.groundX), Math.floor(standard.height + 248), 1920, 184);
         groundImg1.src = 'Images/Background/ground.png';
     }
     if (groundImg2.complete) {
-        c.drawImage(groundImg2, Math.floor(back2.x), Math.floor(standard.height + 248), 1920, 184);
+        c.drawImage(groundImg2, Math.floor(back2.groundX), Math.floor(standard.height + 248), 1920, 184);
         groundImg2.src = 'Images/Background/ground.png';
+    }
+    if (hillImg1.complete) {
+        c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        hillImg1.src = 'Images/Background/hill1.png';
+    }
+    if (hillImg2.complete) {
+        c.drawImage(hillImg2, Math.floor(back2.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        hillImg2.src = 'Images/Background/hill1.png';
     }
 }
 function showMenu() {
     if (menu.menuState === 1) {
-        if (showButton(22, 10, 15, 1) === true) {
-            alert("hej")
-        }
+
     }
     if (player.dead === true) {
         if (gameoverImg.complete) {
@@ -640,8 +670,10 @@ function die() {
     player.animationState = 4;
     player.dead = true;
     menu.pause = true;
-    back1.x = (Math.floor(back1.x / 8)) * 8
-    back2.x = (Math.floor(back2.x / 8)) * 8
+    back1.groundX = (Math.floor(back1.groundX / 8)) * 8
+    back2.groundX = (Math.floor(back2.groundX / 8)) * 8
+    back1.hillX = (Math.floor(back1.hillX / 8)) * 8
+    back2.hillX = (Math.floor(back2.hillX / 8)) * 8
     cactus1.x = (Math.floor(cactus1.x / 8)) * 8
     cactus2.x = (Math.floor(cactus2.x / 8)) * 8
     cactus3.x = (Math.floor(cactus3.x / 8)) * 8
@@ -685,14 +717,28 @@ function moveObstacle() {
 }
 function moveBackground() {
     if (menu.pause === false) {
-        if (back1.x < -1920 + player.speed / fpsMultiplier) {
-            back1.x = 1920 - player.speed / fpsMultiplier;
+        if (back1.groundX < -1920 + player.speed / fpsMultiplier) {
+            back1.groundX = 1920;
+            back2.groundX = 0;
         }
-        if (back2.x < -1920 + player.speed / fpsMultiplier) {
-            back2.x = 1920 - player.speed / fpsMultiplier;
+        if (back2.groundX < -1920 + player.speed / fpsMultiplier) {
+            back2.groundX = 1920;
+            back1.groundX = 0;
         }
-        back1.x -= player.speed / fpsMultiplier;
-        back2.x -= player.speed / fpsMultiplier;
+        back1.groundX -= player.speed / fpsMultiplier;
+        back2.groundX -= player.speed / fpsMultiplier;
+
+        if (back1.hillX < -1920 + player.speed / fpsMultiplier) {
+            back1.hillX = 1920;
+            back2.hillX = 0;
+
+        }
+        if (back2.hillX < -1920 + player.speed / fpsMultiplier) {
+            back1.hillX = 0;
+            back2.hillX = 1920;
+        }
+        back1.hillX -= (player.speed / fpsMultiplier) * 0.75;
+        back2.hillX -= (player.speed / fpsMultiplier) *0.75;
     }
 }
 
