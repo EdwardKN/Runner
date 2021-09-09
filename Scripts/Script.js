@@ -29,6 +29,8 @@ var cloud1 = new Image();
 var gameoverImg = new Image();
 var introImg = new Image();
 
+var ostrichIcon = new Image();
+
 var ButtonDownLeft = new Image();
 var ButtonUpLeft = new Image();
 var ButtonDownRight = new Image();
@@ -171,7 +173,7 @@ function init() {
         crouchValue: 8 * 8,
         deathFallSpeed: 0,
         crouchCooldownValue: 0,
-        skin:"Ostrich",
+        skin:"",
         distance:0
     };
     png_font.setup(
@@ -336,32 +338,34 @@ window.addEventListener('keyup', function (event) {
 function preload() {
     if (playerImg1.complete) {
         c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg1.src = `Images/Player/${player.skin}/player1.png`;
+        playerImg1.src = `Images/Player/Ostrich/player1.png`;
     }
     if (playerImg2.complete) {
         c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg2.src = `Images/Player/${player.skin}/player2.png`;
+        playerImg2.src = `Images/Player/Ostrich/player2.png`;
     }
     if (playerImg3.complete) {
         c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg3.src = `Images/Player/${player.skin}/player3.png`;
+        playerImg3.src = `Images/Player/Ostrich/player3.png`;
     }
     if (playerImg4.complete) {
         c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg4.src = `Images/Player/${player.skin}/player4.png`;
+        playerImg4.src = `Images/Player/Ostrich/player4.png`;
     }
     if (playerImg5.complete) {
         c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg5.src = `Images/Player/${player.skin}/player5.png`;
+        playerImg5.src = `Images/Player/Ostrich/player5.png`;
     }
     if (playerImg6.complete) {
         c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg6.src = `Images/Player/${player.skin}/player6.png`;
+        playerImg6.src = `Images/Player/Ostrich/player6.png`;
     }
     if (playerImg7.complete) {
         c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg7.src = `Images/Player/${player.skin}/player7.png`;
+        playerImg7.src = `Images/Player/Ostrich/player7.png`;
     }
+    
+
     if (birdImg1.complete) {
         c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
         birdImg1.src = 'Images/Obstacles/bird1.png';
@@ -389,39 +393,43 @@ function preload() {
     }
     if (groundImg1.complete) {
         c.drawImage(groundImg1, Math.floor(back1.groundX), Math.floor(standard.height + 248), 1920, 184);
-        groundImg1.src = 'Images/Background/ground.png';
+        groundImg1.src = 'Images/Background/Desert/ground.png';
     }
     if (groundImg2.complete) {
         c.drawImage(groundImg2, Math.floor(back2.groundX), Math.floor(standard.height + 248), 1920, 184);
-        groundImg2.src = 'Images/Background/ground.png';
+        groundImg2.src = 'Images/Background/Desert/ground.png';
     }
     if (hillImg1.complete) {
         c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
-        hillImg1.src = 'Images/Background/hill1.png';
+        hillImg1.src = 'Images/Background/Desert/hill1.png';
     }
     if (hillImg2.complete) {
         c.drawImage(hillImg2, Math.floor(back2.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
-        hillImg2.src = 'Images/Background/hill1.png';
+        hillImg2.src = 'Images/Background/Desert/hill1.png';
     }
     if (hillImg1.complete) {
         c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
-        hillImg1.src = 'Images/Background/hill1.png';
+        hillImg1.src = 'Images/Background/Desert/hill1.png';
     }
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back2.cloudX), Math.floor(back2.cloudY), 800, 400);
-        cloud1.src = 'Images/Background/cloud1.png';
+        cloud1.src = 'Images/Background/Desert/cloud1.png';
     }
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back1.cloudX), Math.floor(back1.cloudY), 800, 400);
-        cloud1.src = 'Images/Background/cloud1.png';
+        cloud1.src = 'Images/Background/Desert/cloud1.png';
     }
     if (skyImg.complete) {
         c.drawImage(skyImg, Math.floor(0), Math.floor(0), 1920, 1080);
-        skyImg.src = 'Images/Background/sky.png';
+        skyImg.src = 'Images/Background/Desert/sky.png';
     }
     if (gameoverImg.complete) {
         c.drawImage(gameoverImg, Math.floor(0), Math.floor(0), 1920, 640);
         gameoverImg.src = 'Images/Menu/gameover.png';
+    }
+    if (ostrichIcon.complete) {
+        c.drawImage(ostrichIcon, Math.floor(0), Math.floor(0), 128, 128);
+        ostrichIcon.src = 'Images/Menu/SkinIcon/ostrich.png';
     }
 }
 
@@ -490,34 +498,35 @@ function toggleFullscreen() {
 
 
 function showPlayer() {
-
-    if (playerImg1.complete && player.animationState === 1 && player.animation === 1) {
-        c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg1.src = `Images/Player/${player.skin}/player1.png`;
-    }
-    if (playerImg2.complete && player.animationState === 1 && player.animation === 2) {
-        c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg2.src = `Images/Player/${player.skin}/player2.png`;
-    }
-    if (playerImg3.complete && player.animationState === 2) {
-        c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg3.src = `Images/Player/${player.skin}/player3.png`;
-    }
-    if (playerImg4.complete && player.animationState === 3 && player.animation === 1) {
-        c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg4.src = `Images/Player/${player.skin}/player4.png`;
-    }
-    if (playerImg5.complete && player.animationState === 3 && player.animation === 2) {
-        c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg5.src = `Images/Player/${player.skin}/player5.png`;
-    }
-    if (playerImg6.complete && player.animationState === 4) {
-        c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg6.src = `Images/Player/${player.skin}/player6.png`;
-    }
-    if (playerImg7.complete && player.animationState === 5) {
-        c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg7.src = `Images/Player/${player.skin}/player7.png`;
+    if(player.skin !== ""){
+        if (playerImg1.complete && player.animationState === 1 && player.animation === 1) {
+            c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg1.src = `Images/Player/${player.skin}/player1.png`;
+        }
+        if (playerImg2.complete && player.animationState === 1 && player.animation === 2) {
+            c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg2.src = `Images/Player/${player.skin}/player2.png`;
+        }
+        if (playerImg3.complete && player.animationState === 2) {
+            c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg3.src = `Images/Player/${player.skin}/player3.png`;
+        }
+        if (playerImg4.complete && player.animationState === 3 && player.animation === 1) {
+            c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg4.src = `Images/Player/${player.skin}/player4.png`;
+        }
+        if (playerImg5.complete && player.animationState === 3 && player.animation === 2) {
+            c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg5.src = `Images/Player/${player.skin}/player5.png`;
+        }
+        if (playerImg6.complete && player.animationState === 4) {
+            c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg6.src = `Images/Player/${player.skin}/player6.png`;
+        }
+        if (playerImg7.complete && player.animationState === 5) {
+            c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg7.src = `Images/Player/${player.skin}/player7.png`;
+        }
     }
 }
 function showObstacle() {
@@ -549,33 +558,41 @@ function showObstacle() {
     }
 }
 function showBackground() {
+
+    if(menu.mapSelected !== ""){
     if (skyImg.complete) {
         c.drawImage(skyImg, Math.floor(0), Math.floor(0), 1920, 1080);
-        skyImg.src = 'Images/Background/sky.png';
+        skyImg.src = `Images/Background/${menu.mapSelected}/sky.png`;
     }
     if (groundImg1.complete) {
         c.drawImage(groundImg1, Math.floor(back1.groundX), Math.floor(standard.height + 248), 1920, 184);
-        groundImg1.src = 'Images/Background/ground.png';
+        groundImg1.src = `Images/Background/${menu.mapSelected}/ground.png`;
     }
     if (groundImg2.complete) {
         c.drawImage(groundImg2, Math.floor(back2.groundX), Math.floor(standard.height + 248), 1920, 184);
-        groundImg2.src = 'Images/Background/ground.png';
+        groundImg2.src = `Images/Background/${menu.mapSelected}/ground.png`;
     }
     if (hillImg1.complete) {
         c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
-        hillImg1.src = 'Images/Background/hill1.png';
+        hillImg1.src = `Images/Background/${menu.mapSelected}/hill1.png`;
     }
     if (hillImg2.complete) {
         c.drawImage(hillImg2, Math.floor(back2.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
-        hillImg2.src = 'Images/Background/hill1.png';
+        hillImg2.src = `Images/Background/${menu.mapSelected}/hill1.png`;
     }
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back2.cloudX), Math.floor(back2.cloudY), 800, 400);
-        cloud1.src = 'Images/Background/cloud1.png';
+        cloud1.src = `Images/Background/${menu.mapSelected}/cloud1.png`;
     }
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back1.cloudX), Math.floor(back1.cloudY), 800, 400);
-        cloud1.src = 'Images/Background/cloud1.png';
+        cloud1.src = `Images/Background/${menu.mapSelected}/cloud1.png`;
+    }
+    }else{
+        if (skyImg.complete) {
+            c.drawImage(skyImg, Math.floor(0), Math.floor(0), 1920, 1080);
+            skyImg.src = 'Images/Background/Desert/sky.png';
+        }
     }
 
 }
@@ -586,7 +603,9 @@ function showMenu() {
 
     }
     if (menu.menuState === 1) {
-        if(showButton(20,6,8,4,"Play",1, "click", 0)){
+        png_font.drawText("Runner", [0,-72], "#403340", 24, null,  false);
+
+        if(showButton(2,8,8,4,"Play",1, "click", 0)){
             menu.menuState = 2;
         }
     }
@@ -602,17 +621,61 @@ function showMenu() {
         }
     }
     if (menu.menuState === 3) {
-        if(showButton(10,6,11,4,"Desert",1 ,"select", 4)){
+        if(showButton(12,6,11,4,"Desert",1 ,"select", 4)){
             menu.mapSelected = "Desert"
-        }else{
+        } 
+        if(showButton(12,11,11,4,"Locked",1 ,"click", 5)){
+            menu.mapSelected = ""
+        } 
+        if(showButton(25,6,11,4,"Locked",1 ,"click", 6)){
+            menu.mapSelected = ""
+        } 
+        if(showButton(25,11,11,4,"Locked",1 ,"click", 7)){
             menu.mapSelected = ""
         }
+        if(showButton(12,6,11,4,"Desert",1 ,"select", 4) === false && 
+        showButton(12,11,11,4,"Locked",1 ,"click", 5) === false &&
+        showButton(25,6,11,4,"Locked",1 ,"click", 6) === false &&
+        showButton(25,11,11,4,"Locked",1 ,"click", 7) === false
+        ){
+            menu.mapSelected = ""
+        }
+
+        if(showButton(12,16,4,4,"",1 ,"select", 8)){
+            player.skin = "Ostrich"
+        } 
+        if(showButton(18,16,4,4,"",1 ,"click", 9)){
+            player.skin = ""
+        } 
+        if(showButton(26,16,4,4,"",1 ,"click", 10)){
+            player.skin = ""
+        } 
+        if(showButton(32,16,4,4,"",1 ,"click", 11)){
+            player.skin = ""
+        }
+        if(showButton(12,16,4,4,"",1 ,"select", 8) === false &&
+        showButton(18,16,4,4,"",1 ,"click", 9) === false &&
+        showButton(26,16,4,4,"",1 ,"click", 10) === false &&
+        showButton(32,16,4,4,"",1 ,"click", 11) === false 
+        ){
+            player.skin = ""
+        }
+
+        if (ostrichIcon.complete) {
+            c.drawImage(ostrichIcon, Math.floor(496), Math.floor(656), 128, 128);
+            ostrichIcon.src = 'Images/Menu/SkinIcon/ostrich.png';
+        }
+
+
         if(showButton(1,1,8,4,"Back",1, "click", 5)){
             menu.menuState = 2;
         }
-        if(showButton(20,20,8,4,"Play",1, "click", 0)){
+
+
+
+        if(showButton(20,22,8,4,"Play",1, "click", 0)){
             if(menu.mapSelected !== ""){
-                unPause(menu.mapSelected);
+                unPause();
             }
         }
     }
