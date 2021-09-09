@@ -88,7 +88,8 @@ var settings = {
 };
 var menu = {
     pause: true,
-    menuState: 0
+    menuState: 0,
+    mapSelected:""
 };
 var standard = {
     jumpspeed: 37.5,
@@ -99,6 +100,8 @@ var mouse = {
     y: undefined,
     click: false
 };
+
+var buttonArray = [];
 
 var back1 = undefined;
 var back2 = undefined;
@@ -121,12 +124,12 @@ function init() {
         groundX: 0,
         hillX:0,
         cloudX:0,
-        cloudY:0
+        cloudY:200
     }
     back2 = {
         groundX: 1920,
         hillX:1920,
-        cloudX:900,
+        cloudX:1400,
         cloudY:0
     }
     cactus1 = {
@@ -168,8 +171,12 @@ function init() {
         crouchValue: 8 * 8,
         deathFallSpeed: 0,
         crouchCooldownValue: 0,
-        skin:"Ostrich"
+        skin:"Ostrich",
+        distance:0
     };
+    png_font.setup(
+        document.getElementById("game").getContext("2d"),"unifont.png"
+       );
 };
 
 function start() {
@@ -296,12 +303,7 @@ window.addEventListener('keydown', function (event) {
                 jump();
             }
         }
-        if (event.code === "Space" || event.code === "ArrowUp") {
-            if (menu.pause === true && player.dead === false) {
-                jump();
-                unPause();
-            }
-        }
+
         if (event.code === "ControlLeft" || event.code === "ArrowDown") {
             if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 25) {
                 crouch();
@@ -579,8 +581,41 @@ function showBackground() {
 
 }
 function showMenu() {
-    if (menu.menuState === 1) {
 
+    if (menu.menuState === 0) {
+        png_font.drawText(`Distance:${Math.floor(player.distance)}m`, [128,96], "#403340", 8, null,  false);
+
+    }
+    if (menu.menuState === 1) {
+        if(showButton(20,6,8,4,"Play",1, "click", 0)){
+            menu.menuState = 2;
+        }
+    }
+    if (menu.menuState === 2) {
+        if(showButton(11,6,10,4,"Story",1, "click", 1)){
+        }
+
+        if(showButton(27,6,13,4,"Endless",1, "click", 2)){
+            menu.menuState = 3;
+        }
+        if(showButton(1,1,8,4,"Back",1, "click", 3)){
+            menu.menuState = 1;
+        }
+    }
+    if (menu.menuState === 3) {
+        if(showButton(10,6,11,4,"Desert",1 ,"select", 4)){
+            menu.mapSelected = "Desert"
+        }else{
+            menu.mapSelected = ""
+        }
+        if(showButton(1,1,8,4,"Back",1, "click", 5)){
+            menu.menuState = 2;
+        }
+        if(showButton(20,20,8,4,"Play",1, "click", 0)){
+            if(menu.mapSelected !== ""){
+                unPause(menu.mapSelected);
+            }
+        }
     }
     if (player.dead === true) {
         if (gameoverImg.complete) {
@@ -604,6 +639,7 @@ function update() {
         moveBackground();
         checkCollision();
         deathFall();
+        updateMetres();
         particleArray.forEach(Particle => {
             Particle.update(particleArray);
         });
@@ -623,6 +659,12 @@ function update() {
         c.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+}
+function updateMetres(){
+    if(menu.pause === false){
+        player.distance+=player.speed * 0.0048;
+        player.speed += 0.00128;
+    }
 }
 function crouchCooldown() {
     if (player.crouch === true) {
@@ -690,7 +732,7 @@ function checkCollision() {
         die();
     }
 }
-function unPause() {
+function unPause(mapSelected) {
     titleScreenMusic.pause();
     titleScreenMusic.currentTime = 0;
     menu.pause = false;
@@ -734,7 +776,7 @@ function die() {
 function revive() {
     clearTimeout(timeout);
     titleScreenMusic.play();
-    menu.menuState = 1;
+    menu.menuState = 3;
     gameOverMusic.pause();
     gameOverMusic.currentTime = 0;
 
@@ -781,12 +823,12 @@ function moveBackground() {
         back2.hillX -= (player.speed / fpsMultiplier) *0.75;
 
         if (back1.cloudX < -900 + player.speed / fpsMultiplier) {
-            back1.cloudX = 1920;
+            back1.cloudX = 1920 + Math.random()*300;
             back1.cloudY = Math.random() * 100;
             back1.cloudY = (Math.floor(back1.cloudY / 8)) * 8;
         }
         if (back2.cloudX < -900 + player.speed / fpsMultiplier) {
-            back2.cloudX = 1920;
+            back2.cloudX = 1920 + Math.random()*300;
             back2.cloudY = Math.random() * 100;
             back2.cloudY = (Math.floor(back2.cloudY / 8)) * 8;
         }
@@ -935,6 +977,7 @@ function Particle(x, y, size, color, spread, gravitation, mode, modeSetting) {
 }
 
 function button(x, y, width, height) {
+
     if (mouse.x > x && mouse.x < x + width && mouse.y > y && mouse.y < y + height) {
         if (mouse.click === true) {
             return 2;
@@ -945,20 +988,64 @@ function button(x, y, width, height) {
         return 0;
     }
 }
-function showButton(x, y, w, h) {
-    if (button(x * 40, y * 40, w * 40, h * 40) === 0) {
-        c.fillStyle = "red"
-        showNiceButton(x * 40, y * 40, w * 40, h * 40)
-        return false;
-    } else if (button(x * 40, y * 40, w * 40, h * 40) === 1) {
-        c.fillStyle = "black"
-        c.fillRect(x * 40, y * 40, w * 40, h * 40)
-        return false;
-    } else {
-        c.fillStyle = "black"
-        c.fillRect(x * 40, y * 40, w * 40, h * 40)
-        return true;
+function showButton(x, y, w, h,text,textSize, type, index, others) {
+
+    if(type === "click"){
+        buttonArray[index] = false;
+        if (button(x * 40, y * 40, w * 40, h * 40) === 0) {
+            c.fillStyle = "red"
+            showNiceButton(x * 40, y * 40, w * 40, h * 40)
+            png_font.drawText(text, [x*40+24,y*40], "#403340", textSize*8, null,  false);
+            return false;
+        } else if (button(x * 40, y * 40, w * 40, h * 40) === 1) {
+            c.fillStyle = "black"
+            c.fillRect(x * 40, y * 40, w * 40, h * 40)
+            return false;
+        } else {
+            c.fillStyle = "black"
+            c.fillRect(x * 40, y * 40, w * 40, h * 40)
+            mouse.click = false;
+
+            return true;
+        }
     }
+    if(type === "select"){
+
+            if (button(x * 40, y * 40, w * 40, h * 40) === 0) {
+                if(buttonArray[index] === true){
+                    c.fillStyle = "black"
+                    c.fillRect(x * 40, y * 40, w * 40, h * 40)
+                    png_font.drawText(text, [x*40+24,y*40], "#858485", textSize*8, null,  false);
+                }else{
+                    c.fillStyle = "red"
+                    showNiceButton(x * 40, y * 40, w * 40, h * 40)
+                    png_font.drawText(text, [x*40+24,y*40], "#403340", textSize*8, null,  false);
+                }
+            } else if (button(x * 40, y * 40, w * 40, h * 40) === 1) {
+                c.fillStyle = "black"
+                c.fillRect(x * 40, y * 40, w * 40, h * 40)
+            } else {
+                c.fillStyle = "black"
+                c.fillRect(x * 40, y * 40, w * 40, h * 40)
+                mouse.click = false;
+                if(buttonArray[index] === true){
+                    buttonArray[index] = false;
+                    return;
+                }else{
+                    buttonArray[index] = true;
+                    if(others !== undefined){
+                        for(let i = 0; i<others.length; i++){
+                            buttonArray[others[i]] = false;
+                        }
+                    }
+                    return;
+                }
+
+            
+        }
+        return buttonArray[index];
+    }
+
 }
 
 function showNiceButton(x, y, w, h) {
