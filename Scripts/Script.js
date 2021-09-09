@@ -91,7 +91,7 @@ var settings = {
 var menu = {
     pause: true,
     menuState: 0,
-    mapSelected:""
+    mapSelected:"Desert"
 };
 var standard = {
     jumpspeed: 37.5,
@@ -104,6 +104,9 @@ var mouse = {
 };
 
 var buttonArray = [];
+
+buttonArray[4] = true;
+buttonArray[8] = true;
 
 var back1 = undefined;
 var back2 = undefined;
@@ -173,7 +176,7 @@ function init() {
         crouchValue: 8 * 8,
         deathFallSpeed: 0,
         crouchCooldownValue: 0,
-        skin:"",
+        skin:"Ostrich",
         distance:0
     };
     png_font.setup(
@@ -597,6 +600,8 @@ function showBackground() {
 
 }
 function showMenu() {
+
+    png_font.drawText(`fps:${fpsMultiplier*60}`, [0,0], "#403340", 1, null,  false);
 
     if (menu.menuState === 0) {
         png_font.drawText(`Distance:${Math.floor(player.distance)}m`, [128,96], "#403340", 8, null,  false);
