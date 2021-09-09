@@ -175,8 +175,7 @@ function init() {
         distance:0
     };
     png_font.setup(
-        document.getElementById("game").getContext("2d"),"unifont.png"
-       );
+        document.getElementById("game").getContext("2d"));
 };
 
 function start() {

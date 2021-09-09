@@ -47,7 +47,7 @@
       callback()
     }
     if(typeof fontImageUrl === 'undefined' || fontImageUrl === null){
-      fontImageUrl = 'img/unifont.png';
+      fontImageUrl = 'Images/unifont.png';
     }
     this.fontImage.src = fontImageUrl;
   },
