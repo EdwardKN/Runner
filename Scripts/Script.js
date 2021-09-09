@@ -23,6 +23,8 @@ var groundImg1 = new Image();
 var groundImg2 = new Image();
 var hillImg1 = new Image();
 var hillImg2 = new Image();
+var skyImg = new Image();
+var cloud1 = new Image();
 
 var gameoverImg = new Image();
 var introImg = new Image();
@@ -117,11 +119,15 @@ setTimeout(() => {
 function init() {
     back1 = {
         groundX: 0,
-        hillX:0
+        hillX:0,
+        cloudX:0,
+        cloudY:0
     }
     back2 = {
         groundX: 1920,
-        hillX:1920
+        hillX:1920,
+        cloudX:900,
+        cloudY:0
     }
     cactus1 = {
         x: -2000,
@@ -161,7 +167,8 @@ function init() {
         dead: false,
         crouchValue: 8 * 8,
         deathFallSpeed: 0,
-        crouchCooldownValue: 0
+        crouchCooldownValue: 0,
+        skin:"Ostrich"
     };
 };
 
@@ -328,31 +335,31 @@ window.addEventListener('keyup', function (event) {
 function preload() {
     if (playerImg1.complete) {
         c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg1.src = 'Images/Player/Ostrich/player1.png';
+        playerImg1.src = `Images/Player/${player.skin}/player1.png`;
     }
     if (playerImg2.complete) {
         c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg2.src = 'Images/Player/Ostrich/player2.png';
+        playerImg2.src = `Images/Player/${player.skin}/player2.png`;
     }
     if (playerImg3.complete) {
         c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg3.src = 'Images/Player/Ostrich/player3.png';
+        playerImg3.src = `Images/Player/${player.skin}/player3.png`;
     }
     if (playerImg4.complete) {
         c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg4.src = 'Images/Player/Ostrich/player4.png';
+        playerImg4.src = `Images/Player/${player.skin}/player4.png`;
     }
     if (playerImg5.complete) {
         c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg5.src = 'Images/Player/Ostrich/player5.png';
+        playerImg5.src = `Images/Player/${player.skin}/player5.png`;
     }
     if (playerImg6.complete) {
         c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg6.src = 'Images/Player/Ostrich/player6.png';
+        playerImg6.src = `Images/Player/${player.skin}/player6.png`;
     }
     if (playerImg7.complete) {
         c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg7.src = 'Images/Player/Ostrich/player7.png';
+        playerImg7.src = `Images/Player/${player.skin}/player7.png`;
     }
     if (birdImg1.complete) {
         c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
@@ -394,6 +401,22 @@ function preload() {
     if (hillImg2.complete) {
         c.drawImage(hillImg2, Math.floor(back2.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
         hillImg2.src = 'Images/Background/hill1.png';
+    }
+    if (hillImg1.complete) {
+        c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        hillImg1.src = 'Images/Background/hill1.png';
+    }
+    if (cloud1.complete) {
+        c.drawImage(cloud1, Math.floor(back2.cloudX), Math.floor(back2.cloudY), 800, 400);
+        cloud1.src = 'Images/Background/cloud1.png';
+    }
+    if (cloud1.complete) {
+        c.drawImage(cloud1, Math.floor(back1.cloudX), Math.floor(back1.cloudY), 800, 400);
+        cloud1.src = 'Images/Background/cloud1.png';
+    }
+    if (skyImg.complete) {
+        c.drawImage(skyImg, Math.floor(0), Math.floor(0), 1920, 1080);
+        skyImg.src = 'Images/Background/sky.png';
     }
     if (gameoverImg.complete) {
         c.drawImage(gameoverImg, Math.floor(0), Math.floor(0), 1920, 640);
@@ -469,31 +492,31 @@ function showPlayer() {
 
     if (playerImg1.complete && player.animationState === 1 && player.animation === 1) {
         c.drawImage(playerImg1, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg1.src = 'Images/Player/Ostrich/player1.png';
+        playerImg1.src = `Images/Player/${player.skin}/player1.png`;
     }
     if (playerImg2.complete && player.animationState === 1 && player.animation === 2) {
         c.drawImage(playerImg2, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg2.src = 'Images/Player/Ostrich/player2.png';
+        playerImg2.src = `Images/Player/${player.skin}/player2.png`;
     }
     if (playerImg3.complete && player.animationState === 2) {
         c.drawImage(playerImg3, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg3.src = 'Images/Player/Ostrich/player3.png';
+        playerImg3.src = `Images/Player/${player.skin}/player3.png`;
     }
     if (playerImg4.complete && player.animationState === 3 && player.animation === 1) {
         c.drawImage(playerImg4, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg4.src = 'Images/Player/Ostrich/player4.png';
+        playerImg4.src = `Images/Player/${player.skin}/player4.png`;
     }
     if (playerImg5.complete && player.animationState === 3 && player.animation === 2) {
         c.drawImage(playerImg5, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg5.src = 'Images/Player/Ostrich/player5.png';
+        playerImg5.src = `Images/Player/${player.skin}/player5.png`;
     }
     if (playerImg6.complete && player.animationState === 4) {
         c.drawImage(playerImg6, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg6.src = 'Images/Player/Ostrich/player6.png';
+        playerImg6.src = `Images/Player/${player.skin}/player6.png`;
     }
     if (playerImg7.complete && player.animationState === 5) {
         c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
-        playerImg7.src = 'Images/Player/Ostrich/player7.png';
+        playerImg7.src = `Images/Player/${player.skin}/player7.png`;
     }
 }
 function showObstacle() {
@@ -525,6 +548,10 @@ function showObstacle() {
     }
 }
 function showBackground() {
+    if (skyImg.complete) {
+        c.drawImage(skyImg, Math.floor(0), Math.floor(0), 1920, 1080);
+        skyImg.src = 'Images/Background/sky.png';
+    }
     if (groundImg1.complete) {
         c.drawImage(groundImg1, Math.floor(back1.groundX), Math.floor(standard.height + 248), 1920, 184);
         groundImg1.src = 'Images/Background/ground.png';
@@ -541,6 +568,15 @@ function showBackground() {
         c.drawImage(hillImg2, Math.floor(back2.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
         hillImg2.src = 'Images/Background/hill1.png';
     }
+    if (cloud1.complete) {
+        c.drawImage(cloud1, Math.floor(back2.cloudX), Math.floor(back2.cloudY), 800, 400);
+        cloud1.src = 'Images/Background/cloud1.png';
+    }
+    if (cloud1.complete) {
+        c.drawImage(cloud1, Math.floor(back1.cloudX), Math.floor(back1.cloudY), 800, 400);
+        cloud1.src = 'Images/Background/cloud1.png';
+    }
+
 }
 function showMenu() {
     if (menu.menuState === 1) {
@@ -674,6 +710,10 @@ function die() {
     back2.groundX = (Math.floor(back2.groundX / 8)) * 8
     back1.hillX = (Math.floor(back1.hillX / 8)) * 8
     back2.hillX = (Math.floor(back2.hillX / 8)) * 8
+    back1.cloudX = (Math.floor(back1.cloudX / 8)) * 8
+    back2.cloudX = (Math.floor(back2.cloudX / 8)) * 8
+    back1.cloudY = (Math.floor(back1.cloudY / 8)) * 8
+    back2.cloudY = (Math.floor(back2.cloudY / 8)) * 8
     cactus1.x = (Math.floor(cactus1.x / 8)) * 8
     cactus2.x = (Math.floor(cactus2.x / 8)) * 8
     cactus3.x = (Math.floor(cactus3.x / 8)) * 8
@@ -739,6 +779,19 @@ function moveBackground() {
         }
         back1.hillX -= (player.speed / fpsMultiplier) * 0.75;
         back2.hillX -= (player.speed / fpsMultiplier) *0.75;
+
+        if (back1.cloudX < -900 + player.speed / fpsMultiplier) {
+            back1.cloudX = 1920;
+            back1.cloudY = Math.random() * 100;
+            back1.cloudY = (Math.floor(back1.cloudY / 8)) * 8;
+        }
+        if (back2.cloudX < -900 + player.speed / fpsMultiplier) {
+            back2.cloudX = 1920;
+            back2.cloudY = Math.random() * 100;
+            back2.cloudY = (Math.floor(back2.cloudY / 8)) * 8;
+        }
+        back1.cloudX -= (player.speed / fpsMultiplier) * 0.2;
+        back2.cloudX -= (player.speed / fpsMultiplier) *0.2;
     }
 }
 
