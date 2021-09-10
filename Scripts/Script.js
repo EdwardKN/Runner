@@ -23,6 +23,10 @@ var groundImg1 = new Image();
 var groundImg2 = new Image();
 var hillImg1 = new Image();
 var hillImg2 = new Image();
+var hillImg3 = new Image();
+var hillImg4 = new Image();
+var hillImg5 = new Image();
+var hillImg6 = new Image();
 var skyImg = new Image();
 var cloud1 = new Image();
 
@@ -137,13 +141,17 @@ function init() {
     let record = player.record;
     back1 = {
         groundX: 0,
-        hillX:0,
+        hill1X:0,
+        hill2X:0-240,
+        hill3X:0-640,
         cloudX:0,
         cloudY:200
     }
     back2 = {
         groundX: 1920,
-        hillX:1920,
+        hill1X:1920,
+        hill2X:1920-240,
+        hill3X:1920-640,
         cloudX:1400,
         cloudY:0
     }
@@ -428,16 +436,28 @@ function preload() {
         groundImg2.src = 'Images/Background/Desert/ground.png';
     }
     if (hillImg1.complete) {
-        c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        c.drawImage(hillImg1, Math.floor(back1.hill1X), Math.floor(standard.height + 248 - 240), 1920, 240);
         hillImg1.src = 'Images/Background/Desert/hill1.png';
     }
     if (hillImg2.complete) {
-        c.drawImage(hillImg2, Math.floor(back2.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        c.drawImage(hillImg2, Math.floor(back2.hill1X), Math.floor(standard.height + 248 - 240), 1920, 240);
         hillImg2.src = 'Images/Background/Desert/hill1.png';
     }
-    if (hillImg1.complete) {
-        c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
-        hillImg1.src = 'Images/Background/Desert/hill1.png';
+    if (hillImg3.complete) {
+        c.drawImage(hillImg3, Math.floor(back1.hill2X), Math.floor(standard.height + 248 - 240-40), 1920, 240);
+        hillImg3.src = 'Images/Background/Desert/hill2.png';
+    }
+    if (hillImg4.complete) {
+        c.drawImage(hillImg4, Math.floor(back2.hill2X), Math.floor(standard.height + 248 - 240-40), 1920, 240);
+        hillImg4.src = 'Images/Background/Desert/hill2.png';
+    }
+    if (hillImg5.complete) {
+        c.drawImage(hillImg5, Math.floor(back1.hill2X), Math.floor(standard.height + 248 - 240-40-40), 1920, 240);
+        hillImg5.src = 'Images/Background/Desert/hill3.png';
+    }
+    if (hillImg6.complete) {
+        c.drawImage(hillImg6, Math.floor(back2.hill2X), Math.floor(standard.height + 248 - 240-40-40), 1920, 240);
+        hillImg6.src = 'Images/Background/Desert/hill3.png';
     }
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back2.cloudX), Math.floor(back2.cloudY), 800, 400);
@@ -601,14 +621,32 @@ function showBackground() {
         c.drawImage(groundImg2, Math.floor(back2.groundX), Math.floor(standard.height + 248), 1920, 184);
         groundImg2.src = `Images/Background/${menu.mapSelected}/ground.png`;
     }
+    if (hillImg5.complete) {
+        c.drawImage(hillImg5, Math.floor(back1.hill3X), Math.floor(standard.height + 248 - 240-56-56), 1920, 240);
+        hillImg5.src = `Images/Background/${menu.mapSelected}/hill3.png`;
+    }
+    if (hillImg6.complete) {
+        c.drawImage(hillImg6, Math.floor(back2.hill3X), Math.floor(standard.height + 248 - 240-56-56), 1920, 240);
+        hillImg6.src = `Images/Background/${menu.mapSelected}/hill3.png`;
+    }
+    if (hillImg3.complete) {
+        c.drawImage(hillImg3, Math.floor(back1.hill2X), Math.floor(standard.height + 248 - 240-56), 1920, 240);
+        hillImg3.src = `Images/Background/${menu.mapSelected}/hill2.png`;
+    }
+    if (hillImg4.complete) {
+        c.drawImage(hillImg4, Math.floor(back2.hill2X), Math.floor(standard.height + 248 - 240-56), 1920, 240);
+        hillImg4.src = `Images/Background/${menu.mapSelected}/hill2.png`;
+    }
     if (hillImg1.complete) {
-        c.drawImage(hillImg1, Math.floor(back1.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        c.drawImage(hillImg1, Math.floor(back1.hill1X), Math.floor(standard.height + 248 - 240), 1920, 240);
         hillImg1.src = `Images/Background/${menu.mapSelected}/hill1.png`;
     }
     if (hillImg2.complete) {
-        c.drawImage(hillImg2, Math.floor(back2.hillX), Math.floor(standard.height + 248 - 240), 1920, 240);
+        c.drawImage(hillImg2, Math.floor(back2.hill1X), Math.floor(standard.height + 248 - 240), 1920, 240);
         hillImg2.src = `Images/Background/${menu.mapSelected}/hill1.png`;
     }
+
+
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back2.cloudX), Math.floor(back2.cloudY), 800, 400);
         cloud1.src = `Images/Background/${menu.mapSelected}/cloud1.png`;
@@ -917,8 +955,12 @@ function die() {
     menu.pause = true;
     back1.groundX = (Math.floor(back1.groundX / 8)) * 8
     back2.groundX = (Math.floor(back2.groundX / 8)) * 8
-    back1.hillX = (Math.floor(back1.hillX / 8)) * 8
-    back2.hillX = (Math.floor(back2.hillX / 8)) * 8
+    back1.hill1X = (Math.floor(back1.hill1X / 8)) * 8
+    back2.hill1X = (Math.floor(back2.hill1X / 8)) * 8
+    back1.hill2X = (Math.floor(back1.hill2X / 8)) * 8
+    back2.hill2X = (Math.floor(back2.hill2X / 8)) * 8
+    back1.hill3X = (Math.floor(back1.hill3X / 8)) * 8
+    back2.hill3X = (Math.floor(back2.hill3X / 8)) * 8
     back1.cloudX = (Math.floor(back1.cloudX / 8)) * 8
     back2.cloudX = (Math.floor(back2.cloudX / 8)) * 8
     back1.cloudY = (Math.floor(back1.cloudY / 8)) * 8
@@ -976,17 +1018,41 @@ function moveBackground() {
         back1.groundX -= player.speed / fpsMultiplier;
         back2.groundX -= player.speed / fpsMultiplier;
 
-        if (back1.hillX < -1920 + player.speed / fpsMultiplier) {
-            back1.hillX = 1920;
-            back2.hillX = 0;
+        if (back1.hill1X < -1920 + player.speed / fpsMultiplier) {
+            back1.hill1X = 1920;
+            back2.hill1X = 0;
 
         }
-        if (back2.hillX < -1920 + player.speed / fpsMultiplier) {
-            back1.hillX = 0;
-            back2.hillX = 1920;
+        if (back2.hill1X < -1920 + player.speed / fpsMultiplier) {
+            back1.hill1X = 0;
+            back2.hill1X = 1920;
         }
-        back1.hillX -= (player.speed / fpsMultiplier) * 0.75;
-        back2.hillX -= (player.speed / fpsMultiplier) *0.75;
+        back1.hill1X -= (player.speed / fpsMultiplier) * 0.71;
+        back2.hill1X -= (player.speed / fpsMultiplier) *0.71;
+
+        if (back1.hill2X < -1920 + player.speed / fpsMultiplier) {
+            back1.hill2X = 1920;
+            back2.hill2X = 0;
+
+        }
+        if (back2.hill2X < -1920 + player.speed / fpsMultiplier) {
+            back1.hill2X = 0;
+            back2.hill2X = 1920;
+        }
+        back1.hill2X -= (player.speed / fpsMultiplier) * 0.51;
+        back2.hill2X -= (player.speed / fpsMultiplier) *0.51;
+
+        if (back1.hill3X < -1920 + player.speed / fpsMultiplier) {
+            back1.hill3X = 1920;
+            back2.hill3X = 0;
+
+        }
+        if (back2.hill3X < -1920 + player.speed / fpsMultiplier) {
+            back1.hill3X = 0;
+            back2.hill3X = 1920;
+        }
+        back1.hill3X -= (player.speed / fpsMultiplier) * 0.17;
+        back2.hill3X -= (player.speed / fpsMultiplier) *0.17;
 
         if (back1.cloudX < -900 + player.speed / fpsMultiplier) {
             back1.cloudX = 1920 + Math.random()*300;
