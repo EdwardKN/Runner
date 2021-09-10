@@ -371,28 +371,28 @@ function preload() {
 
     if (birdImg1.complete) {
         c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
-        birdImg1.src = 'Images/Obstacles/bird1.png';
+        birdImg1.src = 'Images/Obstacles/Desert/bird1.png';
     }
     if (birdImg2.complete) {
         c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
-        birdImg2.src = 'Images/Obstacles/bird2.png';
+        birdImg2.src = 'Images/Obstacles/Desert/bird2.png';
     }
 
     if (cactusImg1.complete) {
         c.drawImage(cactusImg1, Math.floor(cactus1.x), Math.floor(cactus1.y), 256, 256);
-        cactusImg1.src = 'Images/Obstacles/cactus1.png';
+        cactusImg1.src = 'Images/Obstacles/Desert/cactus1.png';
     }
     if (cactusImg2.complete) {
         c.drawImage(cactusImg2, Math.floor(cactus2.x), Math.floor(cactus2.y), 256, 256);
-        cactusImg2.src = 'Images/Obstacles/cactus2.png';
+        cactusImg2.src = 'Images/Obstacles/Desert/cactus2.png';
     }
     if (cactusImg3.complete) {
         c.drawImage(cactusImg3, Math.floor(cactus3.x), Math.floor(cactus3.y), 256, 256);
-        cactusImg3.src = 'Images/Obstacles/cactus3.png';
+        cactusImg3.src = 'Images/Obstacles/Desert/cactus3.png';
     }
     if (cactusImg4.complete) {
         c.drawImage(cactusImg4, Math.floor(cactus4.x), Math.floor(cactus4.y), 256, 256);
-        cactusImg4.src = 'Images/Obstacles/cactus4.png';
+        cactusImg4.src = 'Images/Obstacles/Desert/cactus4.png';
     }
     if (groundImg1.complete) {
         c.drawImage(groundImg1, Math.floor(back1.groundX), Math.floor(standard.height + 248), 1920, 184);
@@ -533,31 +533,32 @@ function showPlayer() {
     }
 }
 function showObstacle() {
+    if(menu.mapSelected !== ""){
+        if (cactusImg1.complete) {
+            c.drawImage(cactusImg1, Math.floor(cactus1.x), Math.floor(cactus1.y), 256, 256);
+            cactusImg1.src = `Images/Obstacles/${menu.mapSelected}/cactus1.png`;
+        }
+        if (cactusImg2.complete) {
+            c.drawImage(cactusImg2, Math.floor(cactus2.x), Math.floor(cactus2.y), 256, 256);
+            cactusImg2.src = `Images/Obstacles/${menu.mapSelected}/cactus2.png`;
+        }
+        if (cactusImg3.complete) {
+            c.drawImage(cactusImg3, Math.floor(cactus3.x), Math.floor(cactus3.y), 256, 256);
+            cactusImg3.src = `Images/Obstacles/${menu.mapSelected}/cactus3.png`;
+        }
+        if (cactusImg4.complete) {
+            c.drawImage(cactusImg4, Math.floor(cactus4.x), Math.floor(cactus4.y), 256, 256);
+            cactusImg4.src = `Images/Obstacles/${menu.mapSelected}/cactus4.png`;
+        }
 
-    if (birdImg1.complete && bird.animationState === 1 && bird.animation === 1) {
-        c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
-        birdImg1.src = 'Images/Obstacles/bird1.png';
-    }
-    if (birdImg2.complete && bird.animationState === 1 && bird.animation === 2) {
-        c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
-        birdImg2.src = 'Images/Obstacles/bird2.png';
-    }
-
-    if (cactusImg1.complete) {
-        c.drawImage(cactusImg1, Math.floor(cactus1.x), Math.floor(cactus1.y), 256, 256);
-        cactusImg1.src = 'Images/Obstacles/cactus1.png';
-    }
-    if (cactusImg2.complete) {
-        c.drawImage(cactusImg2, Math.floor(cactus2.x), Math.floor(cactus2.y), 256, 256);
-        cactusImg2.src = 'Images/Obstacles/cactus2.png';
-    }
-    if (cactusImg3.complete) {
-        c.drawImage(cactusImg3, Math.floor(cactus3.x), Math.floor(cactus3.y), 256, 256);
-        cactusImg3.src = 'Images/Obstacles/cactus3.png';
-    }
-    if (cactusImg4.complete) {
-        c.drawImage(cactusImg4, Math.floor(cactus4.x), Math.floor(cactus4.y), 256, 256);
-        cactusImg4.src = 'Images/Obstacles/cactus4.png';
+        if (birdImg1.complete && bird.animationState === 1 && bird.animation === 1) {
+            c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
+            birdImg1.src = `Images/Obstacles/${menu.mapSelected}/bird1.png`;
+        }
+        if (birdImg2.complete && bird.animationState === 1 && bird.animation === 2) {
+            c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
+            birdImg2.src = `Images/Obstacles/${menu.mapSelected}/bird1.png`;
+        }
     }
 }
 function showBackground() {
