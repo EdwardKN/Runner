@@ -557,7 +557,7 @@ function showObstacle() {
         }
         if (birdImg2.complete && bird.animationState === 1 && bird.animation === 2) {
             c.drawImage(birdImg2, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
-            birdImg2.src = `Images/Obstacles/${menu.mapSelected}/bird1.png`;
+            birdImg2.src = `Images/Obstacles/${menu.mapSelected}/bird2.png`;
         }
     }
 }
@@ -605,7 +605,11 @@ function showMenu() {
     png_font.drawText(`fps:${fpsMultiplier*60}`, [0,0], "#403340", 1, null,  false);
 
     if (menu.menuState === 0) {
-        png_font.drawText(`Distance:${Math.floor(player.distance)}m`, [128,96], "#403340", 8, null,  false);
+        if(player.distance < 1000){
+            png_font.drawText(`Distance:${Math.floor(player.distance)}m`, [128,96], "#403340", 8, null,  false);
+        }else{
+            png_font.drawText(`Distance:${Math.floor(player.distance/10)/100}km`, [128,96], "#403340", 8, null,  false);
+        }
 
     }
     if (menu.menuState === 1) {
