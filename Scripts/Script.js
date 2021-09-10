@@ -86,7 +86,9 @@ var interval1 = undefined;
 
 var settings = {
     fullscreen: false,
-    debug: false
+    debug: false,
+    name:getCookie("name") === -1 ? "" : getCookie("name"),
+    type: false
 };
 var menu = {
     pause: true,
@@ -101,6 +103,11 @@ var mouse = {
     x: undefined,
     y: undefined,
     click: false
+};
+
+var game = {
+    gamemode: "",
+    leaderboard : []
 };
 
 var buttonArray = [];
@@ -118,13 +125,16 @@ var cactus4 = undefined;
 
 var bird = undefined;
 
-var player = undefined;
+var player = {distance:0,record:getCookie("record") === -1 ? -1 : getCookie("record")};
+
 
 setTimeout(() => {
     startTimer = true;
 }, 1000);
 
 function init() {
+    let distance = player.distance;
+    let record = player.record;
     back1 = {
         groundX: 0,
         hillX:0,
@@ -177,7 +187,8 @@ function init() {
         deathFallSpeed: 0,
         crouchCooldownValue: 0,
         skin:"Ostrich",
-        distance:0
+        distance:distance,
+        record:record
     };
     png_font.setup(
         document.getElementById("game").getContext("2d"));
@@ -268,59 +279,67 @@ canvas.addEventListener('mousemove', function (event) {
 
 window.addEventListener('keydown', function (event) {
     console.log(event)
-    if (clicked === false && startTimer === true) {
-        loadingMusic.play();
-        clicked = true;
-        toggleFullscreen();
-        timeout2 = setTimeout(function () {
+
+    if(settings.type === true){
+        if(event.code === "Backspace"){
+            settings.name = settings.name.slice(0, -1);
+        }
+    }else{
+        if (clicked === false && startTimer === true) {
+            loadingMusic.play();
+            clicked = true;
+            toggleFullscreen();
+            timeout2 = setTimeout(function () {
+                loaded = true;
+                clearTimeout(timeout2);
+                titleScreenMusic.play();
+                menu.menuState = 1;
+                timeout2 = undefined;
+
+            }, 17000);
+            setTimeout(() => {
+                loadingMusic2.play();
+            }, 9000);
+        }
+        if (event.code === "KeyP") {
+            window.close();
+        }
+        if (event.code === "KeyD") {
             loaded = true;
             clearTimeout(timeout2);
             titleScreenMusic.play();
             menu.menuState = 1;
             timeout2 = undefined;
-
-        }, 17000);
-        setTimeout(() => {
-            loadingMusic2.play();
-        }, 9000);
-    }
-    if (event.code === "KeyP") {
-        window.close();
-    }
-    if (event.code === "KeyD") {
-        loaded = true;
-        clearTimeout(timeout2);
-        titleScreenMusic.play();
-        menu.menuState = 1;
-        timeout2 = undefined;
-        loadingMusic.pause();
-        loadingState = 1000;
-        loadingAlpha = 1000000000000;
-    }
-    if (loaded === true) {
-
-        if (event.code === "KeyF") {
-            toggleFullscreen();
+            loadingMusic.pause();
+            loadingState = 1000;
+            loadingAlpha = 1000000000000;
         }
-        if (event.code === "Space" || event.code === "ArrowUp") {
-            if (menu.pause === false && player.dead === false) {
-                jump();
+        if (loaded === true) {
+
+            if (event.code === "KeyF") {
+                toggleFullscreen();
             }
-        }
-
-        if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-            if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 25) {
-                crouch();
+            if (event.code === "Space" || event.code === "ArrowUp") {
+                if (menu.pause === false && player.dead === false) {
+                    jump();
+                }
             }
-        }
-        if (event.code === "Escape" && player.dead === false) {
-            toggleMenu();
-        }
-        if (event.code === "Enter" && player.dead === true) {
-            revive();
-        }
-        if (event.code === "KeyT") {
-            createParticles(player.x, player.y, 50, 5, "black", 1)
+
+            if (event.code === "ControlLeft" || event.code === "ArrowDown") {
+                if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 25) {
+                    crouch();
+                }
+            }
+            if (event.code === "Escape" && player.dead === false) {
+                toggleMenu();
+            }
+            if (event.code === "Enter" && player.dead === true) {
+                menu.menuState = 4;
+                revive();
+            }
+            if (event.code === "KeyT") {
+                createParticles(player.x, player.y, 50, 5, "black", 1)
+            }
         }
     }
 });
@@ -335,6 +354,12 @@ window.addEventListener('keyup', function (event) {
         if (event.code === "KeyB") {
             toggleDebug();
         }
+    }
+});
+
+window.addEventListener('keypress', function (event) {
+    if(settings.type === true){
+        settings.name += event.key;
     }
 });
 
@@ -631,63 +656,133 @@ function showMenu() {
         }
     }
     if (menu.menuState === 3) {
-        if(showButton(12,6,11,4,"Desert",1 ,"select", 4)){
+        if(showButton(12,1,11,4,"Desert",1 ,"select", 4)){
             menu.mapSelected = "Desert"
         } 
-        if(showButton(12,11,11,4,"Locked",1 ,"click", 5)){
+        if(showButton(12,6,11,4,"Locked",1 ,"click", 5)){
             menu.mapSelected = ""
         } 
-        if(showButton(25,6,11,4,"Locked",1 ,"click", 6)){
+        if(showButton(25,1,11,4,"Locked",1 ,"click", 6)){
             menu.mapSelected = ""
         } 
-        if(showButton(25,11,11,4,"Locked",1 ,"click", 7)){
+        if(showButton(25,6,11,4,"Locked",1 ,"click", 7)){
             menu.mapSelected = ""
         }
-        if(showButton(12,6,11,4,"Desert",1 ,"select", 4) === false && 
-        showButton(12,11,11,4,"Locked",1 ,"click", 5) === false &&
-        showButton(25,6,11,4,"Locked",1 ,"click", 6) === false &&
-        showButton(25,11,11,4,"Locked",1 ,"click", 7) === false
+        if(showButton(12,1,11,4,"Desert",1 ,"select", 4) === false && 
+        showButton(12,6,11,4,"Locked",1 ,"click", 5) === false &&
+        showButton(25,1,11,4,"Locked",1 ,"click", 6) === false &&
+        showButton(25,6,11,4,"Locked",1 ,"click", 7) === false
         ){
             menu.mapSelected = ""
         }
 
-        if(showButton(12,16,4,4,"",1 ,"select", 8)){
+        if(showButton(12,11,4,4,"",1 ,"select", 8)){
             player.skin = "Ostrich"
         } 
-        if(showButton(18,16,4,4,"",1 ,"click", 9)){
+        if(showButton(18,11,4,4,"",1 ,"click", 9)){
             player.skin = ""
         } 
-        if(showButton(26,16,4,4,"",1 ,"click", 10)){
+        if(showButton(26,11,4,4,"",1 ,"click", 10)){
             player.skin = ""
         } 
-        if(showButton(32,16,4,4,"",1 ,"click", 11)){
+        if(showButton(32,11,4,4,"",1 ,"click", 11)){
             player.skin = ""
         }
-        if(showButton(12,16,4,4,"",1 ,"select", 8) === false &&
-        showButton(18,16,4,4,"",1 ,"click", 9) === false &&
-        showButton(26,16,4,4,"",1 ,"click", 10) === false &&
-        showButton(32,16,4,4,"",1 ,"click", 11) === false 
+        if(showButton(12,11,4,4,"",1 ,"select", 8) === false &&
+        showButton(18,11,4,4,"",1 ,"click", 9) === false &&
+        showButton(26,11,4,4,"",1 ,"click", 10) === false &&
+        showButton(32,11,4,4,"",1 ,"click", 11) === false 
         ){
             player.skin = ""
         }
 
         if (ostrichIcon.complete) {
-            c.drawImage(ostrichIcon, Math.floor(496), Math.floor(656), 128, 128);
+            c.drawImage(ostrichIcon, Math.floor(496), Math.floor(656-(5*40)), 128, 128);
             ostrichIcon.src = 'Images/Menu/SkinIcon/ostrich.png';
         }
 
 
-        if(showButton(1,1,8,4,"Back",1, "click", 5)){
+        if(showButton(1,1,8,4,"Back",1, "click", 12)){
             menu.menuState = 2;
+        }
+        if(showButton(32,11,4,4,"",1 ,"click", 11)){
+            player.skin = ""
         }
 
 
-
-        if(showButton(20,22,8,4,"Play",1, "click", 0)){
+        if(showButton(20,22,8,4,"Play",1, "click", 13)){
             if(menu.mapSelected !== ""){
                 unPause();
             }
         }
+        if(showButton(14.5,16,19,4,"Leaderboard",1, "click", 15)){
+            menu.menuState = 5;
+            getScore();
+        }
+
+    }
+    if(menu.menuState === 4){
+        if(player.distance > player.record){
+
+
+            png_font.drawText("Submit new record to", [0,24], "#403340", 8, null,  false);
+            png_font.drawText("leaderboard?", [0,24+80+24], "#403340", 8, null,  false);
+
+            png_font.drawText("Name:", [0,128+80+16+40+40], "#403340", 8, null,  false);
+
+            if(player.distance < 1000){
+                png_font.drawText(`Distance:${Math.floor(player.distance)}m`, [0,232+80+24+16+40+40], "#403340", 8, null,  false);
+            }else{
+                png_font.drawText(`Distance:${Math.floor(player.distance/10)/100}km`, [0,232+80+24+16+40+40], "#403340", 8, null,  false);
+            }
+
+            if(showButton(13,22,8,4,"Nope",1, "click", 13)){
+                menu.menuState = 3;
+                settings.type = false;
+                player.record = player.distance;
+                document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
+                player.distance = 0;
+
+            }
+            if(showButton(26,22,11,4,"Submit",1, "click", 13)){
+                if(settings.name !== ""){
+                    sendScore(settings.name, player.distance);
+
+                    menu.menuState = 3;
+                    document.cookie = `name=${settings.name};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
+                    settings.type = false;
+                    player.record = player.distance;
+                    document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
+                    player.distance = 0;
+
+                }
+            }
+            if(showButton(8,8,20,3,"",1 ,"select", 14)){
+                settings.type = true;
+            }
+            png_font.drawText(settings.name, [128*3,128+80+16+40+40], "#403340", 8, null,  false);
+
+        }else{
+            menu.menuState = 3;
+            player.distance = 0;
+
+        }
+    }
+    if(menu.menuState === 5){
+        if(showButton(1,1,8,4,"Back",1, "click", 3)){
+            menu.menuState = 3;
+        }
+        png_font.drawText("Leaderboard", [8*55, -8*3], "#403340", 16, null,  false);
+        for(let i = 0; i < 9; i++){
+            if(game.leaderboard.length >= (i+1)){
+                if(game.leaderboard[i].score < 1000){
+                    png_font.drawText(`${i+1}. ${game.leaderboard[i].name}: ${Math.floor(game.leaderboard[i].score)}m`, [8*55, i*96+256-64], "#403340", 8, null,  false);
+                }else{
+                    png_font.drawText(`${i+1}. ${game.leaderboard[i].name}: ${Math.floor(game.leaderboard[i].score/10)/100}km`, [8*55, i*96+256-64], "#403340", 8, null,  false);
+                }
+            }
+        }
+
     }
     if (player.dead === true) {
         if (gameoverImg.complete) {
@@ -848,13 +943,12 @@ function die() {
 function revive() {
     clearTimeout(timeout);
     titleScreenMusic.play();
-    menu.menuState = 3;
     gameOverMusic.pause();
     gameOverMusic.currentTime = 0;
 
     particleArray = [];
 
-    init();
+    init()
 }
 
 function moveObstacle() {
@@ -1371,5 +1465,22 @@ function getCookie(cname) {
     }
     return -1;
 }
+function sendScore(username, score){
+    const http = new XMLHttpRequest();   
+    const url=`https://l2niipto9l.execute-api.eu-north-1.amazonaws.com/test/updaterunner?username=${username}&score=${score}`;
+    http.open("GET", url);
+    http.send();
+};
+function getScore(){
+    const http = new XMLHttpRequest();   
+    const url=`https://l2niipto9l.execute-api.eu-north-1.amazonaws.com/test/getrunnerscore`;
+    http.open("GET", url);
+    http.send();
+
+    http.onreadystatechange=(e)=>{
+        game.leaderboard = JSON.parse(http.responseText);
+    };
+};
+
 //    document.cookie = `test=${true};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
 //    getCookie("test") === -1 ? false : getCookie("test");
