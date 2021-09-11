@@ -342,8 +342,17 @@ window.addEventListener('keydown', function (event) {
                 toggleMenu();
             }
             if (event.code === "Enter" && player.dead === true) {
-                menu.menuState = 4;
+                if(player.distance >= player.record){
+                    player.record = player.distance;
+
+                    menu.menuState = 4;
+                }else{
+                    menu.menuState = 3;
+                    player.distance = 0;
+        
+                }
                 revive();
+
             }
             if (event.code === "KeyT") {
                 createParticles(player.x, player.y, 50, 5, "black", 1)
@@ -366,7 +375,7 @@ window.addEventListener('keyup', function (event) {
 });
 
 window.addEventListener('keypress', function (event) {
-    if(settings.type === true){
+    if(settings.type === true && settings.name.length < 16){
         settings.name += event.key;
     }
 });
@@ -760,63 +769,92 @@ function showMenu() {
 
     }
     if(menu.menuState === 4){
-        if(player.distance > player.record){
 
 
-            png_font.drawText("Submit new record to", [0,24], "#403340", 8, null,  false);
-            png_font.drawText("leaderboard?", [0,24+80+24], "#403340", 8, null,  false);
+        png_font.drawText("Submit record to leaderboard?", [0,24], "#403340", 8, null,  false);
 
-            png_font.drawText("Name:", [0,128+80+16+40+40], "#403340", 8, null,  false);
+        png_font.drawText("Name:", [0,128+80+16+40+40], "#403340", 8, null,  false);
 
-            if(player.distance < 1000){
-                png_font.drawText(`Distance:${Math.floor(player.distance)}m`, [0,232+80+24+16+40+40], "#403340", 8, null,  false);
-            }else{
-                png_font.drawText(`Distance:${Math.floor(player.distance/10)/100}km`, [0,232+80+24+16+40+40], "#403340", 8, null,  false);
-            }
-
-            if(showButton(13,22,8,4,"Nope",1, "click", 13)){
-                menu.menuState = 3;
-                settings.type = false;
-                player.record = player.distance;
-                document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
-                player.distance = 0;
-
-            }
-            if(showButton(26,22,11,4,"Submit",1, "click", 13)){
-                if(settings.name !== ""){
-                    sendScore(settings.name, player.distance);
-
-                    menu.menuState = 3;
-                    document.cookie = `name=${settings.name};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
-                    settings.type = false;
-                    player.record = player.distance;
-                    document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
-                    player.distance = 0;
-
-                }
-            }
-            if(showButton(8,8,20,3,"",1 ,"select", 14)){
-                settings.type = true;
-            }
-            png_font.drawText(settings.name, [128*3,128+80+16+40+40], "#403340", 8, null,  false);
-
+        if(player.distance < 1000){
+            png_font.drawText(`Distance:${Math.floor(player.record)}m`, [0,232+80+24+16+40+40], "#403340", 8, null,  false);
         }else{
-            menu.menuState = 3;
+            png_font.drawText(`Distance:${Math.floor(player.record/10)/100}km`, [0,232+80+24+16+40+40], "#403340", 8, null,  false);
+        }
+
+        if(showButton(13,22,8,4,"Nope",1, "click", 13)){
+            if(player.distance !== 0){
+                menu.menuState = 3;
+
+            }else{
+                menu.menuState = 5;
+                getScore();
+            }
+            settings.type = false;
+                
+            document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
+
+            document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
             player.distance = 0;
 
         }
+        if(showButton(26,22,11,4,"Submit",1, "click", 13)){
+            if(settings.name !== ""){
+
+                sendScore(settings.name, player.distance);
+
+                document.cookie = `name=${settings.name};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
+
+                document.cookie = `name=${settings.name};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
+                settings.type = false;
+                player.record = player.distance;
+                document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
+
+                document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
+                player.distance = 0;
+                if(player.distance !== 0){
+
+
+                    menu.menuState = 3;
+
+                }else{
+                    menu.menuState = 5;
+                    setTimeout(() => {
+                        getScore();
+
+                    }, 500);
+
+                }
+            }
+        }
+        if(showButton(8,8,28,3,"",1 ,"select", 14)){
+            settings.type = true;
+        }
+        png_font.drawText(settings.name, [128*3,128+80+16+40+40], "#403340", 8, null,  false);
+
+        
     }
     if(menu.menuState === 5){
         if(showButton(1,1,8,4,"Back",1, "click", 3)){
             menu.menuState = 3;
         }
-        png_font.drawText("Leaderboard", [8*55, -8*3], "#403340", 16, null,  false);
+        if(showButton(10,1,37,4,"Submit to leaderboard?",1, "click", 3)){
+            menu.menuState = 4;
+        }
+        
         for(let i = 0; i < 9; i++){
             if(game.leaderboard.length >= (i+1)){
                 if(game.leaderboard[i].score < 1000){
-                    png_font.drawText(`${i+1}. ${game.leaderboard[i].name}: ${Math.floor(game.leaderboard[i].score)}m`, [8*55, i*96+256-64], "#403340", 8, null,  false);
+                    if(game.leaderboard[i].name === settings.name){
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score)}m`, [-8*1, i*96+256-64], "#403340", 8, null,  false);
+                    }else{
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score)}m`, [-8*1, i*96+256-64], "#403340", 8, null,  false);
+                    }
                 }else{
-                    png_font.drawText(`${i+1}. ${game.leaderboard[i].name}: ${Math.floor(game.leaderboard[i].score/10)/100}km`, [8*55, i*96+256-64], "#403340", 8, null,  false);
+                    if(game.leaderboard[i].name === settings.name){
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score/10)/100}km`, [-8*1, i*96+256-64], "#403340", 8, null,  false);
+                    }else{
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score/10)/100}km`, [-8*1, i*96+256-64], "#403340", 8, null,  false);
+                    }
                 }
             }
         }
