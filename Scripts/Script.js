@@ -312,7 +312,7 @@ window.addEventListener('keydown', function (event) {
         if (event.code === "KeyP") {
             window.close();
         }
-        if (event.code === "KeyD") {
+        if (event.code === "KeyD" && loaded == false) {
             loaded = true;
             clearTimeout(timeout2);
             titleScreenMusic.play();
@@ -452,11 +452,11 @@ function preload() {
         hillImg4.src = 'Images/Background/Desert/hill2.png';
     }
     if (hillImg5.complete) {
-        c.drawImage(hillImg5, Math.floor(back1.hill2X), Math.floor(standard.height + 248 - 240-40-40), 1920, 240);
+        c.drawImage(hillImg5, Math.floor(back1.hill2X), Math.floor(standard.height + 248 - 240-40-60), 1920, 240);
         hillImg5.src = 'Images/Background/Desert/hill3.png';
     }
     if (hillImg6.complete) {
-        c.drawImage(hillImg6, Math.floor(back2.hill2X), Math.floor(standard.height + 248 - 240-40-40), 1920, 240);
+        c.drawImage(hillImg6, Math.floor(back2.hill2X), Math.floor(standard.height + 248 - 240-40-60), 1920, 240);
         hillImg6.src = 'Images/Background/Desert/hill3.png';
     }
     if (cloud1.complete) {
@@ -622,11 +622,11 @@ function showBackground() {
         groundImg2.src = `Images/Background/${menu.mapSelected}/ground.png`;
     }
     if (hillImg5.complete) {
-        c.drawImage(hillImg5, Math.floor(back1.hill3X), Math.floor(standard.height + 248 - 240-56-56), 1920, 240);
+        c.drawImage(hillImg5, Math.floor(back1.hill3X), Math.floor(standard.height + 248 - 240-56-56-48), 1920, 240);
         hillImg5.src = `Images/Background/${menu.mapSelected}/hill3.png`;
     }
     if (hillImg6.complete) {
-        c.drawImage(hillImg6, Math.floor(back2.hill3X), Math.floor(standard.height + 248 - 240-56-56), 1920, 240);
+        c.drawImage(hillImg6, Math.floor(back2.hill3X), Math.floor(standard.height + 248 - 240-56-56-48), 1920, 240);
         hillImg6.src = `Images/Background/${menu.mapSelected}/hill3.png`;
     }
     if (hillImg3.complete) {
