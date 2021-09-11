@@ -252,6 +252,7 @@ start();
 
 
 window.addEventListener('click', function () {
+
     if (clicked === false && startTimer === true) {
         loadingMusic.play();
         clicked = true;
@@ -265,12 +266,16 @@ window.addEventListener('click', function () {
 
         }, 12500);
     }
+    if(clicked === true){
+        toggleFullscreen();
+    }
     if (mouse.click === false) {
         mouse.click = true;
         setTimeout(() => {
             mouse.click = false;
         }, 1000 / fps);
     }
+
 })
 canvas.addEventListener('mousemove', function (event) {
     let tmpXmulti = 1920 / screen.width;
@@ -837,7 +842,7 @@ function showMenu() {
                 }
             }
         }
-        if(showButton(8,8,28,3,"",1 ,"select", 14)){
+        if(showButton(8.5,7.5,28,4,"",1 ,"select", 14)){
             settings.type = true;
         }
         png_font.drawText(settings.name, [128*3,128+80+16+40+40], "#403340", 8, null,  false);
