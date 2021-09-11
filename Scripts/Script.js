@@ -89,7 +89,6 @@ var timeout2 = undefined;
 var interval1 = undefined;
 
 var settings = {
-    fullscreen: false,
     debug: false,
     name:getCookie("name") === -1 ? "" : getCookie("name"),
     type: false
@@ -530,44 +529,25 @@ function toggleDebug() {
 
 
 function toggleFullscreen() {
-    if (settings.fullscreen === true) {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-            settings.fullscreen = false;
-            return;
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-            settings.fullscreen = false;
-            return;
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-            settings.fullscreen = false;
-            return;
-        }
-    }
-    if (settings.fullscreen === false) {
+
         if (canvas.RequestFullScreen) {
             canvas.RequestFullScreen();
-            settings.fullscreen = true;
             return;
         } else if (canvas.webkitRequestFullScreen) {
             canvas.webkitRequestFullScreen();
-            settings.fullscreen = true;
             return;
         } else if (canvas.mozRequestFullScreen) {
             canvas.mozRequestFullScreen();
-            settings.fullscreen = true;
             return;
         } else if (canvas.msRequestFullscreen) {
             canvas.msRequestFullscreen();
-            settings.fullscreen = true;
             return;
         } else {
             alert("This Computer doesn't supporter fullscreen");
         }
 
 
-    }
+    
 }
 
 
