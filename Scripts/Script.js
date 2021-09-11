@@ -136,6 +136,8 @@ setTimeout(() => {
 }, 1000);
 
 function init() {
+    getScore();
+
     let distance = player.distance;
     let record = JSON.parse(player.record);
     
