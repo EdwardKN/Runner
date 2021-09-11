@@ -138,7 +138,8 @@ setTimeout(() => {
 
 function init() {
     let distance = player.distance;
-    let record = player.record;
+    let record = JSON.parse(player.record);
+    
     back1 = {
         groundX: 0,
         hill1X:0,
@@ -286,7 +287,6 @@ canvas.addEventListener('mousemove', function (event) {
 
 
 window.addEventListener('keydown', function (event) {
-    console.log(event)
 
     if(settings.type === true){
         if(event.code === "Backspace"){
@@ -342,16 +342,32 @@ window.addEventListener('keydown', function (event) {
                 toggleMenu();
             }
             if (event.code === "Enter" && player.dead === true) {
-                if(player.distance >= player.record){
+                getScore();
+                let score = undefined;
+                for(let i = 0; i<game.leaderboard.length; i++){
+                    if(game.leaderboard[i].name == settings.name){
+                        score = game.leaderboard[i].score;
+                        console.log(game.leaderboard[i])
+                        
+                    }
+                }
+                if(player.distance < score && score !== undefined || score == undefined && player.distance < player.record){
+                    menu.menuState = 3;
                     player.record = player.distance;
 
-                    menu.menuState = 4;
-                }else{
-                    menu.menuState = 3;
                     player.distance = 0;
-        
+                    revive();
+
+                }else{
+                    player.record = player.distance;
+
+                    player.distance = 0;
+                    menu.menuState = 4;
+                    getScore();
+
+                    revive();
+
                 }
-                revive();
 
             }
             if (event.code === "KeyT") {
@@ -375,7 +391,8 @@ window.addEventListener('keyup', function (event) {
 });
 
 window.addEventListener('keypress', function (event) {
-    if(settings.type === true && settings.name.length < 16){
+    console.log(event)
+    if(settings.type === true && settings.name.length < 16 && event.code !== "Enter"){
         settings.name += event.key;
     }
 });
@@ -794,19 +811,33 @@ function showMenu() {
             document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
 
             document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
+            
+            document.cookie = `name=${settings.name};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
+
+            document.cookie = `name=${settings.name};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
             player.distance = 0;
+            settings.type = false;
+
 
         }
         if(showButton(26,22,11,4,"Submit",1, "click", 13)){
-            if(settings.name !== ""){
+            let score = undefined;
+            for(let i = 0; i<game.leaderboard.length; i++){
+                if(game.leaderboard[i].name == settings.name){
+                    score = game.leaderboard[i].score;
+                }
+            }
 
-                sendScore(settings.name, player.distance);
+            if(settings.name !== "" && score < player.record ||settings.name !== "" && score === undefined){
+
+
+
+                sendScore(settings.name, player.record);
 
                 document.cookie = `name=${settings.name};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
 
                 document.cookie = `name=${settings.name};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
                 settings.type = false;
-                player.record = player.distance;
                 document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
 
                 document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
@@ -821,7 +852,7 @@ function showMenu() {
                     setTimeout(() => {
                         getScore();
 
-                    }, 500);
+                    }, 750);
 
                 }
             }
@@ -839,6 +870,8 @@ function showMenu() {
         }
         if(showButton(10,1,37,4,"Submit to leaderboard?",1, "click", 3)){
             menu.menuState = 4;
+            getScore();
+
         }
         
         for(let i = 0; i < 9; i++){
