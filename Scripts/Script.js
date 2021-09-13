@@ -789,7 +789,8 @@ function showMenu() {
             menu.menuState = 3;
         
             settings.type = false;
-                
+            buttonArray[14] = false;
+
             document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
 
             document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
@@ -803,6 +804,10 @@ function showMenu() {
 
         }
         if(showButton(26,22,11,4,"Submit",1, "click", 13)){
+            settings.type = false;
+            buttonArray[14] = false;
+            
+
             let score = undefined;
             for(let i = 0; i<game.leaderboard.length; i++){
                 if(game.leaderboard[i].name == settings.name){
