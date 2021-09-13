@@ -130,6 +130,8 @@ var bird = undefined;
 
 var player = {distance:0,record:getCookie("record") === -1 ? -1 : getCookie("record")};
 
+var dieTimeout
+
 
 setTimeout(() => {
     startTimer = true;
@@ -351,6 +353,7 @@ window.addEventListener('keydown', function (event) {
                 toggleMenu();
             }
             if (event.code === "Enter" && player.dead === true) {
+                clearTimeout(dieTimeout);
                 getScore();
                 let score = undefined;
                 for(let i = 0; i<game.leaderboard.length; i++){
@@ -1009,7 +1012,7 @@ function unPause(mapSelected) {
 }
 
 function die() {
-    setTimeout(() => {
+    dieTimeout = setTimeout(function(){
         getScore();
                 let score = undefined;
                 for(let i = 0; i<game.leaderboard.length; i++){
@@ -1036,7 +1039,8 @@ function die() {
                     revive();
 
                 }
-    }, 30000);
+    },30000)
+
     menu.menuState = 0;
     player.animationState = 4;
     player.dead = true;
@@ -1144,12 +1148,12 @@ function moveBackground() {
 
         if (back1.cloudX < -900 + player.speed / fpsMultiplier) {
             back1.cloudX = 1920 + Math.random()*300;
-            back1.cloudY = Math.random() * 100;
+            back1.cloudY = Math.random() * 150;
             back1.cloudY = (Math.floor(back1.cloudY / 8)) * 8;
         }
         if (back2.cloudX < -900 + player.speed / fpsMultiplier) {
             back2.cloudX = 1920 + Math.random()*300;
-            back2.cloudY = Math.random() * 100;
+            back2.cloudY = Math.random() * 150;
             back2.cloudY = (Math.floor(back2.cloudY / 8)) * 8;
         }
         back1.cloudX -= (player.speed / fpsMultiplier) * 0.2;
