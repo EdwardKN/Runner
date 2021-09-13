@@ -786,13 +786,8 @@ function showMenu() {
         }
 
         if(showButton(13,22,8,4,"Nope",1, "click", 13)){
-            if(player.distance !== 0){
-                menu.menuState = 3;
-
-            }else{
-                menu.menuState = 5;
-                getScore();
-            }
+            menu.menuState = 3;
+        
             settings.type = false;
                 
             document.cookie = `record=${player.record};Expires=Sun, 22 Oct 2020 08:00:00 UTC;`;
