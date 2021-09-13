@@ -279,18 +279,21 @@ window.addEventListener('click', function () {
     }
 
 })
-canvas.addEventListener('mousemove', function (event) {
-    let tmpXmulti = 1920 / screen.width;
-    let tmpYmulti = 1080 / screen.height;
-    if (settings.fullscreen === true) {
-        mouse.x = event.offsetX * tmpXmulti;
-        mouse.y = event.offsetY * tmpYmulti;
-    } else {
-        mouse.x = event.offsetX;
-        mouse.y = event.offsetY;
-    };
-});
+window.addEventListener('mousemove', function (event) {
+    let tmpXmulti = 1920/screen.width;
+    
+    if(document.fullscreenElement){
+      mouse.x = event.offsetX*tmpXmulti;
+      mouse.y = event.offsetY*tmpXmulti - ((1080*tmpXmulti)-1080)/2;
+      console.log(mouse.y)
+      console.log(tmpXmulti)
+      console.log(screen.availWidth)
 
+    }else{
+      mouse.x = event.offsetX;
+      mouse.y = event.offsetY;      
+    }
+});
 
 window.addEventListener('keydown', function (event) {
 
