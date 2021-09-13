@@ -858,6 +858,9 @@ function showMenu() {
         
     }
     if(menu.menuState === 5){
+        c.fillStyle =  "rgba(255, 255, 255, 0.8)"
+        c.fillRect(0,0,1920,1080)
+
         if(showButton(1,1,8,4,"Back",1, "click", 3)){
             menu.menuState = 3;
         }
