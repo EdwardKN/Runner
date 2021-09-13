@@ -1001,7 +1001,34 @@ function unPause(mapSelected) {
 }
 
 function die() {
-    timeout = setTimeout(revive, 30000)
+    setTimeout(() => {
+        getScore();
+                let score = undefined;
+                for(let i = 0; i<game.leaderboard.length; i++){
+                    if(game.leaderboard[i].name == settings.name){
+                        score = game.leaderboard[i].score;
+                        console.log(game.leaderboard[i])
+                        
+                    }
+                }
+                if(player.distance < score && score !== undefined || score == undefined && player.distance < player.record){
+                    menu.menuState = 3;
+                    player.record = player.distance;
+
+                    player.distance = 0;
+                    revive();
+
+                }else{
+                    player.record = player.distance;
+
+                    player.distance = 0;
+                    menu.menuState = 4;
+                    getScore();
+
+                    revive();
+
+                }
+    }, 30000);
     menu.menuState = 0;
     player.animationState = 4;
     player.dead = true;
