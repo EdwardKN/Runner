@@ -122,7 +122,7 @@ var player = undefined;
 
 setTimeout(() => {
     startTimer = true;
-}, 1000);
+}, 500);
 
 function init() {
     back1 = {
