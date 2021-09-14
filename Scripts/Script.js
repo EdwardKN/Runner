@@ -283,8 +283,8 @@ window.addEventListener('click', function () {
 })
 
 canvas.addEventListener('mousemove', function (event) {
-    let tmpXmulti = 1920 / screen.width;
-    let tmpYmulti = 1080 / screen.height;
+    let tmpXmulti = 1920 / screen.availWidth;
+    let tmpYmulti = 1080 / screen.availHeight;
     if (document.fullscreenElement) {
         mouse.x = event.offsetX * tmpXmulti;
         mouse.y = event.offsetY * tmpYmulti;
