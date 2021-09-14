@@ -282,17 +282,28 @@ window.addEventListener('click', function () {
 
 })
 
-canvas.addEventListener('mousemove', function (event) {
-    let tmpXmulti = 1920 / screen.width;
-    let tmpYmulti = 1080 / screen.height;
-    if (settings.fullscreen === true) {
-        mouse.x = event.offsetX * tmpXmulti;
-        mouse.y = event.offsetY * tmpYmulti + ((screen.height*tmpXmulti)-screen.height)/2;
+var FULLSCREEN = false;
+document.onfullscreenchange = () => {FULLSCREEN = !FULLSCREEN};
 
+function map(v,n1,n2,m1,m2){
+    return (v-n1)/(n2-n1)*(m2-m1)+m1;
+}
+
+window.addEventListener('mousemove',e=>{
+    var x,y;
+    var element = e.target;
+    let br = element.getBoundingClientRect();
+    if(FULLSCREEN){
+        let ratio = window.innerHeight/canvas.height;
+        let offset = (window.innerWidth-(canvas.width*ratio))/2;
+        x = map(e.clientX-br.left-offset,0,canvas.width*ratio,0,element.width);
+        y = map(e.clientY-br.top,0,canvas.height*ratio,0,element.height);
     } else {
-        mouse.x = event.offsetX;
-        mouse.y = event.offsetY;
-    };
+        x = e.clientX - br.left;
+        y = e.clientY - br.top;
+    }
+    mouse.x = x;
+    mouse.y = y;
 });
 
 window.addEventListener('keydown', function (event) {
