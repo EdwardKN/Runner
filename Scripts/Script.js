@@ -1,3 +1,5 @@
+(function() {
+
 var canvas = document.getElementById('game');
 
 canvas.width = 1920;
@@ -1705,3 +1707,5 @@ function getScore(){
 
 //    document.cookie = `test=${true};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
 //    getCookie("test") === -1 ? false : getCookie("test");
+
+})();
