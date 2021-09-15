@@ -159,7 +159,7 @@ function init() {
     sun = {
         x:0,
         y:0,
-        value:270,
+        value:200,
         colorValue:1
     }
     back1 = {
@@ -981,7 +981,9 @@ function update() {
 
 }
 function calculateSun(){
-    sun.value-=0.00075;
+    if(menu.pause === false){
+        sun.value-=0.00075;
+    }   
     sun.value = sun.value%360
 
     sun.x=960*Math.cos(sun.value) + 960;
