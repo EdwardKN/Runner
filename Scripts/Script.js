@@ -12,6 +12,7 @@ var playerImg4 = new Image();
 var playerImg5 = new Image();
 var playerImg6 = new Image();
 var playerImg7 = new Image();
+var playerImg8 = new Image();
 
 var birdImg1 = new Image();
 var birdImg2 = new Image();
@@ -262,7 +263,7 @@ function init() {
     player = {
         x: 200,
         y: standard.height,
-        animationState: 5,
+        animationState: 6,
         animation: 1,
         jumping: false,
         jumpSpeed: standard.jumpspeed,
@@ -476,7 +477,7 @@ window.addEventListener('keydown', function (event) {
                 titleScreenMusic.pause();
                 titleScreenMusic.currentTime = 0;
                 introLevel1Music.play();
-                player.animationState = 5;
+                player.animationState = 6;
                 smallInit();
                 }
             }
@@ -536,6 +537,11 @@ function preload() {
         c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg7.src = `Images/Player/Ostrich/player7.png`;
     }
+    if (playerImg8.complete) {
+        c.drawImage(playerImg8, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg8.src = `Images/Player/Ostrich/player8.png`;
+    }
+    
 
     if (birdImg1.complete) {
         c.drawImage(birdImg1, Math.floor(bird.x), Math.floor(bird.y), 256, 256);
@@ -694,6 +700,10 @@ function showPlayer() {
         if (playerImg7.complete && player.animationState === 5) {
             c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
             playerImg7.src = `Images/Player/${player.skin}/player7.png`;
+        }
+        if (playerImg8.complete && player.animationState === 6) {
+            c.drawImage(playerImg8, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg8.src = `Images/Player/${player.skin}/player8.png`;
         }
     }
 }
@@ -1034,7 +1044,7 @@ function showMenu() {
             titleScreenMusic.pause();
             titleScreenMusic.currentTime = 0;
             introLevel1Music.play();
-            player.animationState = 5;
+            player.animationState = 6;
         }
         if(showButton(38,1,4,4,">",1, "click", 23)){
 
