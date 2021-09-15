@@ -119,8 +119,8 @@ var game = {
 
 var buttonArray = [];
 
-buttonArray[4] = true;
-buttonArray[8] = true;
+buttonArray[34] = true;
+buttonArray[38] = true;
 buttonArray[62] = (settings.sound)*37
 buttonArray[63] = (settings.music)*37
 
