@@ -378,7 +378,6 @@ window.addEventListener('keydown', function (event) {
                 for(let i = 0; i<game.leaderboard.length; i++){
                     if(game.leaderboard[i].name == settings.name){
                         score = game.leaderboard[i].score;
-                        console.log(game.leaderboard[i])
                         
                     }
                 }
@@ -1005,7 +1004,6 @@ function calculateSun(){
     }
 
     c.fillStyle = `rgba(${sun.colorValue}, ${sun.colorValue/(value*8)}, 0, ${value})`;
-    console.log(sun.colorValue + "    " + value)
     c.fillRect(0,0,1920,1080)
 }
 function updateMetres(){
@@ -1097,7 +1095,6 @@ function die() {
                 for(let i = 0; i<game.leaderboard.length; i++){
                     if(game.leaderboard[i].name == settings.name){
                         score = game.leaderboard[i].score;
-                        console.log(game.leaderboard[i])
                         
                     }
                 }
@@ -1468,7 +1465,6 @@ function showButton(x, y, w, h,text,textSize, type, index, others) {
         } else {
             let tmp = (((mouse.x/40)-x-0.2)/w)*40
             buttonArray[index] = (Math.floor(tmp / 1)) * 1 -1 
-            console.log(buttonArray[index]);
             showNiceButton(x * 40, y * 40, w * 40, h * 40)
             c.fillStyle = "black";
 
