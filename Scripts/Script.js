@@ -356,7 +356,7 @@ window.addEventListener('keydown', function (event) {
             }
 
             if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-                if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 35) {
+                if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 75) {
                     crouch();
                 }
             }
@@ -974,7 +974,7 @@ function crouchCooldown() {
     } else if (player.crouchCooldownValue > 0) {
         player.crouchCooldownValue -= 0.5 / fpsMultiplier;
     }
-    if (player.crouchCooldownValue > 50) {
+    if (player.crouchCooldownValue > 75) {
         crouchEnd();
     }
 }
