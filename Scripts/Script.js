@@ -271,7 +271,6 @@ window.addEventListener('mousedown', function () {
     if (clicked === false && startTimer === true) {
         loadingMusic.play();
         clicked = true;
-        mouse.click = false
         toggleFullscreen();
         timeout2 = setTimeout(function () {
             loaded = true;
@@ -284,6 +283,9 @@ window.addEventListener('mousedown', function () {
     }
     if(clicked === true){
         toggleFullscreen();
+    }
+    if (mouse.click === false) {
+        mouse.click = true;
     }
 
 })
