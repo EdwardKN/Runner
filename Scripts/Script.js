@@ -981,30 +981,29 @@ function update() {
 }
 function calculateSun(){
     if(menu.pause === false){
-        sun.value-=0.00075;
+        sun.value-=0.00025;
+        if(sun.y > 540){
+            sun.value-=0.0004;
+        }
     }   
     sun.value = sun.value%360
 
     sun.x=960*Math.cos(sun.value) + 960;
     sun.y=540*Math.sin(sun.value) + 540;
     
-    let value = ((sun.y-100)/560)
-
-    if(value <= 0){
-        value = 0.01;
+    if(sun.y > 400 && sun.colorValue <= 245){
+        sun.colorValue += 0.2;
+    }else if(sun.colorValue > 0){
+        sun.colorValue -= 0.2;
+    }
+    if(sun.colorValue > 245){
+        sun.colorValue = 245;
     }
 
-    if(value > 0.95){
-        value = 0.95;
+    if(menu.menuState === 0 && player.dead === false){
+        c.fillStyle = `rgba(${250-sun.colorValue}, ${125-sun.colorValue/2}, 0, ${(sun.colorValue)/255})`;
+        c.fillRect(0,0,1920,1080)
     }
-    if(value >= 0.10 && sun.colorValue > 0){
-        sun.colorValue -= 1;
-    }else if(sun.colorValue < 80){
-        sun.colorValue += 1;
-    }
-
-    c.fillStyle = `rgba(${sun.colorValue}, ${sun.colorValue/(value*8)}, 0, ${value})`;
-    c.fillRect(0,0,1920,1080)
 }
 function updateMetres(){
     if(menu.pause === false){
