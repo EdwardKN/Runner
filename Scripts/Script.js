@@ -31,6 +31,7 @@ var hillImg5 = new Image();
 var hillImg6 = new Image();
 var skyImg = new Image();
 var cloud1 = new Image();
+var sunImg = new Image();
 
 var gameoverImg = new Image();
 var introImg = new Image();
@@ -131,6 +132,7 @@ gameOverMusic.volume = settings.music;
 
 var back1 = undefined;
 var back2 = undefined;
+var sun = undefined;
 
 var cactus1 = undefined;
 var cactus2 = undefined;
@@ -154,6 +156,12 @@ function init() {
     let distance = player.distance;
     let record = JSON.parse(player.record);
     
+    sun = {
+        x:0,
+        y:0,
+        value:270,
+        colorValue:1
+    }
     back1 = {
         groundX: 0,
         hill1X:0,
@@ -356,7 +364,7 @@ window.addEventListener('keydown', function (event) {
             }
 
             if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-                if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 45) {
+                if (menu.pause === false && player.dead === false && player.crouchCooldownValue < 55 && player.crouch === false) {
                     crouch();
                 }
             }
@@ -403,7 +411,7 @@ window.addEventListener('keydown', function (event) {
 window.addEventListener('keyup', function (event) {
     if (loaded === true) {
         if (event.code === "ControlLeft" || event.code === "ArrowDown") {
-            if (menu.pause === false && player.dead === false) {
+            if (menu.pause === false && player.dead === false && player.crouch === true) {
                 crouchEnd();
             }
         }
@@ -515,6 +523,10 @@ function preload() {
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back1.cloudX), Math.floor(back1.cloudY), 800, 400);
         cloud1.src = 'Images/Background/Desert/cloud1.png';
+    }
+    if (sunImg.complete) {
+        c.drawImage(sunImg, Math.floor(sun.x), Math.floor(sun.y), 128, 128);
+        sunImg.src = 'Images/Background/Desert/sun.png';
     }
     if (skyImg.complete) {
         c.drawImage(skyImg, Math.floor(0), Math.floor(0), 1920, 1080);
@@ -639,9 +651,14 @@ function showObstacle() {
 function showBackground() {
 
     if(menu.mapSelected !== ""){
+
     if (skyImg.complete) {
         c.drawImage(skyImg, Math.floor(0), Math.floor(0), 1920, 1080);
         skyImg.src = `Images/Background/${menu.mapSelected}/sky.png`;
+    }
+    if (sunImg.complete) {
+        c.drawImage(sunImg, Math.floor(sun.x), Math.floor(sun.y), 128, 128);
+        sunImg.src = `Images/Background/${menu.mapSelected}/sun.png`;
     }
     if (groundImg1.complete) {
         c.drawImage(groundImg1, Math.floor(back1.groundX), Math.floor(standard.height + 248), 1920, 184);
@@ -947,6 +964,7 @@ function update() {
         });
         crouchCooldown();
         showMenu();
+        calculateSun();
 
 
 
@@ -961,6 +979,32 @@ function update() {
         c.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+}
+function calculateSun(){
+    sun.value-=0.00075;
+    sun.value = sun.value%360
+
+    sun.x=960*Math.cos(sun.value) + 960;
+    sun.y=540*Math.sin(sun.value) + 540;
+    
+    let value = ((sun.y-100)/560)
+
+    if(value <= 0){
+        value = 0.01;
+    }
+
+    if(value > 0.95){
+        value = 0.95;
+    }
+    if(value >= 0.10 && sun.colorValue > 0){
+        sun.colorValue -= 1;
+    }else if(sun.colorValue < 80){
+        sun.colorValue += 1;
+    }
+
+    c.fillStyle = `rgba(${sun.colorValue}, ${sun.colorValue/(value*8)}, 0, ${value})`;
+    console.log(sun.colorValue + "    " + value)
+    c.fillRect(0,0,1920,1080)
 }
 function updateMetres(){
     if(menu.pause === false){
@@ -1633,7 +1677,7 @@ setInterval(function () {
 
 setInterval(function () {
     if (menu.pause === false) {
-        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "rgb(" + (255 - ((player.crouchCooldownValue / 50) * 255)) + ", " + (255 - ((player.crouchCooldownValue / 50) * 255)) + ", " + (255 - ((player.crouchCooldownValue / 50) * 255)) + ")", 1, 0, 0)
+        createParticles(player.x + 96, player.y + 112, Math.floor(player.crouchCooldownValue / 12.5), 1, 6, "rgb(" + (255 - ((player.crouchCooldownValue / 85) * 255)) + ", " + (255 - ((player.crouchCooldownValue / 85) * 255)) + ", " + (255 - ((player.crouchCooldownValue / 85) * 255)) + ")", 1, 0, 0)
     }
 }, 100 - player.crouchCooldownValue);
 
