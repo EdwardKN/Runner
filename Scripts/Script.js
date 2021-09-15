@@ -12,6 +12,7 @@ var playerImg4 = new Image();
 var playerImg5 = new Image();
 var playerImg6 = new Image();
 var playerImg7 = new Image();
+var playerImg8 = new Image();
 
 var birdImg1 = new Image();
 var birdImg2 = new Image();
@@ -65,6 +66,9 @@ titleScreenMusic.loop = true;
 
 var loadingMusic = new Audio('Sounds/Music/IntroByDavidRenda.mp3')
 
+var introLevel1Music = new Audio('Sounds/Music/IntroLevel1ByPatrickdeArteaga.ogg')
+introLevel1Music.loop = true;
+
 var c = canvas.getContext('2d');
 c.imageSmoothingEnabled = false;
 
@@ -101,7 +105,10 @@ var settings = {
 var menu = {
     pause: true,
     menuState: 0,
-    mapSelected:"Desert"
+    mapSelected:"Desert",
+    levelsDone:0,
+    level:0,
+    levelState:0
 };
 var standard = {
     jumpspeed: 37.5,
@@ -129,6 +136,7 @@ runningMusic.volume = settings.music;
 loadingMusic.volume = settings.music;
 titleScreenMusic.volume = settings.music;
 gameOverMusic.volume = settings.music;
+introLevel1Music.volume = settings.music;
 
 var back1 = undefined;
 var back2 = undefined;
@@ -150,6 +158,55 @@ setTimeout(() => {
     startTimer = true;
 }, 500);
 
+function smallInit(){
+    sun = {
+        x:0,
+        y:0,
+        value:200,
+        colorValue:1
+    }
+    back1 = {
+        groundX: 0,
+        hill1X:0,
+        hill2X:0-240,
+        hill3X:0-640,
+        cloudX:0,
+        cloudY:200
+    }
+    back2 = {
+        groundX: 1920,
+        hill1X:1920,
+        hill2X:1920-240,
+        hill3X:1920-640,
+        cloudX:1400,
+        cloudY:0
+    }
+    cactus1 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus2 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus3 = {
+        x: -2000,
+        y: standard.height
+    };
+    cactus4 = {
+        x: -2000,
+        y: standard.height
+    };
+
+    bird = {
+        x: -2000,
+        y: (standard.height + 100) - Math.random() * 300,
+        animationState: 1,
+        animation: 1,
+        speed: 1.25
+    };
+
+}
 function init() {
     getScore();
 
@@ -361,6 +418,13 @@ window.addEventListener('keydown', function (event) {
                 if (menu.pause === false && player.dead === false) {
                     jump();
                 }
+                if(menu.level === 1 && menu.levelState === 3){
+                    jump();
+                    menu.pause = false;
+                    player.animationState = 1;
+                    runningMusic.play();
+                    menu.levelState = 4
+                }
             }
 
             if (event.code === "ControlLeft" || event.code === "ArrowDown") {
@@ -372,6 +436,7 @@ window.addEventListener('keydown', function (event) {
                 toggleMenu();
             }
             if (event.code === "Enter" && player.dead === true) {
+                if(menu.level === 0){
                 clearTimeout(dieTimeout);
                 getScore();
                 let score = undefined;
@@ -399,6 +464,22 @@ window.addEventListener('keydown', function (event) {
 
                 }
 
+            }else if(menu.level === 1){
+                clearTimeout(dieTimeout);
+                gameOverMusic.pause();
+                gameOverMusic.currentTime = 0;
+            
+                particleArray = [];
+                menu.menuState = 0;
+                player.dead = false;
+
+                menu.levelState = 1;
+                titleScreenMusic.pause();
+                titleScreenMusic.currentTime = 0;
+                introLevel1Music.play();
+                player.animationState = 6;
+                smallInit();
+                }
             }
             if (event.code === "KeyT") {
                 createParticles(player.x, player.y, 50, 5, "black", 1)
@@ -455,6 +536,10 @@ function preload() {
     if (playerImg7.complete) {
         c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
         playerImg7.src = `Images/Player/Ostrich/player7.png`;
+    }
+    if (playerImg8.complete) {
+        c.drawImage(playerImg8, Math.floor(player.x), Math.floor(player.y), 256, 256);
+        playerImg8.src = `Images/Player/Ostrich/player8.png`;
     }
     
 
@@ -616,6 +701,10 @@ function showPlayer() {
             c.drawImage(playerImg7, Math.floor(player.x), Math.floor(player.y), 256, 256);
             playerImg7.src = `Images/Player/${player.skin}/player7.png`;
         }
+        if (playerImg8.complete && player.animationState === 6) {
+            c.drawImage(playerImg8, Math.floor(player.x), Math.floor(player.y), 256, 256);
+            playerImg8.src = `Images/Player/${player.skin}/player8.png`;
+        }
     }
 }
 function showObstacle() {
@@ -714,10 +803,12 @@ function showMenu() {
     png_font.drawText(`fps:${fpsMultiplier*60}`, [0,0], "#403340", 1, null,  false);
 
     if (menu.menuState === 0) {
-        if(player.distance < 1000){
-            png_font.drawText(`Distance:${Math.floor(player.distance)}m`, [128,96], "#403340", 8, null,  false);
-        }else{
-            png_font.drawText(`Distance:${Math.floor(player.distance/10)/100}km`, [128,96], "#403340", 8, null,  false);
+        if(menu.level === 0){
+            if(player.distance < 1000){
+                png_font.drawText(`Distance:${Math.floor(player.distance)}m`, [128,96], "#403340", 8, null,  false);
+            }else{
+                png_font.drawText(`Distance:${Math.floor(player.distance/10)/100}km`, [128,96], "#403340", 8, null,  false);
+            }
         }
 
     }
@@ -732,11 +823,16 @@ function showMenu() {
         }
     }
     if (menu.menuState === 2) {
-        if(showButton(11,6,10,4,"Story",1, "click", 21)){
+            if(showButton(11,6,10,4,"Story",1, "click", 21)){
+                if(settings.name === "DetLängstaNamnet"){
+                    menu.menuState = 7;
+                }
         }
+
 
         if(showButton(27,6,13,4,"Endless",1, "click", 22)){
             menu.menuState = 3;
+            menu.level = 0;
         }
         if(showButton(1,1,8,4,"Back",1, "click", 23)){
             menu.menuState = 1;
@@ -929,10 +1025,31 @@ function showMenu() {
         loadingMusic.volume = settings.music;
         titleScreenMusic.volume = settings.music;
         gameOverMusic.volume = settings.music;
+        introLevel1Music.volume = settings.music;
+
         document.cookie = `sound=${settings.sound};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
         document.cookie = `music=${settings.music};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
 
 
+        
+    }
+    if(menu.menuState === 7){
+        if(showButton(1,1,8,4,"Back",1, "click", 23)){
+            menu.menuState = 2;
+        }
+        if(showButton(11,6,4,4,"1",1, "click", 23)){
+            menu.level = 1;
+            menu.menuState = 0;
+            menu.levelState = 1;
+            titleScreenMusic.pause();
+            titleScreenMusic.currentTime = 0;
+            introLevel1Music.play();
+            player.animationState = 6;
+        }
+        if(showButton(38,1,4,4,">",1, "click", 23)){
+
+        }
+        png_font.drawText("Dessert", [8*80,-24], "#403340", 2*8, null,  false);
         
     }
     if (player.dead === true) {
@@ -948,6 +1065,7 @@ function update() {
 
         c.fillStyle = 'white';
         c.fillRect(0, 0, canvas.width, canvas.height);
+
         showDebugMenu();
         showBackground();
         showObstacle();
@@ -964,6 +1082,7 @@ function update() {
         crouchCooldown();
         showMenu();
         calculateSun();
+        useLevelStates();
 
 
 
@@ -978,6 +1097,44 @@ function update() {
         c.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+}
+function useLevelStates(){
+    if(menu.level === 1){
+        if(menu.levelState === 1){
+            if(showButton(1,1,8,4,"Back",1, "click", 23)){
+                menu.level = 0;
+                menu.menuState = 7;
+                menu.levelState = 0;
+                titleScreenMusic.play();
+                introLevel1Music.pause();
+                introLevel1Music.currentTime = 0;
+                player.animationState = 5;
+            }
+            if(mouse.x > player.x && mouse.x < player.x+256 && mouse.y > player.y && mouse.x < player.y+256){
+                if(mouse.click === true){
+                    menu.levelState = 2;
+                    mouse.click = false;
+                    introLevel1Music.pause();
+                    introLevel1Music.currentTime = 0;
+                    unPause();
+                }
+
+            }
+        }
+        if(menu.levelState === 2){
+            if(cactus1.x < 700  && cactus1.x > 100 || cactus2.x < 700 && cactus2.x > 100|| cactus3.x < 700 && cactus3.x > 100|| cactus4.x < 700 && cactus4.x > 100){
+                menu.pause = true;
+                player.animationState = 5;
+                runningMusic.pause();
+                menu.levelState = 3
+            }
+
+        }
+        if(menu.levelState === 3){
+            png_font.drawText("Press -Space- to jump", [2,2], "#403340", 1*8, null,  false);
+
+        }
+    }
 }
 function calculateSun(){
     if(menu.pause === false){
@@ -1008,7 +1165,11 @@ function calculateSun(){
 function updateMetres(){
     if(menu.pause === false){
         player.distance+=player.speed * 0.0048;
-        player.speed += 0.00128;
+        if(menu.level !== 1){
+            player.speed += 0.00128;
+        }else{
+            player.speed = 22;
+        }
     }
 }
 function crouchCooldown() {
@@ -1077,7 +1238,9 @@ function checkCollision() {
         die();
     }
 }
-function unPause(mapSelected) {
+function unPause() {
+
+
     titleScreenMusic.pause();
     titleScreenMusic.currentTime = 0;
     menu.pause = false;
@@ -1234,6 +1397,20 @@ function moveBackground() {
         back1.cloudX -= (player.speed / fpsMultiplier) * 0.2;
         back2.cloudX -= (player.speed / fpsMultiplier) *0.2;
     }
+    if(menu.level === 1 && menu.levelState === 1){
+        if (back1.cloudX < -900 + 3 / fpsMultiplier) {
+            back1.cloudX = 1920 + Math.random()*300;
+            back1.cloudY = Math.random() * 150;
+            back1.cloudY = (Math.floor(back1.cloudY / 8)) * 8;
+        }
+        if (back2.cloudX < -900 + 3 / fpsMultiplier) {
+            back2.cloudX = 1920 + Math.random()*300;
+            back2.cloudY = Math.random() * 150;
+            back2.cloudY = (Math.floor(back2.cloudY / 8)) * 8;
+        }
+        back1.cloudX -= (3 / fpsMultiplier) * 0.2;
+        back2.cloudX -= (3 / fpsMultiplier) *0.2;
+    }
 }
 
 function checkAir() {
@@ -1283,25 +1460,45 @@ function crouchEnd() {
 
 function teleport() {
     if (menu.pause === false) {
-        var chosen = Math.floor(Math.random() * 5);
-        if (cactus1.x < -200 && chosen === 0) {
-            cactus1.x = 2000 + (Math.random() * 300);
+        if(menu.level === 0){
+            var chosen = Math.floor(Math.random() * 5);
+            if (cactus1.x < -200 && chosen === 0) {
+                cactus1.x = 2000 + (Math.random() * 300);
+            }
+            else if (cactus2.x < -200 && chosen === 1) {
+                cactus2.x = 2000 + (Math.random() * 300);
+            }
+            else if (cactus3.x < -200 && chosen === 2) {
+                cactus3.x = 2000 + (Math.random() * 300);
+            }
+            else if (cactus4.x < -200 && chosen === 3) {
+                cactus4.x = 2000 + (Math.random() * 300);
+            }
+            else if (bird.x < -200 && chosen === 4) {
+                bird.x = 2200 + (Math.random() * 300);
+                bird.y = (standard.height - 50) - (Math.random() * 200);
+            }
+            else {
+                chosen = Math.floor(Math.random() * 5);
+            }
         }
-        else if (cactus2.x < -200 && chosen === 1) {
-            cactus2.x = 2000 + (Math.random() * 300);
-        }
-        else if (cactus3.x < -200 && chosen === 2) {
-            cactus3.x = 2000 + (Math.random() * 300);
-        }
-        else if (cactus4.x < -200 && chosen === 3) {
-            cactus4.x = 2000 + (Math.random() * 300);
-        }
-        else if (bird.x < -200 && chosen === 4) {
-            bird.x = 2200 + (Math.random() * 300);
-            bird.y = (standard.height - 50) - (Math.random() * 200);
-        }
-        else {
-            chosen = Math.floor(Math.random() * 5);
+        if(menu.level === 1){
+            var chosen = Math.floor(Math.random() * 4);
+            if (cactus1.x < -200 && chosen === 0) {
+                cactus1.x = 2000 + (Math.random() * 300);
+            }
+            else if (cactus2.x < -200 && chosen === 1) {
+                cactus2.x = 2000 + (Math.random() * 300);
+            }
+            else if (cactus3.x < -200 && chosen === 2) {
+                cactus3.x = 2000 + (Math.random() * 300);
+            }
+            else if (cactus4.x < -200 && chosen === 3) {
+                cactus4.x = 2000 + (Math.random() * 300);
+            }
+            else {
+                chosen = Math.floor(Math.random() * 4);
+            }
         }
     }
 }
