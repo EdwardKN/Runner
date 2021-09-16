@@ -1102,6 +1102,7 @@ function useLevelStates(){
     if(menu.level === 1){
         if(menu.levelState === 1){
             if(showButton(1,1,8,4,"Back",1, "click", 23)){
+                player.distance = 0;    
                 menu.level = 0;
                 menu.menuState = 7;
                 menu.levelState = 0;
@@ -1142,19 +1143,22 @@ function calculateSun(){
         if(sun.y > 540){
             sun.value-=0.0004;
         }
+        if(menu.level === 1){
+            sun.value-=0.001;
+        }
     }   
     sun.value = sun.value%360
 
     sun.x=960*Math.cos(sun.value) + 960;
     sun.y=540*Math.sin(sun.value) + 540;
     
-    if(sun.y > 400 && sun.colorValue <= 245){
+    if(sun.y > 400 && sun.colorValue <= 200){
         sun.colorValue += 0.2;
     }else if(sun.colorValue > 0){
         sun.colorValue -= 0.2;
     }
-    if(sun.colorValue > 245){
-        sun.colorValue = 245;
+    if(sun.colorValue > 200){
+        sun.colorValue = 200;
     }
 
     if(menu.menuState === 0 && player.dead === false){
