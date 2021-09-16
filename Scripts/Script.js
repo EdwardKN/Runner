@@ -1152,13 +1152,13 @@ function calculateSun(){
     sun.x=960*Math.cos(sun.value) + 960;
     sun.y=540*Math.sin(sun.value) + 540;
     
-    if(sun.y > 400 && sun.colorValue <= 150){
+    if(sun.y > 400 && sun.colorValue <= 175){
         sun.colorValue += 0.2;
     }else if(sun.colorValue > 0){
         sun.colorValue -= 0.2;
     }
-    if(sun.colorValue > 150){
-        sun.colorValue = 150;
+    if(sun.colorValue > 175){
+        sun.colorValue = 175;
     }
 
     if(menu.menuState === 0 && player.dead === false){
