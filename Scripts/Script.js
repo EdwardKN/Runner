@@ -1152,17 +1152,17 @@ function calculateSun(){
     sun.x=960*Math.cos(sun.value) + 960;
     sun.y=540*Math.sin(sun.value) + 540;
     
-    if(sun.y > 400 && sun.colorValue <= 200){
+    if(sun.y > 400 && sun.colorValue <= 150){
         sun.colorValue += 0.2;
     }else if(sun.colorValue > 0){
         sun.colorValue -= 0.2;
     }
-    if(sun.colorValue > 200){
-        sun.colorValue = 200;
+    if(sun.colorValue > 150){
+        sun.colorValue = 150;
     }
 
     if(menu.menuState === 0 && player.dead === false){
-        c.fillStyle = `rgba(${250-sun.colorValue}, ${125-sun.colorValue/2}, 0, ${(sun.colorValue)/255})`;
+        c.fillStyle = `rgba(${250-sun.colorValue}, ${75-sun.colorValue/2}, 0, ${(sun.colorValue)/255})`;
         c.fillRect(0,0,1920,1080)
     }
 }
