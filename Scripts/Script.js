@@ -1109,7 +1109,7 @@ function useLevelStates(){
                 titleScreenMusic.play();
                 introLevel1Music.pause();
                 introLevel1Music.currentTime = 0;
-                player.animationState = 5;
+                player.animationState = 6;
             }
             if(mouse.x > player.x && mouse.x < player.x+256 && mouse.y > player.y && mouse.x < player.y+256){
                 if(mouse.click === true){
