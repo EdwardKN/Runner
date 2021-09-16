@@ -396,7 +396,7 @@ window.addEventListener('keydown', function (event) {
                 loadingMusic2.play();
             }, 9000);
         }
-        if (event.code === "KeyP") {
+        if (event.code === "KeyV") {
             window.close();
         }
         if (event.code === "KeyD" && loaded == false) {
@@ -432,7 +432,7 @@ window.addEventListener('keydown', function (event) {
                     crouch();
                 }
             }
-            if (event.code === "Escape" && player.dead === false) {
+            if (event.code === "KeyP" && player.dead === false) {
                 toggleMenu();
             }
             if (event.code === "Enter" && player.dead === true) {
