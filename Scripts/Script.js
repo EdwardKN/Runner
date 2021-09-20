@@ -1021,6 +1021,19 @@ function showMenu() {
         }
         settings.music = showButton(10,5,24,4,"Music",1, "slider", 63)
         settings.sound = showButton(10,9,24,4,"Sounds",1, "slider", 62)
+        if(settings.music < 0.02){
+            settings.music = 0;
+        }
+        if(settings.music >= 1){
+            settings.music = 1;
+        }
+        if(settings.sound < 0.02){
+            settings.sound = 0;
+        }
+        if(settings.sound >= 1){
+            settings.sound = 1;
+        }
+        console.log(settings.music)
         runningMusic.volume = settings.music;
         loadingMusic.volume = settings.music;
         titleScreenMusic.volume = settings.music;
@@ -1649,26 +1662,26 @@ function showButton(x, y, w, h,text,textSize, type, index, others) {
         if(buttonArray[index] === undefined){
             buttonArray[index] = 1;
         };
-        if (button(x * 40+16, y * 40, w * 40-36, h * 40) === 0) {
+        if (button(x * 40+16, y * 40, w * 40-48, h * 40) === 0) {
                 showNiceButton(x * 40, y * 40, w * 40, h * 40)
                 png_font.drawText(text, [x*40+24,y*40], "#403340", textSize*8, null,  false);
                 c.fillStyle = "#403340";
-                c.fillRect(buttonArray[index]*w+x*40+15+16,y*40,16,h*40)
+                c.fillRect(buttonArray[index]*w+x*40+4,y*40,16,h*40)
             
-        } else if (button(x * 40+16, y * 40, w * 40-36, h * 40) === 1) {
+        } else if (button(x * 40+16, y * 40, w * 40-48, h * 40) === 1) {
             showNiceButton(x * 40, y * 40, w * 40, h * 40)
             png_font.drawText(text, [x*40+24,y*40], "#403340", textSize*8, null,  false);
             c.fillStyle = "black";
 
-            c.fillRect(buttonArray[index]*w+x*40+15+16,y*40,16,h*40)
+            c.fillRect(buttonArray[index]*w+x*40+4,y*40,16,h*40)
 
         } else {
-            let tmp = (((mouse.x/40)-x-0.2)/w)*40
-            buttonArray[index] = (Math.floor(tmp / 1)) * 1 -1 
+            let tmp = (((mouse.x/40)-x)/w)*40;
+            buttonArray[index] = (Math.floor(tmp / 0.66)) * 0.66
             showNiceButton(x * 40, y * 40, w * 40, h * 40)
             c.fillStyle = "black";
 
-            c.fillRect(buttonArray[index]*w+x*40+15+16,y*40,16,h*40)
+            c.fillRect(buttonArray[index]*w+x*40+4,y*40,16,h*40)
 
 
         
