@@ -821,6 +821,18 @@ function showMenu() {
         if(showButton(2,12,14,4,"Settings",1, "click", 12)){
             menu.menuState = 6;
         }
+        if(showButton(2, 18, 4, 4, "", 1, "select", 13)){
+            runningMusic = new Audio('Sounds/Music/DNA_Warrior_03.mp3');
+        }
+        if(showButton(8, 18, 4, 4, "", 1, "select", 14)){
+            runningMusic = new Audio('Sounds/Music/nedladdning.mp3');
+        }
+        if(showButton(2, 18, 4, 4, "", 1, "select", 13) === false && 
+        showButton(8, 18, 4, 4, "", 1, "select", 14) === false
+        ){
+            runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
+        }
+
     }
     if (menu.menuState === 2) {
             if(showButton(11,6,10,4,"Story",1, "click", 21)){
