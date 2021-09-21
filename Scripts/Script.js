@@ -106,7 +106,7 @@ var menu = {
     pause: true,
     menuState: 0,
     mapSelected:"Desert",
-    levelsDone:0,
+    levelsDone:getCookie("levelsDone") === -1 ? 0 : getCookie("levelsDone"),
     level:0,
     levelState:0
 };
@@ -465,6 +465,7 @@ window.addEventListener('keydown', function (event) {
                 }
 
             }else if(menu.level === 1){
+                player.speed = 0;
                 clearTimeout(dieTimeout);
                 gameOverMusic.pause();
                 gameOverMusic.currentTime = 0;
@@ -833,6 +834,7 @@ function showMenu() {
         if(showButton(27,6,13,4,"Endless",1, "click", 22)){
             menu.menuState = 3;
             menu.level = 0;
+            player.speed = 24;
         }
         if(showButton(1,1,8,4,"Back",1, "click", 23)){
             menu.menuState = 1;
@@ -1037,14 +1039,17 @@ function showMenu() {
         if(showButton(1,1,8,4,"Back",1, "click", 23)){
             menu.menuState = 2;
         }
-        if(showButton(11,6,4,4,"1",1, "click", 23)){
-            menu.level = 1;
-            menu.menuState = 0;
-            menu.levelState = 1;
-            titleScreenMusic.pause();
-            titleScreenMusic.currentTime = 0;
-            introLevel1Music.play();
-            player.animationState = 6;
+        if(menu.levelsDone >= 0){
+            if(showButton(11,6,4,4,"1",1, "click", 23)){
+                menu.level = 1;
+                player.speed = 0;
+                menu.menuState = 0;
+                menu.levelState = 1;
+                titleScreenMusic.pause();
+                titleScreenMusic.currentTime = 0;
+                introLevel1Music.play();
+                player.animationState = 6;
+            }
         }
         if(showButton(38,1,4,4,">",1, "click", 23)){
 
@@ -1104,6 +1109,7 @@ function useLevelStates(){
             if(showButton(1,1,8,4,"Back",1, "click", 23)){
                 player.distance = 0;    
                 menu.level = 0;
+                player.speed = 24
                 menu.menuState = 7;
                 menu.levelState = 0;
                 titleScreenMusic.play();
@@ -1133,36 +1139,93 @@ function useLevelStates(){
         }
         if(menu.levelState === 3){
             png_font.drawText("Press -Space- to jump", [2,2], "#403340", 1*8, null,  false);
+        }
+        if(menu.levelState === 4){
+            if(sun.y > 350){
+                menu.levelState = 5;
+            }
+        }
+        if(menu.levelState === 5){
+            if(sun.y > 450){
 
+                if(player.speed > 0){
+                    player.speed-=0.1;
+                    if(runningMusic.volume > 0){
+                        runningMusic.volume-=0.001;
+
+                    }else{
+                        runningMusic.volume = 0;
+                    }
+                }else{
+                    player.speed = 0;
+                    player.animationState = 5;
+                    menu.levelState = 6;
+                    introLevel1Music.play();
+                    runningMusic.pause();
+                    setTimeout(() => {
+                        init();
+                        introLevel1Music.pause();
+                        menu.level = 0;
+                        menu.levelState = 0;
+                        if(menu.levelsDone > 1){
+                            menu.levelsDone = 1
+                            document.cookie = `levelsDone=${menu.levelsDone};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
+                        }
+                        menu.menuState = 7;
+                    }, 7000);
+                }
+
+            }
+        }
+        if(menu.levelState === 6){
+            png_font.drawText("Level 2 unlocked", [2,2], "white", 1*8, null,  false);
+            runningMusic.volume = settings.music;
+
+            setTimeout(() => {
+                player.animationState = 6;
+            }, 500);
+            menu.pause = true;
         }
     }
 }
 function calculateSun(){
-    if(menu.pause === false){
+    if(menu.pause === false || menu.levelState === 6 && menu.level === 1){
         sun.value-=0.00025;
         if(sun.y > 540){
             sun.value-=0.0004;
         }
-        if(menu.level === 1){
+        if(menu.level === 1 && menu.levelState !== 6){
             sun.value-=0.001;
+        }
+        if(menu.level === 1 && menu.levelState === 6){
+            sun.value-=0.0007;
+
         }
     }   
     sun.value = sun.value%360
 
     sun.x=960*Math.cos(sun.value) + 960;
     sun.y=540*Math.sin(sun.value) + 540;
-    
-    if(sun.y > 400 && sun.colorValue <= 175){
-        sun.colorValue += 0.2;
-    }else if(sun.colorValue > 0){
-        sun.colorValue -= 0.2;
-    }
-    if(sun.colorValue > 175){
-        sun.colorValue = 175;
+    if(player.dead === false && player.pause === false  || menu.levelState === 6 && menu.level === 1){
+        if(sun.y > 400 && sun.colorValue <= 200 || sun.y > 400 && sun.colorValue <= 255 && menu.level === 1 && menu.levelState === 6){
+            if(menu.level === 1 && menu.levelState === 6){
+                sun.colorValue += 1;
+            }
+            sun.colorValue += 0.2;
+        }else if(sun.colorValue > 0){
+            sun.colorValue -= 0.2;
+        }
+        if(sun.colorValue > 200 && menu.levelState !== 6 || menu.levelState === 6 && sun.colorValue > 255){
+            if(menu.levelState !== 6){
+                sun.colorValue = 200;
+            }else{
+                sun.colorValue = 255;
+            }
+        }
     }
 
-    if(menu.menuState === 0 && player.dead === false){
-        c.fillStyle = `rgba(${250-sun.colorValue}, ${75-sun.colorValue/2}, 0, ${(sun.colorValue)/255})`;
+    if(menu.menuState === 0  || menu.levelState === 6 && menu.level === 1){
+        c.fillStyle = `rgba(${250-sun.colorValue}, ${100-sun.colorValue/2}, 0, ${(sun.colorValue)/255})`;
         c.fillRect(0,0,1920,1080)
     }
 }
@@ -1171,8 +1234,8 @@ function updateMetres(){
         player.distance+=player.speed * 0.0048;
         if(menu.level !== 1){
             player.speed += 0.00128;
-        }else{
-            player.speed = 22;
+        }else if(player.speed < 22 && menu.levelState !== 5 && menu.level === 1){
+            player.speed+= 0.5;
         }
     }
 }
@@ -1486,7 +1549,7 @@ function teleport() {
                 chosen = Math.floor(Math.random() * 5);
             }
         }
-        if(menu.level === 1){
+        if(menu.level === 1 && menu.levelState !== 5){
             var chosen = Math.floor(Math.random() * 4);
             if (cactus1.x < -200 && chosen === 0) {
                 cactus1.x = 2000 + (Math.random() * 300);
