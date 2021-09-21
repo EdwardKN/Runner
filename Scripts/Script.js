@@ -821,15 +821,14 @@ function showMenu() {
         if(showButton(2,12,14,4,"Settings",1, "click", 12)){
             menu.menuState = 6;
         }
-        if(showButton(2, 18, 4, 4, "", 1, "select", 13)){
+        if(showButton(2, 18, 4, 4, "", 1, "select", 13,[14])){
             runningMusic = new Audio('Sounds/Music/DNA_Warrior_03.mp3');
         }
-        if(showButton(8, 18, 4, 4, "", 1, "select", 14)){
+        if(showButton(8, 18, 4, 4, "", 1, "select", 14,[13])){
             runningMusic = new Audio('Sounds/Music/nedladdning.mp3');
         }
         if(showButton(2, 18, 4, 4, "", 1, "select", 13) === false && 
-        showButton(8, 18, 4, 4, "", 1, "select", 14) === false
-        ){
+        showButton(8, 18, 4, 4, "", 1, "select", 14) === false){
             runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
         }
 
