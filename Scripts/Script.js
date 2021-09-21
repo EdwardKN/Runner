@@ -1054,8 +1054,8 @@ function showMenu() {
         if(showButton(16, 14, 4, 4, "", 1, "select", 14,[13])){
             runningMusic = new Audio('Sounds/Music/nedladdning.mp3');
         }
-        if(showButton(10, 14, 4, 4, "", 1, "select", 13) === false && 
-        showButton(10, 14, 4, 4, "", 1, "select", 14) === false){
+        if(showButton(10, 14, 4, 4, "", 1, "select", 13, [14]) === false && 
+        showButton(16, 14, 4, 4, "", 1, "select", 14, [13]) === false){
             runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
         }
 
