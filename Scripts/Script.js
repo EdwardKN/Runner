@@ -327,6 +327,8 @@ function start() {
             c.fillRect(1424+64,800-40,4*8,4*8)
             c.fillRect(1424+128,800-40,4*8,4*8)
         }
+        mouse.click = false;
+
     }
 }
 init();
