@@ -279,10 +279,12 @@ function init() {
         record:record
     };
     png_font.setup(
-        document.getElementById("game").getContext("2d"));
+    document.getElementById("game").getContext("2d"));
+
 };
 
 function start() {
+
 
     if (clicked === true) {
         preload();
@@ -329,7 +331,6 @@ function start() {
 }
 init();
 start();
-
 
 window.addEventListener('mousedown', function () {
 
@@ -1120,6 +1121,8 @@ function update() {
         c.fillStyle = 'black';
 
         c.fillRect(0, 0, canvas.width, canvas.height);
+        png_font.drawText(`Click to start`, [0,0], "white", 8, null,  false);
+
     }
 
 }
