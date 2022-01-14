@@ -1193,11 +1193,11 @@ function calculateSun(){
 
     if(menu.menuState === 0 && player.dead === false){
         c.fillStyle = `rgba(${250-sun.colorValue}, ${75-sun.colorValue/2}, 0, ${(sun.colorValue)/255})`;
-        c.fillRect(0,0,player.x,player.y-300)
-        c.fillRect(player.x+500,player.y-300,1920,1080)
-        c.fillRect(player.x,0,1920,player.y-300)
-        c.fillRect(0,player.y+500,player.x+500,1080)
-        c.fillRect(0,player.y-300,player.x-300,500)
+        c.fillRect(0,0,player.x,player.y-200)
+        c.fillRect(player.x+800,player.y-200,1920,1920)
+        c.fillRect(player.x,0,1920,player.y-200)
+        c.fillRect(0,player.y+500,player.x+800,1920)
+        c.fillRect(0,player.y-200,player.x-400,400)
 
     }
 }
