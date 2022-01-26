@@ -56,12 +56,12 @@ var ButtonDownSided = new Image();
 var ButtonUpperSided = new Image();
 var ButtonDoubleVertical = new Image();
 
-var runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
+var runningMusic = new Audio('Sounds/Music/Electronic Fantasy.ogg');
 runningMusic.loop = true;
 
-var gameOverMusic = new Audio('Sounds/Music/GameOverByPatrickdeArteaga.ogg')
+var gameOverMusic = new Audio('Sounds/Music/Ruined Planet.ogg')
 
-var titleScreenMusic = new Audio('Sounds/Music/TitleScreenBysawsquarenoise.mp3')
+var titleScreenMusic = new Audio('Sounds/Music/retro.mp3')
 titleScreenMusic.loop = true;
 
 var loadingMusic = new Audio('Sounds/Music/IntroByDavidRenda.mp3')
@@ -816,49 +816,49 @@ function showMenu() {
     if (menu.menuState === 1) {
         png_font.drawText("Runner", [0,-72], "#403340", 24, null,  false);
 
-        if(showButton(2,7,8,4,"Play",1, "click", 11)){
+        if(showButton(2,7,9,4,"Play",1, "click", 11)){
             menu.menuState = 2;
         }
-        if(showButton(2,12,14,4,"Settings",1, "click", 12)){
+        if(showButton(2,12,15,4,"Settings",1, "click", 12)){
             menu.menuState = 6;
         }
 
 
     }
     if (menu.menuState === 2) {
-            if(showButton(11,6,10,4,"Story",1, "click", 21)){
+            if(showButton(11,6,11,4,"Story",1, "click", 21)){
                 if(settings.name === "DetLängstaNamnet"){
                     menu.menuState = 7;
                 }
         }
 
 
-        if(showButton(27,6,13,4,"Endless",1, "click", 22)){
+        if(showButton(27,6,14,4,"Endless",1, "click", 22)){
             menu.menuState = 3;
             menu.level = 0;
             player.speed = 24;
         }
-        if(showButton(1,1,8,4,"Back",1, "click", 23)){
+        if(showButton(1,1,9,4,"Back",1, "click", 23)){
             menu.menuState = 1;
         }
     }
     if (menu.menuState === 3) {
-        if(showButton(12,1,11,4,"Desert",1 ,"select", 34)){
+        if(showButton(12,1,12,4,"Desert",1 ,"select", 34)){
             menu.mapSelected = "Desert"
         } 
-        if(showButton(12,6,11,4,"Locked",1 ,"click", 35)){
+        if(showButton(12,6,12,4,"Locked",1 ,"click", 35)){
             menu.mapSelected = ""
         } 
-        if(showButton(25,1,11,4,"Locked",1 ,"click", 36)){
+        if(showButton(25,1,12,4,"Locked",1 ,"click", 36)){
             menu.mapSelected = ""
         } 
-        if(showButton(25,6,11,4,"Locked",1 ,"click", 37)){
+        if(showButton(25,6,12,4,"Locked",1 ,"click", 37)){
             menu.mapSelected = ""
         }
-        if(showButton(12,1,11,4,"Desert",1 ,"select", 34) === false && 
-        showButton(12,6,11,4,"Locked",1 ,"click", 35) === false &&
-        showButton(25,1,11,4,"Locked",1 ,"click", 36) === false &&
-        showButton(25,6,11,4,"Locked",1 ,"click", 37) === false
+        if(showButton(12,1,12,4,"Desert",1 ,"select", 34) === false && 
+        showButton(12,6,12,4,"Locked",1 ,"click", 35) === false &&
+        showButton(25,1,12,4,"Locked",1 ,"click", 36) === false &&
+        showButton(25,6,12,4,"Locked",1 ,"click", 37) === false
         ){
             menu.mapSelected = ""
         }
@@ -869,16 +869,16 @@ function showMenu() {
         if(showButton(18,11,4,4,"",1 ,"click", 39)){
             player.skin = ""
         } 
-        if(showButton(26,11,4,4,"",1 ,"click", 310)){
+        if(showButton(27,11,4,4,"",1 ,"click", 310)){
             player.skin = ""
         } 
-        if(showButton(32,11,4,4,"",1 ,"click", 311)){
+        if(showButton(33,11,4,4,"",1 ,"click", 311)){
             player.skin = ""
         }
         if(showButton(12,11,4,4,"",1 ,"select", 38) === false &&
         showButton(18,11,4,4,"",1 ,"click", 39) === false &&
-        showButton(26,11,4,4,"",1 ,"click", 310) === false &&
-        showButton(32,11,4,4,"",1 ,"click", 311) === false 
+        showButton(27,11,4,4,"",1 ,"click", 310) === false &&
+        showButton(33,11,4,4,"",1 ,"click", 311) === false 
         ){
             player.skin = ""
         }
@@ -889,20 +889,20 @@ function showMenu() {
         }
 
 
-        if(showButton(1,1,8,4,"Back",1, "click", 312)){
+        if(showButton(1,1,9,4,"Back",1, "click", 312)){
             menu.menuState = 2;
         }
-        if(showButton(32,11,4,4,"",1 ,"click", 311)){
+        if(showButton(33,11,4,4,"",1 ,"click", 311)){
             player.skin = ""
         }
 
 
-        if(showButton(20,22,8,4,"Play",1, "click", 313)){
+        if(showButton(20,22,9,4,"Play",1, "click", 313)){
             if(menu.mapSelected !== ""){
                 unPause();
             }
         }
-        if(showButton(14.5,16,19,4,"Leaderboard",1, "click", 315)){
+        if(showButton(14.5,16,20,4,"Leaderboard",1, "click", 315)){
             menu.menuState = 5;
             getScore();
         }
@@ -921,7 +921,7 @@ function showMenu() {
             png_font.drawText(`Distance:${Math.floor(player.record/10)/100}km`, [0,232+80+24+16+40+40], "#403340", 8, null,  false);
         }
 
-        if(showButton(13,22,8,4,"Nope",1, "click", 41)){
+        if(showButton(13,22,9,4,"Nope",1, "click", 41)){
             menu.menuState = 3;
         
             settings.type = false;
@@ -939,7 +939,7 @@ function showMenu() {
 
 
         }
-        if(showButton(26,22,11,4,"Submit",1, "click", 42)){
+        if(showButton(26,22,12,4,"Submit",1, "click", 42)){
             settings.type = false;
             buttonArray[14] = false;
             
@@ -991,10 +991,10 @@ function showMenu() {
         c.fillStyle =  "rgba(255, 255, 255, 0.8)"
         c.fillRect(0,0,1920,1080)
 
-        if(showButton(1,1,8,4,"Back",1, "click", 51)){
+        if(showButton(0,1,9,4,"Back",1, "click", 51)){
             menu.menuState = 3;
         }
-        if(showButton(10,1,37,4,"Submit to leaderboard?",1, "click", 52)){
+        if(showButton(10,1,38,4,"Submit to leaderboard?",1, "click", 52)){
             menu.menuState = 4;
             getScore();
 
@@ -1020,7 +1020,7 @@ function showMenu() {
 
     }
     if(menu.menuState === 6){
-        if(showButton(1,1,8,4,"Back",1, "click", 61)){
+        if(showButton(1,1,9,4,"Back",1, "click", 61)){
             menu.menuState = 1;
         }
         settings.music = showButton(10,5,24,4,"Music",1, "slider", 63)
@@ -1047,21 +1047,9 @@ function showMenu() {
         document.cookie = `sound=${settings.sound};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
         document.cookie = `music=${settings.music};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
 
-
-        if(showButton(10, 14, 4, 4, "", 1, "select", 13,[14])){
-            runningMusic = new Audio('Sounds/Music/DNA_Warrior_03.mp3');
-        }
-        if(showButton(16, 14, 4, 4, "", 1, "select", 14,[13])){
-            runningMusic = new Audio('Sounds/Music/nedladdning.mp3');
-        }
-        if(showButton(10, 14, 4, 4, "", 1, "select", 13, [14]) === false && 
-        showButton(16, 14, 4, 4, "", 1, "select", 14, [13]) === false){
-            runningMusic = new Audio('Sounds/Music/RunningMusicLevel1Bysawsquarenoise.mp3');
-        }
-
     }
     if(menu.menuState === 7){
-        if(showButton(1,1,8,4,"Back",1, "click", 23)){
+        if(showButton(1,1,9,4,"Back",1, "click", 23)){
             menu.menuState = 2;
         }
         if(menu.levelsDone >= 0){
@@ -1076,10 +1064,58 @@ function showMenu() {
                 player.animationState = 6;
             }
         }
+        if(menu.levelsDone >= 1){
+            if(showButton(17,6,4,4,"2",1, "click", 23)){
+                menu.level = 2;
+                player.speed = 0;
+                menu.menuState = 0;
+                menu.levelState = 1;
+                titleScreenMusic.pause();
+                titleScreenMusic.currentTime = 0;
+                introLevel1Music.play();
+                player.animationState = 6;
+            }
+        }
+        if(menu.levelsDone >= 2){
+            if(showButton(23,6,4,4,"3",1, "click", 23)){
+                menu.level = 2;
+                player.speed = 0;
+                menu.menuState = 0;
+                menu.levelState = 1;
+                titleScreenMusic.pause();
+                titleScreenMusic.currentTime = 0;
+                introLevel1Music.play();
+                player.animationState = 6;
+            }
+        }
+        if(menu.levelsDone >= 3){
+            if(showButton(29,6,4,4,"4",1, "click", 23)){
+                menu.level = 2;
+                player.speed = 0;
+                menu.menuState = 0;
+                menu.levelState = 1;
+                titleScreenMusic.pause();
+                titleScreenMusic.currentTime = 0;
+                introLevel1Music.play();
+                player.animationState = 6;
+            }
+        }
+        if(menu.levelsDone >= 4){
+            if(showButton(35,6,4,4,"5",1, "click", 23)){
+                menu.level = 2;
+                player.speed = 0;
+                menu.menuState = 0;
+                menu.levelState = 1;
+                titleScreenMusic.pause();
+                titleScreenMusic.currentTime = 0;
+                introLevel1Music.play();
+                player.animationState = 6;
+            }
+        }
         if(showButton(38,1,4,4,">",1, "click", 23)){
 
         }
-        png_font.drawText("Dessert", [8*80,-24], "#403340", 2*8, null,  false);
+        png_font.drawText("Dessert", [6*80,-24], "#403340", 2*8, null,  false);
         
     }
     if (player.dead === true) {
@@ -1125,6 +1161,8 @@ function update() {
         c.fillStyle = 'black';
 
         c.fillRect(0, 0, canvas.width, canvas.height);
+
+        png_font.drawText(`Click to start`, [0,0], "white", 8, null,  false);
     }
 
 }
@@ -1190,9 +1228,11 @@ function useLevelStates(){
                     setTimeout(() => {
                         init();
                         introLevel1Music.pause();
+                        introLevel1Music.currentTime = 0;
+
                         menu.level = 0;
                         menu.levelState = 0;
-                        if(menu.levelsDone > 1){
+                        if(menu.levelsDone < 1){
                             menu.levelsDone = 1
                             document.cookie = `levelsDone=${menu.levelsDone};Expires=Sun, 22 Oct 2030 08:00:00 UTC;`;
                         }
@@ -1369,7 +1409,7 @@ function die() {
                     revive();
 
                 }
-    },30000)
+    },120000)
 
     menu.menuState = 0;
     player.animationState = 4;
@@ -1683,7 +1723,7 @@ function showButton(x, y, w, h,text,textSize, type, index, others) {
         if (button(x * 40, y * 40, w * 40, h * 40) === 0) {
             c.fillStyle = "red"
             showNiceButton(x * 40, y * 40, w * 40, h * 40)
-            png_font.drawText(text, [x*40+24,y*40], "#403340", textSize*8, null,  false);
+            png_font.drawText(text, [x*40+48,y*40], "#403340", textSize*8, null,  false);
             return false;
         } else if (button(x * 40, y * 40, w * 40, h * 40) === 1) {
             c.fillStyle = "black"
