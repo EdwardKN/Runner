@@ -1265,7 +1265,9 @@ function calculateSun(){
         }
         if(menu.level === 1 && menu.levelState === 6){
             sun.value-=0.0007;
-
+        }
+        if(menu.level === 2){
+            sun.value-=0.00045;
         }
     }   
     sun.value = sun.value%360
@@ -1298,10 +1300,12 @@ function calculateSun(){
 function updateMetres(){
     if(menu.pause === false){
         player.distance+=player.speed * 0.0048;
-        if(menu.level !== 1){
+        if(menu.level !== 1 && menu.level !== 2){
             player.speed += 0.00128;
         }else if(player.speed < 22 && menu.levelState !== 5 && menu.level === 1){
             player.speed+= 0.5;
+        }else if(menu.level === 2 && player.speed < 26 ){
+            player.speed+= 0.4;
         }
     }
 }
@@ -1615,7 +1619,7 @@ function teleport() {
                 chosen = Math.floor(Math.random() * 5);
             }
         }
-        if(menu.level === 1 && menu.levelState !== 5){
+        if(menu.level === 1 && menu.levelState !== 5 || menu.level === 2){
             var chosen = Math.floor(Math.random() * 4);
             if (cactus1.x < -200 && chosen === 0) {
                 cactus1.x = 2000 + (Math.random() * 300);
