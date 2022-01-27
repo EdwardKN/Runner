@@ -464,7 +464,7 @@ window.addEventListener('keydown', function (event) {
 
                 }
 
-            }else if(menu.level === 1){
+            }else if(menu.level === 1 || menu.level === 2){
                 player.speed = 0;
                 clearTimeout(dieTimeout);
                 gameOverMusic.pause();
@@ -1167,30 +1167,31 @@ function update() {
 
 }
 function useLevelStates(){
-    if(menu.level === 1){
-        if(menu.levelState === 1){
-            if(showButton(1,1,8,4,"Back",1, "click", 23)){
-                player.distance = 0;    
-                menu.level = 0;
-                player.speed = 24
-                menu.menuState = 7;
-                menu.levelState = 0;
-                titleScreenMusic.play();
+    if(menu.levelState === 1){
+        if(showButton(1,1,8,4,"Back",1, "click", 23)){
+            player.distance = 0;    
+            menu.level = 0;
+            player.speed = 24
+            menu.menuState = 7;
+            menu.levelState = 0;
+            titleScreenMusic.play();
+            introLevel1Music.pause();
+            introLevel1Music.currentTime = 0;
+            player.animationState = 6;
+        }
+        if(mouse.x > player.x && mouse.x < player.x+256 && mouse.y > player.y && mouse.x < player.y+256){
+            if(mouse.click === true){
+                menu.levelState = 2;
+                mouse.click = false;
                 introLevel1Music.pause();
                 introLevel1Music.currentTime = 0;
-                player.animationState = 6;
+                unPause();
             }
-            if(mouse.x > player.x && mouse.x < player.x+256 && mouse.y > player.y && mouse.x < player.y+256){
-                if(mouse.click === true){
-                    menu.levelState = 2;
-                    mouse.click = false;
-                    introLevel1Music.pause();
-                    introLevel1Music.currentTime = 0;
-                    unPause();
-                }
 
-            }
         }
+    }
+    if(menu.level === 1){
+
         if(menu.levelState === 2){
             if(cactus1.x < 700  && cactus1.x > 100 || cactus2.x < 700 && cactus2.x > 100|| cactus3.x < 700 && cactus3.x > 100|| cactus4.x < 700 && cactus4.x > 100){
                 menu.pause = true;
@@ -1529,7 +1530,7 @@ function moveBackground() {
         back1.cloudX -= (player.speed / fpsMultiplier) * 0.2;
         back2.cloudX -= (player.speed / fpsMultiplier) *0.2;
     }
-    if(menu.level === 1 && menu.levelState === 1){
+    if(menu.levelState === 1){
         if (back1.cloudX < -900 + 3 / fpsMultiplier) {
             back1.cloudX = 1920 + Math.random()*300;
             back1.cloudY = Math.random() * 150;
