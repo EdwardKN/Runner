@@ -817,7 +817,7 @@ function showMenu() {
         png_font.drawText("Runner", [0,-72], "#403340", 24, null,  false);
 
         if(showButton(2,7,9,4,"Play",1, "click", 11)){
-            menu.menuState = 2;
+            menu.menuState = 3;
         }
         if(showButton(2,12,15,4,"Settings",1, "click", 12)){
             menu.menuState = 6;
@@ -890,7 +890,7 @@ function showMenu() {
 
 
         if(showButton(1,1,9,4,"Back",1, "click", 312)){
-            menu.menuState = 2;
+            menu.menuState = 1;
         }
         if(showButton(33,11,4,4,"",1 ,"click", 311)){
             player.skin = ""
@@ -1050,7 +1050,7 @@ function showMenu() {
     }
     if(menu.menuState === 7){
         if(showButton(1,1,9,4,"Back",1, "click", 23)){
-            menu.menuState = 2;
+            menu.menuState = 3;
         }
         if(menu.levelsDone >= 0){
             if(showButton(11,6,4,4,"1",1, "click", 23)){
@@ -1256,7 +1256,7 @@ function useLevelStates(){
 }
 function calculateSun(){
     if(menu.pause === false || menu.levelState === 6 && menu.level === 1){
-        sun.value-=0.00025;
+        sun.value-=0.0025;
         if(sun.y > 540){
             sun.value-=0.0004;
         }
@@ -1271,25 +1271,14 @@ function calculateSun(){
         }
     }   
     sun.value = sun.value%360
+    sun.colorValue = (540*Math.sin(sun.value-0.2))
+    if(sun.colorValue > 200){
+        sun.colorValue = 200;
+    }
 
-    sun.x=960*Math.cos(sun.value) + 960;
+    sun.x=850*Math.cos(sun.value) + 850;
     sun.y=540*Math.sin(sun.value) + 540;
     if(player.dead === false && player.pause === false  || menu.levelState === 6 && menu.level === 1){
-        if(sun.y > 400 && sun.colorValue <= 200 || sun.y > 400 && sun.colorValue <= 255 && menu.level === 1 && menu.levelState === 6){
-            if(menu.level === 1 && menu.levelState === 6){
-                sun.colorValue += 1;
-            }
-            sun.colorValue += 0.2;
-        }else if(sun.colorValue > 0){
-            sun.colorValue -= 0.2;
-        }
-        if(sun.colorValue > 200 && menu.levelState !== 6 || menu.levelState === 6 && sun.colorValue > 255){
-            if(menu.levelState !== 6){
-                sun.colorValue = 200;
-            }else{
-                sun.colorValue = 255;
-            }
-        }
     }
 
     if(menu.menuState === 0  || menu.levelState === 6 && menu.level === 1){
