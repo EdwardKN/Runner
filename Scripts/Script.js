@@ -123,7 +123,8 @@ var mouse = {
 
 var game = {
     gamemode: "",
-    leaderboard : []
+    leaderboard : [],
+    leaderboardScroll:0
 };
 
 var buttonArray = [];
@@ -385,6 +386,15 @@ canvas.addEventListener('mousemove', function (event) {
 });
 
 window.addEventListener('keydown', function (event) {
+
+    if(menu.menuState === 5){
+        if(event.code === "ArrowUp"&& game.leaderboardScroll > 0){
+            game.leaderboardScroll --;
+        }
+        if(event.code === "ArrowDown" && game.leaderboardScroll < game.leaderboard.length){
+            game.leaderboardScroll ++;
+        }
+    }
 
     if(settings.type === true){
         if(event.code === "Backspace"){
@@ -924,6 +934,7 @@ function showMenu() {
         }
         if(showButton(14.5,16,20,4,"Leaderboard",1, "click", 315)){
             menu.menuState = 5;
+            game.leaderboardScroll = 0;
             getScore();
         }
 
@@ -992,6 +1003,7 @@ function showMenu() {
 
                 }else{
                     menu.menuState = 5;
+                    game.leaderboardScroll = 0;
                     setTimeout(() => {
                         getScore();
 
@@ -1019,20 +1031,21 @@ function showMenu() {
             getScore();
 
         }
+
         
-        for(let i = 0; i < 9; i++){
+        for(let i = 0+game.leaderboardScroll; i < 9+game.leaderboardScroll; i++){
             if(game.leaderboard.length >= (i+1)){
                 if(game.leaderboard[i].score < 1000){
                     if(game.leaderboard[i].name === settings.name){
-                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score)}m`, [-8*1, i*96+256-64], "#403340", 8, null,  false);
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score)}m`, [-8*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
                     }else{
-                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score)}m`, [-8*1, i*96+256-64], "#403340", 8, null,  false);
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score)}m`, [-8*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
                     }
                 }else{
                     if(game.leaderboard[i].name === settings.name){
-                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score/10)/100}km`, [-8*1, i*96+256-64], "#403340", 8, null,  false);
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score/10)/100}km`, [-8*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
                     }else{
-                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score/10)/100}km`, [-8*1, i*96+256-64], "#403340", 8, null,  false);
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score/10)/100}km`, [-8*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
                     }
                 }
             }
