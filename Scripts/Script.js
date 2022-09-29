@@ -33,6 +33,7 @@ var hillImg6 = new Image();
 var skyImg = new Image();
 var cloud1 = new Image();
 var sunImg = new Image();
+var moonImg = new Image();
 
 var gameoverImg = new Image();
 var introImg = new Image();
@@ -141,6 +142,7 @@ introLevel1Music.volume = settings.music;
 var back1 = undefined;
 var back2 = undefined;
 var sun = undefined;
+var moon = undefined;
 
 var cactus1 = undefined;
 var cactus2 = undefined;
@@ -164,6 +166,10 @@ function smallInit(){
         y:0,
         value:200,
         colorValue:1
+    }
+    moon = {
+        x:0,
+        y:0
     }
     back1 = {
         groundX: 0,
@@ -218,6 +224,10 @@ function init() {
         y:0,
         value:200,
         colorValue:1
+    }
+    moon = {
+        x:0,
+        y:0 
     }
     back1 = {
         groundX: 0,
@@ -343,15 +353,16 @@ window.addEventListener('mousedown', function () {
             titleScreenMusic.play();
             menu.menuState = 1;
             timeout2 = undefined;
+            mouse.click = false;
 
         }, 12500);
-    }
+    };
     if(clicked === true){
         toggleFullscreen();
-    }
+    };
     if (mouse.click === false) {
         mouse.click = true;
-    }
+    };
 
 })
 window.addEventListener('mouseup', function () {
@@ -408,6 +419,7 @@ window.addEventListener('keydown', function (event) {
             loadingMusic.pause();
             loadingState = 1000;
             loadingAlpha = 1000000000000;
+            mouse.click = false;
         }
         if (loaded === true) {
 
@@ -613,6 +625,10 @@ function preload() {
         c.drawImage(sunImg, Math.floor(sun.x), Math.floor(sun.y), 128, 128);
         sunImg.src = 'Images/Background/Desert/sun.png';
     }
+    if (moonImg.complete) {
+        c.drawImage(moonImg, Math.floor(moon.x), Math.floor(moon.y), 128, 128);
+        moonImg.src = 'Images/Background/Desert/moon.png';
+    }
     if (skyImg.complete) {
         c.drawImage(skyImg, Math.floor(0), Math.floor(0), 1920, 1080);
         skyImg.src = 'Images/Background/Desert/sky.png';
@@ -748,6 +764,10 @@ function showBackground() {
     if (sunImg.complete) {
         c.drawImage(sunImg, Math.floor(sun.x), Math.floor(sun.y), 128, 128);
         sunImg.src = `Images/Background/${menu.mapSelected}/sun.png`;
+    }
+    if (moonImg.complete) {
+        c.drawImage(moonImg, Math.floor(moon.x), Math.floor(moon.y), 128, 128);
+        moonImg.src = `Images/Background/${menu.mapSelected}/moon.png`;
     }
     if (groundImg1.complete) {
         c.drawImage(groundImg1, Math.floor(back1.groundX), Math.floor(standard.height + 248), 1920, 184);
@@ -1278,11 +1298,13 @@ function calculateSun(){
 
     sun.x=850*Math.cos(sun.value) + 850;
     sun.y=540*Math.sin(sun.value) + 540;
+    moon.x=850*-Math.cos(sun.value) + 850;
+    moon.y=540*Math.sin(-sun.value) + 540;
     if(player.dead === false && player.pause === false  || menu.levelState === 6 && menu.level === 1){
     }
 
     if(menu.menuState === 0  || menu.levelState === 6 && menu.level === 1){
-        c.fillStyle = `rgba(${250-sun.colorValue}, ${100-sun.colorValue/2}, 0, ${(sun.colorValue)/255})`;
+        c.fillStyle = `rgba(${250-sun.colorValue/0.9}, ${100-sun.colorValue/2}, ${250-sun.colorValue/0.8}, ${(sun.colorValue)/400})`;
         c.fillRect(0,0,1920,1080)
     }
 }
