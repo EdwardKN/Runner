@@ -384,17 +384,20 @@ canvas.addEventListener('mousemove', function (event) {
         mouse.y = event.offsetY;
     };
 });
+window.addEventListener('wheel',(event) => {
+    if(menu.menuState === 5){
+        if(game.leaderboardScroll > 0 && event.deltaX > 0){
+            game.leaderboardScroll --;
+        }
+        if(game.leaderboardScroll < game.leaderboard.length-9 && event.deltaX < 0){
+            game.leaderboardScroll ++;
+        }
+
+    }});
 
 window.addEventListener('keydown', function (event) {
 
-    if(menu.menuState === 5){
-        if(event.code === "ArrowUp"&& game.leaderboardScroll > 0){
-            game.leaderboardScroll --;
-        }
-        if(event.code === "ArrowDown" && game.leaderboardScroll < game.leaderboard.length){
-            game.leaderboardScroll ++;
-        }
-    }
+    
 
     if(settings.type === true){
         if(event.code === "Backspace"){
