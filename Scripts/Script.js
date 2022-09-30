@@ -811,8 +811,15 @@ function showBackground() {
 
 
     if (cloud1.complete) {
-        c.drawImage(cloud1, Math.floor(back2.cloudX), Math.floor(back2.cloudY), 800, 400);
+        let filter = document.createElement("canvas");
+        filter.width = canvas.width; filter.height = canvas.height; filter.getContext("2d").imageSmoothingEnabled = false;
+        
+        filter.getContext("2d").drawImage(cloud1, 0, 0, 800, 400);
         cloud1.src = `Images/Background/${menu.mapSelected}/cloud1.png`;
+        filter.getContext("2d").fillStyle = `rgba(${250-sun.colorValue/0.9}, ${100-sun.colorValue/2}, ${250-sun.colorValue/0.8}, ${(sun.colorValue)/400})`;
+        filter.getContext("2d").fillRect(0,0,800,400)
+
+        c.drawImage(filter,Math.floor(back2.cloudX),Math.floor(back2.cloudY))
     }
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back1.cloudX), Math.floor(back1.cloudY), 800, 400);
@@ -1285,7 +1292,7 @@ function useLevelStates(){
 }
 function calculateSun(){
     if(menu.pause === false || menu.levelState === 6 && menu.level === 1){
-        sun.value-=0.0025;
+        sun.value-=0.025;
         if(sun.y > 540){
             sun.value-=0.0004;
         }
@@ -2096,7 +2103,9 @@ function getScore(){
     http.send();
 
     http.onreadystatechange=(e)=>{
-        game.leaderboard = JSON.parse(http.responseText);
+        if(http.readyState === 4){
+            game.leaderboard = JSON.parse(http.responseText);
+        }
     };
 };
 
