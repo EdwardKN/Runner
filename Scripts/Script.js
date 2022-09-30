@@ -65,7 +65,6 @@ var gameOverMusic = new Audio('Sounds/Music/Ruined Planet.ogg')
 var titleScreenMusic = new Audio('Sounds/Music/retro.mp3')
 titleScreenMusic.loop = true;
 
-var loadingMusic = new Audio('Sounds/Music/IntroByDavidRenda.mp3')
 
 var introLevel1Music = new Audio('Sounds/Music/IntroLevel1ByPatrickdeArteaga.ogg')
 introLevel1Music.loop = true;
@@ -135,7 +134,6 @@ buttonArray[62] = (settings.sound)*37
 buttonArray[63] = (settings.music)*37
 
 runningMusic.volume = settings.music;
-loadingMusic.volume = settings.music;
 titleScreenMusic.volume = settings.music;
 gameOverMusic.volume = settings.music;
 introLevel1Music.volume = settings.music;
@@ -345,7 +343,6 @@ start();
 window.addEventListener('mousedown', function () {
 
     if (clicked === false && startTimer === true) {
-        loadingMusic.play();
         clicked = true;
         toggleFullscreen();
         timeout2 = setTimeout(function () {
@@ -356,7 +353,7 @@ window.addEventListener('mousedown', function () {
             timeout2 = undefined;
             mouse.click = false;
 
-        }, 12500);
+        }, 1000);
     };
     if(clicked === true){
         toggleFullscreen();
@@ -405,7 +402,6 @@ window.addEventListener('keydown', function (event) {
         }
     }else{
         if (clicked === false && startTimer === true) {
-            loadingMusic.play();
             clicked = true;
             toggleFullscreen();
             timeout2 = setTimeout(function () {
@@ -417,7 +413,6 @@ window.addEventListener('keydown', function (event) {
 
             }, 17000);
             setTimeout(() => {
-                loadingMusic2.play();
             }, 9000);
         }
         if (event.code === "KeyV") {
@@ -429,7 +424,6 @@ window.addEventListener('keydown', function (event) {
             titleScreenMusic.play();
             menu.menuState = 1;
             timeout2 = undefined;
-            loadingMusic.pause();
             loadingState = 1000;
             loadingAlpha = 1000000000000;
             mouse.click = false;
@@ -1075,7 +1069,6 @@ function showMenu() {
         }
         console.log(settings.music)
         runningMusic.volume = settings.music;
-        loadingMusic.volume = settings.music;
         titleScreenMusic.volume = settings.music;
         gameOverMusic.volume = settings.music;
         introLevel1Music.volume = settings.music;
