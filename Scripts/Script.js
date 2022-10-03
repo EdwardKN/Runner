@@ -811,15 +811,12 @@ function showBackground() {
 
 
     if (cloud1.complete) {
-        let filter = document.createElement("canvas");
-        filter.width = canvas.width; filter.height = canvas.height; filter.getContext("2d").imageSmoothingEnabled = false;
         
-        filter.getContext("2d").drawImage(cloud1, 0, 0, 800, 400);
+        
         cloud1.src = `Images/Background/${menu.mapSelected}/cloud1.png`;
-        filter.getContext("2d").fillStyle = `rgba(${250-sun.colorValue/0.9}, ${100-sun.colorValue/2}, ${250-sun.colorValue/0.8}, ${(sun.colorValue)/400})`;
-        filter.getContext("2d").fillRect(0,0,800,400)
 
-        c.drawImage(filter,Math.floor(back2.cloudX),Math.floor(back2.cloudY))
+
+        c.drawImage(cloud1,Math.floor(back2.cloudX),Math.floor(back2.cloudY), 800, 400)
     }
     if (cloud1.complete) {
         c.drawImage(cloud1, Math.floor(back1.cloudX), Math.floor(back1.cloudY), 800, 400);
@@ -1041,15 +1038,15 @@ function showMenu() {
             if(game.leaderboard.length >= (i+1)){
                 if(game.leaderboard[i].score < 1000){
                     if(game.leaderboard[i].name === settings.name){
-                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score)}m`, [-8*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score)}m`, [-9*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
                     }else{
-                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score)}m`, [-8*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score)}m`, [-9*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
                     }
                 }else{
                     if(game.leaderboard[i].name === settings.name){
-                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score/10)/100}km`, [-8*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}(You):${Math.floor(game.leaderboard[i].score/10)/100}km`, [-9*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
                     }else{
-                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score/10)/100}km`, [-8*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
+                        png_font.drawText(`${i+1}.${game.leaderboard[i].name}:${Math.floor(game.leaderboard[i].score/10)/100}km`, [-9*1, i*96+256-64 - game.leaderboardScroll*96], "#403340", 8, null,  false);
                     }
                 }
             }
@@ -1292,7 +1289,7 @@ function useLevelStates(){
 }
 function calculateSun(){
     if(menu.pause === false || menu.levelState === 6 && menu.level === 1){
-        sun.value-=0.025;
+        sun.value-=0.0025;
         if(sun.y > 540){
             sun.value-=0.0004;
         }
